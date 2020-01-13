@@ -1,16 +1,16 @@
 <template>
   <q-page padding class="flex column">
-    <q-banner class="bg-grey-3 text-grey-6 text-center">
+    <q-banner v-if="!otherUserDetails.online" class="bg-grey-3 text-grey-6 text-center">
       <template v-slot:avatar>
         <q-icon name="speaker_notes_off" color="grey-5" />
       </template>
-      User is offline
+      {{otherUserDetails.name}} is offline
     </q-banner>
     <div class="q-mb-xl column col justify-end">
       <q-chat-message
         v-for="message in messages"
         :key="message.text"
-        :name="message.from"
+        :name="message.from == 'me' ? userDetails.name : otherUserDetails.name"
         avatar="https://cdn.quasar.dev/img/avatar4.jpg"
         :text="[message.text]"
         stamp="minutes ago"
@@ -37,37 +37,41 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+import mixinOtherUserDetails from "src/mixins/mixin-other-user-details";
 export default {
   name: "PageIndex",
+  mixins: [mixinOtherUserDetails],
   data() {
     return {
-      newMessage: "",
-      messages: [
-        {
-          text: "hey, how are you?",
-          from: "me",
-          stamp: ""
-        },
-        {
-          text: "doing fine, how r you?",
-          from: "them",
-          stamp: ""
-        },
-        {
-          text: "Good",
-          from: "me",
-          stamp: ""
-        }
-      ]
+      newMessage: ""
     };
   },
   methods: {
+    ...mapActions("auth", [
+      "fbGetMessages",
+      "fbStopGettingMessages",
+      "fbSendMessages"
+    ]),
     sendMessage() {
-      this.messages.push({
-        text: this.newMessage,
-        from: "me"
+      this.fbSendMessages({
+        message: {
+          text: this.newMessage,
+          from: "me"
+        },
+        otherUserID: this.$route.params.id
       });
     }
+  },
+  computed: {
+    ...mapState("auth", ["loggedIn", "userDetails", "messages"])
+  },
+  mounted() {
+    this.fbGetMessages(this.$route.params.id);
+    // console.log(this.otherUserDetails);
+  },
+  destroyed() {
+    this.fbStopGettingMessages();
   }
 };
 </script>

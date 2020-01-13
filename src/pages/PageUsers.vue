@@ -1,7 +1,14 @@
 <template>
   <q-page padding>
     <q-list separator class="full-width">
-      <q-item to="/chat" v-for="(user, key) in users" :key="key" class="q-my-sm" clickable v-ripple>
+      <q-item
+        :to="'/chat/'+ key"
+        v-for="(user, key) in users"
+        :key="key"
+        class="q-my-sm"
+        clickable
+        v-ripple
+      >
         <q-item-section avatar>
           <q-avatar color="primary" text-color="white">{{ user.name.charAt(0).toUpperCase() }}</q-avatar>
         </q-item-section>

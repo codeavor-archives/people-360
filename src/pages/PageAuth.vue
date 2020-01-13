@@ -1,9 +1,8 @@
 <template>
-  <q-page padding>
+  <q-page padding class="login-register">
     <q-card class="auth-tabs">
       <q-tabs
         v-model="tab"
-        dense
         class="text-grey"
         active-color="primary"
         indicator-color="primary"
@@ -44,7 +43,10 @@ export default {
 
 <style>
 .auth-tabs {
-  max-width: 500px;
+  max-width: 480px;
   margin: 0 auto;
+}
+.login-register {
+  margin-top: 50px;
 }
 </style>

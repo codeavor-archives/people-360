@@ -5,26 +5,7 @@ import { showErrorMessage } from "src/functions/function-show-error-message";
 
 // import { db } from "../boot/firebase";
 const state = {
-  tasks: {
-    // ID1: {
-    //   name: "Where to go?",
-    //   completed: false,
-    //   dueDate: "2019/05/04",
-    //   dueTime: "16:00"
-    // },
-    // ID2: {
-    //   name: "Where to Live?",
-    //   completed: false,
-    //   dueDate: "2019/06/04",
-    //   dueTime: "17:00"
-    // },
-    // ID3: {
-    //   name: "Make Dinner?",
-    //   completed: false,
-    //   dueDate: "2019/07/07",
-    //   dueTime: "18:00"
-    // }
-  },
+  tasks: {},
   search: "",
   sort: "name",
   taskDownloaded: false

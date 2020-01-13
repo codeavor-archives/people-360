@@ -64,7 +64,7 @@
         </q-btn-dropdown>
       </q-toolbar>
     </q-header>
-    <q-footer v-if="this.$route.fullPath!='/chat' && loggedIn">
+    <q-footer v-if="loggedIn && !this.$route.params.id">
       <q-tabs active-color="white" dense no-caps>
         <q-route-tab
           clickable
@@ -108,12 +108,15 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+import mixinOtherUserDetails from "src/mixins/mixin-other-user-details";
 export default {
   name: "MyLayout",
+  mixins: [mixinOtherUserDetails],
   props: ["tab"],
   data() {
     return {
       // leftDrawerOpen: false
+      chat: "",
       leftDrawerOpen: this.$q.platform.is.desktop,
       navs: [
         {
@@ -164,7 +167,7 @@ export default {
       // console.log(this.$route)
       let currentPath = this.$route.fullPath;
       if (currentPath == "/") return "Asset Management";
-      else if (currentPath == "/chat") return "Chat";
+      else if (currentPath.includes("/chat")) return this.otherUserDetails.name;
       else if (currentPath == "/auth") return "Login";
       else if (currentPath == "/settings") return "Settings";
       else if (currentPath == "/users") return "Contacts";
@@ -172,7 +175,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions("auth", ["logoutUser"]),
+    ...mapActions("auth", [
+      "logoutUser",
+      "fbGetMessages",
+      "fbStopGettingMessages"
+    ]),
     ...mapActions("storesettings", [
       "setshow12HourFormat",
       "setshowTaskInOneList"

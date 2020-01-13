@@ -7,7 +7,7 @@ const routes = [
       { path: "settings", component: () => import("pages/Settings.vue") },
       { path: "settings/help", component: () => import("pages/PageHelp.vue") },
       { path: "auth", component: () => import("pages/PageAuth.vue") },
-      { path: "chat", component: () => import("pages/PageChat.vue") },
+      { path: "chat/:id", component: () => import("pages/PageChat.vue") },
       { path: "users", component: () => import("pages/PageUsers.vue") }
     ]
   }

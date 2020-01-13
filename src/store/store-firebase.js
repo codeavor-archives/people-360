@@ -2,11 +2,13 @@ import { fb, db } from "boot/firebase";
 import Vue from "vue";
 import { Loading, LocalStorage, Notify } from "quasar";
 import { showErrorMessage } from "src/functions/function-show-error-message";
+let messagesRef;
 
 const state = {
   loggedIn: false,
   userDetails: {},
-  users: {}
+  users: {},
+  messages: {}
 };
 
 const mutations = {
@@ -21,6 +23,12 @@ const mutations = {
   },
   updateUser(state, payload) {
     Object.assign(state.users[payload.userID], payload.userDetails);
+  },
+  addMessage(state, payload) {
+    Vue.set(state.messages, payload.messageID, payload.messages);
+  },
+  clearMessages(state, payload) {
+    state.messages = payload;
   }
 };
 
@@ -118,13 +126,6 @@ const actions = {
         }
       });
     }
-
-    // let userTasks = db.ref("users/" + payload.userID);
-    // userTasks.update(payload.updates, error => {
-    //   if (error) {
-    //     showErrorMessage(error.message);
-    //   }
-    // });
   },
   fbGetUsers({ commit }) {
     db.ref("users").on("child_added", snapshot => {
@@ -143,6 +144,35 @@ const actions = {
         userDetails
       });
     });
+  },
+  fbGetMessages({ state, commit }, id) {
+    let userID = state.userDetails.userID;
+    messagesRef = db.ref("chats/" + userID + "/" + id);
+    messagesRef.on("child_added", snapshot => {
+      let messages = snapshot.val();
+      let messageID = snapshot.key;
+      commit("addMessage", {
+        messageID,
+        messages
+      });
+    });
+  },
+  fbStopGettingMessages({ commit }) {
+    // console, console.log("firebase stop getting messages");
+    if (messagesRef) {
+      messagesRef.off("child_added");
+    }
+    commit("clearMessages", {});
+  },
+  fbSendMessages({}, payload) {
+    // console.log(payload);
+    db.ref(
+      "chats/" + state.userDetails.userID + "/" + payload.otherUserID
+    ).push(payload.message);
+    payload.message.from = "them";
+    db.ref(
+      "chats/" + payload.otherUserID + "/" + state.userDetails.userID
+    ).push(payload.message);
   }
 };
 
