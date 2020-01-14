@@ -2,6 +2,9 @@
 .thumbs.db
 node_modules
 
+#Firebase Api
+/src/boot/firebase
+
 # Quasar core related directories
 .quasar
 /dist

@@ -175,7 +175,6 @@ const actions = {
     ).push(payload.message);
   }
 };
-
 const getters = {
   users: state => {
     let usersFiltered = {};
