@@ -1,12 +1,11 @@
 <template>
-  <div class="row q-mb-sm">
+  <div class="row">
     <q-input
       @input="$emit('update:name', $event)"
       autofocus
       :rules="[val => !!val || 'Field is required']"
       ref="name"
       class="col"
-      outlined
       :value="name"
       label="Task Name"
       v-select-all

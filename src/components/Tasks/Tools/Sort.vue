@@ -1,6 +1,5 @@
 <template>
   <q-select
-    filled
     emit-value
     map-options
     class="col q-ml-sm"

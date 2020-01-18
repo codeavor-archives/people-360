@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card class="full-width">
     <modal-header>Edit Task</modal-header>
     <q-form @submit.prevent="submitForm()">
       <q-card-section>

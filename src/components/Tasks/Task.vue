@@ -1,7 +1,7 @@
 <template>
   <q-item
     v-touch-hold:500.mouse="showEditTaskModal"
-    :class="!task.completed ? 'bg-orange-1' : 'bg-green-1'"
+    :class="!task.completed ? 'bg-grey-1' : 'bg-blue-grey-1'"
     clickable
     v-ripple
     @click="updateTasks({ id: id, updates: { completed: !task.completed }})"

@@ -1,9 +1,9 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header elevated>
+    <q-header elevated v-if="loggedIn">
       <q-toolbar>
         <q-btn
-          v-if="loggedIn"
+          v-if="loggedIn && !this.$route.params.id"
           class="hamburger"
           flat
           dense
@@ -12,22 +12,21 @@
           icon="menu"
           aria-label="Menu"
         />
-
-        <q-toolbar-title class="text-center" v-if="loggedIn">{{title}}</q-toolbar-title>
-        <!-- <q-btn
-          no-caps
-          v-if="!loggedIn"
-          to="/auth"
+        <q-btn
+          v-if="loggedIn && this.$route.params.id"
           flat
-          class="absolute-right"
-          icon="account_circle"
-          label="Login"
-        />-->
+          dense
+          round
+          icon="arrow_back"
+          aria-label="Menu"
+          v-go-back.single
+        />
+        <q-toolbar-title class="text-center" v-if="loggedIn">{{title}}</q-toolbar-title>
         <q-btn-dropdown flat v-if="loggedIn" push dropdown-icon="more_vert" dense>
-          <div class="row no-wrap q-pa-md">
+          <div class="row no-wrap q-pa-sm">
             <div class="column">
-              <div class="text-h6 q-mb-md">Settings</div>
-              <q-item tag="label" v-ripple>
+              <div class="text-h6">Settings</div>
+              <q-item tag="label" v-ripple dense>
                 <q-item-section>
                   <q-item-label>Show 12 hour time format</q-item-label>
                 </q-item-section>
@@ -35,7 +34,7 @@
                   <q-toggle v-model="show12HourFormat" color="blue" />
                 </q-item-section>
               </q-item>
-              <q-item tag="label" v-ripple>
+              <q-item tag="label" v-ripple dense>
                 <q-item-section>
                   <q-item-label>Show tasks in one list</q-item-label>
                 </q-item-section>
@@ -44,10 +43,10 @@
                 </q-item-section>
               </q-item>
             </div>
-            <q-separator vertical inset class="q-mr-xl" />
-            <div class="column items-center q-mr-md">
+            <q-separator vertical inset class="q-mr-xs" />
+            <div class="column items-center">
               <q-avatar size="72px">
-                <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                <img :src="userDetails.photo" />
               </q-avatar>
               <div class="text-subtitle1 q-mt-md q-mb-xs">{{userDetails.email}}</div>
               <q-btn
@@ -79,11 +78,10 @@
     </q-footer>
 
     <q-drawer
-      v-if="loggedIn"
+      v-if="loggedIn && !this.$route.params.id"
       :width="260"
       :breakpoint="767"
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
       content-class="bg-grey-2"
     >
@@ -97,6 +95,24 @@
             <q-item-label>{{ nav.label }}</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item to="/users" exact clickable>
+          <q-item-section avatar>
+            <q-icon name="supervised_user_circle" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Manage User</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-expansion-item icon="settings" label="Settings">
+          <q-item to="/settings" exact clickable class="q-pl-xl">
+            <q-item-section avatar>
+              <q-icon name="settings" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>General Settings</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
       </q-list>
     </q-drawer>
 
@@ -108,6 +124,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+import { fb, db } from "boot/firebase";
 import mixinOtherUserDetails from "src/mixins/mixin-other-user-details";
 export default {
   name: "MyLayout",
@@ -115,7 +132,7 @@ export default {
   props: ["tab"],
   data() {
     return {
-      // leftDrawerOpen: false
+      profilePhoto: {},
       chat: "",
       leftDrawerOpen: this.$q.platform.is.desktop,
       navs: [
@@ -124,21 +141,21 @@ export default {
           icon: "list",
           to: "/"
         },
+        // {
+        //   label: "Manage Users",
+        //   icon: "supervised_user_circle",
+        //   to: "/users"
+        // },
         {
           label: "Chat",
           icon: "chat_bubble",
-          to: "/chat"
-        },
-        {
-          label: "Users",
-          icon: "people",
-          to: "/users"
-        },
-        {
-          label: "Settings",
-          icon: "settings",
-          to: "/settings"
+          to: "/contacts"
         }
+        // {
+        //   label: "Settings",
+        //   icon: "settings",
+        //   to: "/settings"
+        // }
       ]
     };
   },
@@ -170,7 +187,7 @@ export default {
       else if (currentPath.includes("/chat")) return this.otherUserDetails.name;
       else if (currentPath == "/auth") return "Login";
       else if (currentPath == "/settings") return "Settings";
-      else if (currentPath == "/users") return "Contacts";
+      else if (currentPath == "/contacts") return "Contacts";
       else return "Asset Management";
     }
   },

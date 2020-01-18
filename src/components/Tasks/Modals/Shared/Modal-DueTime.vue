@@ -1,10 +1,10 @@
 <template>
-  <div class="row q-mb-sm">
+  <div class="row">
     <q-input
+      :rules="[val => !!val || 'Field is required']"
       @input="$emit('update:duetime', $event)"
       class="col"
       label="Due time"
-      outlined
       :value="duetime"
     >
       <template v-slot:append>

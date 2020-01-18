@@ -1,7 +1,7 @@
 <template>
   <transition appear enter-active-class="animated zoomIn" leave-active-class="animated zoomOut">
     <div :class="{ 'q-mt-lg' : !settings.showTaskInOneList }">
-      <list-header v-if="!settings.showTaskInOneList" bgcolor="bg-green-4">
+      <list-header v-if="!settings.showTaskInOneList" bgcolor="bg-blue-grey-3">
         Task
         Todo
         Completed

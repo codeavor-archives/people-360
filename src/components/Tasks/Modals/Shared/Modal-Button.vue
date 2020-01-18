@@ -1,5 +1,5 @@
 <template>
-  <q-btn type="submit" label="Save" color="primary" />
+  <q-btn icon="save" style="width: 100px" type="submit" label="Save" color="primary" />
 </template>
 
 <script>

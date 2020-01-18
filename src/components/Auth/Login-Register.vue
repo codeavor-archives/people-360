@@ -52,6 +52,7 @@
       </q-input>
     </div>
     <div class="row q-mb-md">
+      <q-btn @click="resetPassword" dense flat color="primary" label="Reset Password" />
       <q-space></q-space>
       <q-btn type="submit" color="primary" :label="tab" />
     </div>
@@ -60,6 +61,9 @@
 
 <script>
 import { mapActions } from "vuex";
+import { fb } from "boot/firebase";
+import { showErrorMessage } from "src/functions/function-show-error-message";
+import { showSuccessMessage } from "src/functions/function-show-success-message";
 export default {
   props: ["tab"],
   data() {
@@ -73,6 +77,28 @@ export default {
     };
   },
   methods: {
+    resetPassword() {
+      this.$q.loading.show({
+        delay: 400
+      });
+      var auth = fb.auth();
+      var emailAddress = this.formData.email;
+      auth
+        .sendPasswordResetEmail(emailAddress)
+        .then(response => {
+          this.$q.loading.hide();
+          this.$q
+            .dialog({
+              title: "Success",
+              message: "Reset Password send to email",
+              persistent: true
+            })
+            .onOk(() => {});
+        })
+        .catch(error => {
+          showErrorMessage(error.message);
+        });
+    },
     submitForm() {
       this.$refs.email.validate();
       this.$refs.password.validate();

@@ -1,6 +1,12 @@
 <template>
-  <div class="row q-mb-sm">
-    <q-input @input="$emit('update:duedate', $event)" label="Due date" outlined :value="duedate">
+  <div class="row">
+    <q-input
+      :rules="[val => !!val || 'Field is required']"
+      class="col"
+      @input="$emit('update:duedate', $event)"
+      label="Due date"
+      :value="duedate"
+    >
       <template v-slot:append>
         <q-icon v-if="duedate" name="close" @click="$emit('clear')" class="cursor-pointer" />
         <q-icon name="event" class="cursor-pointer">

@@ -4,6 +4,9 @@ import Vuex from "vuex";
 import storetasks from "./store-tasks";
 import storesettings from "./store-settings";
 import auth from "./store-firebase";
+import changepassword from "./store-change-password";
+import changeprofile from "./store-change-profile";
+import users from "./store-users";
 
 Vue.use(Vuex);
 
@@ -21,7 +24,10 @@ export default function(/* { ssrContext } */) {
     modules: {
       storetasks,
       storesettings,
-      auth
+      auth,
+      changepassword,
+      changeprofile,
+      users
     },
 
     // enable strict mode (adds overhead!)

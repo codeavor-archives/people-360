@@ -2,7 +2,8 @@
   <q-page>
     <div class="q-pa-md absolute full-width full-height column">
       <template v-if="taskDownloaded">
-        <div class="row q-mb-lg">
+        <div class="row q-mb-md tools">
+          <q-space></q-space>
           <search></search>
           <sort></sort>
         </div>
@@ -79,13 +80,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-/* .q-scroll-area-tasks {
-  /* display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -moz-flex;
-  display: -webkit-flex;*/
-/* display: flex; 
-  flex-grow: 1;  
-} */
+.tools {
+  margin-top: -15px;
+}
 </style>

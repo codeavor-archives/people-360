@@ -1,8 +1,8 @@
 <template>
-  <q-card>
+  <q-card class="full-width">
     <modal-header>Add Task</modal-header>
-    <q-form @submit.prevent="submitForm()">
-      <q-card-section>
+    <q-form @submit.prevent="submitForm()" class="addtask">
+      <q-card-section class="tasks">
         <modal-taskname ref="taskname" :name.sync="taskToSubmit.name"></modal-taskname>
         <modal-duedate @clear="clearDueDate" :duedate.sync="taskToSubmit.dueDate"></modal-duedate>
         <modal-duetime v-if="taskToSubmit.dueDate" :duetime.sync="taskToSubmit.dueTime"></modal-duetime>
@@ -39,3 +39,5 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+</style>

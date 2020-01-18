@@ -8,10 +8,18 @@ const state = {
   loggedIn: false,
   userDetails: {},
   users: {},
-  messages: {}
+  messages: {},
+  usersDownloaded: false,
+  messagesDownloaded: false
 };
 
 const mutations = {
+  setusersDownloaded(state, value) {
+    state.usersDownloaded = value;
+  },
+  setmessagesDownloaded(state, value) {
+    state.messagesDownloaded = value;
+  },
   setLoggedIn(state, value) {
     state.loggedIn = value;
   },
@@ -43,6 +51,7 @@ const actions = {
           {
             name: payload.name,
             email: payload.email,
+            roles: "client",
             online: true
           },
           error => {
@@ -91,6 +100,7 @@ const actions = {
           commit("setUserDetails", {
             name: userDetails.name,
             email: userDetails.email,
+            photo: userDetails.photo,
             userID: userID
           });
         });
@@ -128,6 +138,11 @@ const actions = {
     }
   },
   fbGetUsers({ commit }) {
+    // Initial Check for Users
+    let users = db.ref("/users");
+    users.once("value", snapshot => {
+      commit("setusersDownloaded", true);
+    });
     db.ref("users").on("child_added", snapshot => {
       let userID = snapshot.key;
       let userDetails = snapshot.val();
@@ -146,7 +161,14 @@ const actions = {
     });
   },
   fbGetMessages({ state, commit }, id) {
+    //Initialize Messages
     let userID = state.userDetails.userID;
+    let message = db.ref("chats/" + userID + "/" + id);
+    message.once("value", snapshot => {
+      commit("setmessagesDownloaded", true);
+    });
+
+    //child Added hook
     messagesRef = db.ref("chats/" + userID + "/" + id);
     messagesRef.on("child_added", snapshot => {
       let messages = snapshot.val();

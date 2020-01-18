@@ -1,41 +1,29 @@
 <template>
   <q-page padding class="pageChat flex column" ref="pageChat">
-    <!-- add class to q-page = flex column -->
-    <q-banner v-if="!otherUserDetails.online" class="bg-grey-3 text-grey-6 text-center fixed-top">
-      <!-- <template v-slot:avatar>
-        <q-icon name="speaker_notes_off" color="grey-5" />
-      </template>-->
-      {{otherUserDetails.name}} is offline
-    </q-banner>
-    <div :class="{'invisible' : !showMessages}" class="q-pa-md column col justify-end">
-      <q-chat-message
-        v-for="(message, key) in messages"
-        :key="key"
-        :name="message.from == 'me' ? userDetails.name : otherUserDetails.name"
-        avatar="https://cdn.quasar.dev/img/avatar4.jpg"
-        :text="[message.text]"
-        stamp="minutes ago"
-        :sent="message.from == 'me' ? true: false"
-        :bg-color="message.from == 'me' ? 'white' : 'green-3'"
-      />
-    </div>
-    <!-- <q-toolbar elevated class="bg-primary absolute-bottom">
-      <div class="row absolute-bottom q-mb-xs q-mx-sm">
-        <q-form @submit="sendMessage" class="row full-width">
-          <q-input
-            ref="newMessage"
-            bg-color="white"
-            class="col"
-            placeholder="Message..."
-            dense
-            rounded
-            outlined
-            v-model="newMessage"
-          ></q-input>
-          <q-btn type="submit" class="q-mt-xs" dense flat color="white" icon="send"></q-btn>
-        </q-form>
+    <template v-if="messagesDownloaded">
+      <q-banner
+        v-if="!otherUserDetails.online"
+        class="bg-grey-3 text-grey-6 text-center fixed-top"
+      >{{otherUserDetails.name}} is offline</q-banner>
+      <div :class="{'invisible' : !showMessages}" class="q-pa-md column col justify-end">
+        <q-chat-message
+          v-for="(message, key) in messages"
+          :key="key"
+          :name="message.from == 'me' ? userDetails.name : otherUserDetails.name"
+          :avatar="message.from == 'me' ? userDetails.photo : otherUserDetails.name"
+          :text="[message.text]"
+          stamp="minutes ago"
+          :sent="message.from == 'me' ? true: false"
+          :bg-color="message.from == 'me' ? 'white' : 'green-3'"
+        />
       </div>
-    </q-toolbar>-->
+    </template>
+
+    <template v-else>
+      <span class="absolute-center">
+        <q-spinner color="primary" size="3em" />
+      </span>
+    </template>
     <q-footer elevated>
       <q-toolbar>
         <q-form @submit.prevent="sendMessage" class="row full-width">
@@ -101,7 +89,12 @@ export default {
     }
   },
   computed: {
-    ...mapState("auth", ["loggedIn", "userDetails", "messages"])
+    ...mapState("auth", [
+      "loggedIn",
+      "userDetails",
+      "messages",
+      "messagesDownloaded"
+    ])
   },
   mounted() {
     this.fbGetMessages(this.$route.params.id);
