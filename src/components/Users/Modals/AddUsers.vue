@@ -1,7 +1,9 @@
 <template>
-  <q-card style="width: 300px; max-width: 80vw;">
-    <q-card-section>
+  <q-card style="width: 700px; max-width: 90vw;">
+    <q-card-section class="row">
       <div class="text-h6">Add Users</div>
+      <q-space></q-space>
+      <q-btn v-close-popup flat round dense icon="close" />
     </q-card-section>
     <q-form @submit.prevent="addUser()">
       <q-card-section class="addusers">
@@ -51,24 +53,27 @@
 
 <script>
 import { mapActions } from "vuex";
+import { uid } from "quasar";
 export default {
   data() {
     return {
       isPwd: true,
       formData: {
+        id: uid(),
         name: "",
         email: "",
-        password: ""
+        password: "",
+        online: false
       }
     };
   },
   methods: {
-    ...mapActions("auth", ["registerUser"]),
+    ...mapActions("users", ["fbAddUser"]),
     addUser() {
       this.$refs.email.validate();
       this.$refs.password.validate();
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
-        this.registerUser(this.formData);
+        this.fbAddUser(this.formData);
       }
     },
     isValidEmailAddress(email) {
