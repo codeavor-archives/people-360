@@ -47,8 +47,10 @@ const actions = {
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
         let userID = fb.auth().currentUser.uid;
+
         db.ref("users/" + userID).set(
           {
+            // emailVerified: false,
             name: payload.name,
             email: payload.email,
             roles: "client",
@@ -59,12 +61,22 @@ const actions = {
               showErrorMessage(error.message);
             } else {
               Notify.create({
-                message: "Sucessfully Registered",
+                message: "Sucessfully Registered, Please Verify email address",
                 position: "bottom",
-                timeout: 1000,
+                timeout: 5000,
                 textColor: "white",
                 actions: [{ icon: "close", color: "white" }]
               });
+              let user = fb.auth().currentUser;
+              fb.auth().signOut();
+              user
+                .sendEmailVerification()
+                .then(response => {
+                  console.log(response);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
             }
           }
         );
@@ -77,7 +89,18 @@ const actions = {
     Loading.show();
     fb.auth()
       .signInWithEmailAndPassword(payload.email, payload.password)
-      .then(response => {})
+      .then(user => {
+        if (!user.emailVerified) {
+          Notify.create({
+            message: "Please verify email address",
+            position: "bottom",
+            timeout: 1000,
+            textColor: "white",
+            actions: [{ icon: "close", color: "white" }]
+          });
+        }
+        Loading.hide();
+      })
       .catch(error => {
         showErrorMessage(error.message);
       });
@@ -89,29 +112,35 @@ const actions = {
     fb.auth().onAuthStateChanged(user => {
       Loading.hide();
       if (user) {
-        commit("setLoggedIn", true);
-        LocalStorage.set("loggedIn", true);
-        dispatch("storetasks/fbReadData", null, {
-          root: true
+        user.getIdTokenResult().then(idTokenResult => {
+          user.admin = idTokenResult.claims.admin;
         });
         let userID = fb.auth().currentUser.uid;
         db.ref("users/" + userID).once("value", snapshot => {
           let userDetails = snapshot.val();
           commit("setUserDetails", {
+            // emailVerified: userDetails.emailVerified,
             name: userDetails.name,
             email: userDetails.email,
             photo: userDetails.photo,
             userID: userID
           });
         });
-        dispatch("fbUpdateUser", {
-          userID: userID,
-          updates: {
-            online: true
-          }
-        });
-        dispatch("fbGetUsers", {});
-        this.$router.push("/").catch(err => {});
+        if (user.emailVerified) {
+          commit("setLoggedIn", true);
+          LocalStorage.set("loggedIn", true);
+          dispatch("storetasks/fbReadData", null, {
+            root: true
+          });
+          dispatch("fbUpdateUser", {
+            userID: userID,
+            updates: {
+              online: true
+            }
+          });
+          dispatch("fbGetUsers", {});
+          this.$router.push("/").catch(err => {});
+        }
       } else {
         commit("storetasks/clearTask", null, { root: true });
         commit("storetasks/setTaskDownloaded", false, { root: true });

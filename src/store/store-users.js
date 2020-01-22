@@ -3,7 +3,20 @@ import { fb, db } from "boot/firebase";
 import Vue from "vue";
 import { Loading, LocalStorage, Notify, uid } from "quasar";
 import { showErrorMessage } from "src/functions/function-show-error-message";
-var admin = require("firebase-admin");
+
+// var admin = require("firebase-admin");
+// var serviceAccount = require("../../api/firebaseprivatekey.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://asset-management-5f4bd.firebaseio.com"
+// });
+
+// const express = require("express");
+// const app = express();
+// const cors = require("cors");
+// const parser = require("body-parser");
+
+// var admin = require("firebase-admin");
 // import * as admin from "firebase-admin";
 // var admin = require("firebase-admin");
 
@@ -85,12 +98,14 @@ const actions = {
       });
   },
   fbUpdateUser({}, payload) {
-    let userID = fb.auth().currentUser.uid;
-    db.ref("users/" + userID).update(payload.updates, error => {
+    // let userID = fb.auth().currentUser.uid;
+    // Please specify this ID
+
+    db.ref("users/" + payload.id).update(payload.userDetails, error => {
       if (error) {
         showErrorMessage(error.message);
       } else {
-        let keys = Object.keys(payload.updates);
+        let keys = Object.keys(payload.userDetails);
         if (!keys.length == 1) {
           Notify.create({
             message: "Task Updated",

@@ -5,8 +5,7 @@ import "firebase/database";
 import "firebase/firebase-database";
 import "firebase/storage";
 import "firebase/firestore";
-
-
+import "firebase/functions";
 
 var firebaseConfig = {
   apiKey: "AIzaSyDJjzQofEuZo2tpwU-1U-7GLu_JXaTG4fQ",
@@ -22,6 +21,7 @@ var firebaseConfig = {
 // const app = admin.initializeApp();
 const fb = firebase.initializeApp(firebaseConfig);
 const db = fb.database();
+const fc = firebase.functions();
 // const firebaseAuth = firebase.firebaseApp.auth();
 
-export { fb, db };
+export { fb, db, fc };

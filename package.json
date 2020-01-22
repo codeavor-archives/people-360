@@ -2,7 +2,7 @@
   "name": "assetmanagementquasar",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "People 360",
   "cordovaId": "org.assetmanagement.app",
   "capacitorId": "",
   "author": "ariel041596 <chocokises17@gmail.com>",
@@ -12,6 +12,10 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "firebase": "^7.6.1",
     "firebase-admin": "^8.9.1",
     "http2": "^3.3.7",
@@ -19,12 +23,13 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",
-    "@quasar/quasar-app-extension-icon-genie": "^1.1.3"
+    "@quasar/quasar-app-extension-icon-genie": "^1.1.3",
+    "@quasar/quasar-app-extension-qcalendar": "^1.3.13"
   },
   "engines": {
-    "node": ">= 8.9.0",
-    "npm": ">= 5.6.0",
-    "yarn": ">= 1.6.0"
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
   },
   "browserslist": [
     "last 1 version, not dead, ie >= 11"

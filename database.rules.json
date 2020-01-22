@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "tasks": {
+      ".write": "auth !=null",
+      ".read": "auth !=null"
+    },
+    "users": {
+      ".write": true,
+      ".read": "auth !=null"
+    },
+    "chats": {
+      ".write": "auth !=null",
+      ".read": "auth !=null"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="admin">
+    <!-- <QCalendar></QCalendar> -->
     <div class="full-width full-height column">
       <template v-if="usersDownloaded">
         <transition
@@ -14,7 +15,11 @@
           <!-- <q-btn round class="all-pointer-events" size="24px" icon="add" color="primary" /> -->
           <q-page-sticky class="all-pointer-events" :offset="[18, 18]">
             <q-fab icon="add" direction="up" color="primary">
-              <q-fab-action @click="showAddUsers = true " color="primary" icon="person_add" />
+              <q-fab-action
+                @click="showAddUsers = true"
+                color="primary"
+                icon="person_add"
+              />
               <!-- <q-fab-action @click="onClick" color="primary" icon="mail" /> -->
             </q-fab>
           </q-page-sticky>
@@ -34,10 +39,15 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import { fb, fc, db } from "boot/firebase";
+// import { QCalendar } from "@quasar/quasar-ui-qcalendar";
+
 export default {
   data() {
     return {
-      showAddUsers: false
+      admin: false,
+      showAddUsers: false,
+      showEditUsers: false
     };
   },
   computed: {
@@ -45,11 +55,25 @@ export default {
     ...mapState("auth", ["usersDownloaded"])
   },
   components: {
+    // QCalendar,
     addusers: require("components/Users/Modals/AddUsers").default,
     userstable: require("components/Users/Modals/Table/UsersTable").default
+  },
+  mounted() {
+    let user = fb.auth().currentUser;
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        // console.log(admin);
+        if (admin == true) {
+          this.admin = true;
+        }
+      });
+      // if()
+    }
   }
 };
 </script>
+<style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
 
-<style>
-</style>
+<style></style>
