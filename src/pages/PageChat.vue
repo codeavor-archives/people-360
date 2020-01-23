@@ -10,7 +10,7 @@
           v-for="(message, key) in messages"
           :key="key"
           :name="message.from == 'me' ? userDetails.name : otherUserDetails.name"
-          :avatar="message.from == 'me' ? userDetails.photo : otherUserDetails.name"
+          :avatar="message.from == 'me' ? userDetails.photo : otherUserDetails.photo"
           :text="[message.text]"
           stamp="minutes ago"
           :sent="message.from == 'me' ? true: false"

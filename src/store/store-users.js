@@ -1,26 +1,7 @@
 import { fb, db } from "boot/firebase";
-// import { admin } from "../../api/app";
 import Vue from "vue";
 import { Loading, LocalStorage, Notify, uid } from "quasar";
 import { showErrorMessage } from "src/functions/function-show-error-message";
-
-// var admin = require("firebase-admin");
-// var serviceAccount = require("../../api/firebaseprivatekey.json");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://asset-management-5f4bd.firebaseio.com"
-// });
-
-// const express = require("express");
-// const app = express();
-// const cors = require("cors");
-// const parser = require("body-parser");
-
-// var admin = require("firebase-admin");
-// import * as admin from "firebase-admin";
-// var admin = require("firebase-admin");
-
-let messagesRef;
 
 const state = {
   loggedIn: false,
@@ -35,7 +16,6 @@ const mutations = {
   setusersDownloaded(state, value) {
     state.usersDownloaded = value;
   },
-
   setUserDetails(state, payload) {
     state.userDetails = payload;
   },
@@ -55,14 +35,14 @@ const actions = {
   updateUser({ dispatch }, payload) {
     dispatch("fbUpdateUser", payload);
   },
-  addUser({ dispatch }, user) {
-    let userID = uid();
-    let payload = {
-      id: userID,
-      user: user
-    };
-    dispatch("fbAddUser", payload);
-  },
+  // addUser({ dispatch }, user) {
+  //   let userID = uid();
+  //   let payload = {
+  //     id: userID,
+  //     user: user
+  //   };
+  //   dispatch("fbAddUser", payload);
+  // },
   fbAddUser({}, payload) {
     Loading.show();
     fb.auth()
@@ -105,8 +85,8 @@ const actions = {
       if (error) {
         showErrorMessage(error.message);
       } else {
-        let keys = Object.keys(payload.userDetails);
-        if (!keys.length == 1) {
+        // let keys = Object.keys(payload.userDetails);
+        // if (!keys.length == 1) {
           Notify.create({
             message: "Task Updated",
             position: "bottom",
@@ -114,24 +94,17 @@ const actions = {
             textColor: "white",
             actions: [{ icon: "close", color: "white" }]
           });
-        }
+        // }
       }
     });
+    // console.log(payload.id, payload.userDetails)
   },
   fbGetUsers({ commit }) {
     // Initial Check for Users
-    let users = db.ref("/users");
-    users.once(
-      "value",
-      snapshot => {
-        commit("setusersDownloaded", true);
-      },
-      error => {
-        showErrorMessage(error.message);
-        this.$router.replace("/auth");
-      }
-    );
-    // Child_added hook
+    let users = db.ref("users/");
+    users.once("value", snapshot => {
+      commit("setusersDownloaded", true);
+    });
     db.ref("users").on("child_added", snapshot => {
       let userID = snapshot.key;
       let userDetails = snapshot.val();
@@ -140,7 +113,6 @@ const actions = {
         userDetails
       });
     });
-    // child_changed hook
     db.ref("users").on("child_changed", snapshot => {
       let userID = snapshot.key;
       let userDetails = snapshot.val();
@@ -148,11 +120,6 @@ const actions = {
         userID,
         userDetails
       });
-    });
-    // child_removed hook
-    db.ref("users").on("child_removed", snapshot => {
-      let userID = snapshot.key;
-      commit("deleteUser", userID);
     });
   },
   fbStopGettingMessages({ commit }) {
@@ -164,7 +131,7 @@ const actions = {
   }
 };
 const getters = {
-  users: state => {
+   users: state => {
     let usersFiltered = {};
     Object.keys(state.users).forEach(key => {
       if (key !== state.userDetails.userID) {

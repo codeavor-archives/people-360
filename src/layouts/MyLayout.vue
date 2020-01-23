@@ -141,21 +141,11 @@ export default {
           icon: "list",
           to: "/"
         },
-        // {
-        //   label: "Manage Users",
-        //   icon: "supervised_user_circle",
-        //   to: "/users"
-        // },
         {
           label: "Chat",
           icon: "chat_bubble",
           to: "/contacts"
         }
-        // {
-        //   label: "Settings",
-        //   icon: "settings",
-        //   to: "/settings"
-        // }
       ]
     };
   },
@@ -183,12 +173,12 @@ export default {
     title() {
       // console.log(this.$route)
       let currentPath = this.$route.fullPath;
-      if (currentPath == "/") return "Asset Management";
+      if (currentPath == "/") return "People 360";
       else if (currentPath.includes("/chat")) return this.otherUserDetails.name;
       else if (currentPath == "/auth") return "Login";
       else if (currentPath == "/settings") return "Settings";
       else if (currentPath == "/contacts") return "Contacts";
-      else return "Asset Management";
+      else return "People 360";
     }
   },
   methods: {

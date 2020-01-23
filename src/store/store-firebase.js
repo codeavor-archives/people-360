@@ -98,6 +98,8 @@ const actions = {
             textColor: "white",
             actions: [{ icon: "close", color: "white" }]
           });
+        }else{
+          
         }
         Loading.hide();
       })
@@ -168,7 +170,7 @@ const actions = {
   },
   fbGetUsers({ commit }) {
     // Initial Check for Users
-    let users = db.ref("/users");
+    let users = db.ref("users/");
     users.once("value", snapshot => {
       commit("setusersDownloaded", true);
     });

@@ -8,11 +8,11 @@
     <q-form>
       <q-card-section class="addusers">
         <div class="row q-mb-md">
-          <q-input ref="name" class="col" v-model="user.name" label="Name" />
+          <q-input ref="name" class="col" v-model="formData.name" label="Name" />
         </div>
-        <!-- <div class="row q-mb-md">
-          <q-input ref="role" class="col" v-model="user.roles" label="Role" />
-        </div> -->
+        <div class="row q-mb-md">
+          <q-input ref="role" class="col" v-model="formData.roles" label="Role" />
+        </div>
         <div class="row q-mb-xs">
           <q-input
             type="email"
@@ -23,7 +23,7 @@
             ]"
             lazy-rules
             class="col"
-            v-model="user.email"
+            v-model="formData.email"
             label="Email"
           />
         </div>
@@ -48,7 +48,12 @@
         </div>-->
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn
+         <q-btn
+          @click="makeAdmin"
+          icon="save"
+          label="Make Admin"
+          color="primary"
+        /><q-btn
           @click="newPassword"
           icon="save"
           label="Reset Password"
@@ -56,9 +61,10 @@
         /><q-btn
           @click="editUser"
           icon="save"
-          label="Set as Admin"
+          label="Save"
           color="primary"
         />
+       
       </q-card-actions>
     </q-form>
   </q-card>
@@ -69,41 +75,37 @@ import { mapActions } from "vuex";
 import { db, fb, fc } from "boot/firebase";
 import { uid } from "quasar";
 export default {
-  props: ["user"],
+  props: ["user", "id"],
   data() {
     return {
       isPwd: true,
       formData: {
-        // id: uid(),
-        // name: "",
-        // email: "",
-        // password: "",
-        // online: false
+        name: "",
+        email: "",
+        online: false
       }
     };
   },
   methods: {
     ...mapActions("storeusers", ["updateUser"]),
-    editUser() {
-      // this.$refs.taskname.$refs.name.validate();
-      // if (!this.$refs.taskname.$refs.name.hasError) {
-      // this.updateUser({
-      //   id: this.$route.params.id,
-      //   userDetails: this.formData
-      // });
-      // }
-      // console.log(this.user.id);
-      // db.ref("users/" + payload.userID).update(payload.updates, error => {
-      //   if (error) {
-      //     showErrorMessage(error.message);
-      //   }
-      // });
-      // db.ref("users/" + this.user).update(this.user);
-      // console.log(this.user.email);
+    makeAdmin(){
+// =====================================================
+      // // This is working na
       const addAdminRole = fc.httpsCallable("addAdminRole");
       addAdminRole({ email: this.user.email }).then(result => {
         console.log(result);
       });
+      // console.log(this.id)
+// ============================
+    },
+    editUser() {
+      this.updateUser({
+        id: this.id,
+        userDetails: this.formData
+      });
+      this.$emit("close");
+
+
     },
     newPassword() {
       const newPassword = fc.httpsCallable("newPassword");
@@ -117,7 +119,7 @@ export default {
     }
   },
   mounted() {
-    // this.formData = Object.assign({}, this.user);
+    this.formData = Object.assign({}, this.user);
   }
 };
 </script>

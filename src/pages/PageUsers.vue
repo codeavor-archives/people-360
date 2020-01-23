@@ -51,6 +51,9 @@ export default {
     };
   },
   computed: {
+    //    ...mapGetters("auth", ["users"]),
+    // ...mapState("auth", ["usersDownloaded"])
+
     ...mapGetters("auth", ["users"]),
     ...mapState("auth", ["usersDownloaded"])
   },
@@ -74,6 +77,5 @@ export default {
   }
 };
 </script>
-<style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
 
 <style></style>

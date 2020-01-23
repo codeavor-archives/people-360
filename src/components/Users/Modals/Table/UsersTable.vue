@@ -1,13 +1,4 @@
 <template>
-  <!-- <q-table :filter="filter" title="Users" :data="data" :columns="columns" row-key="id">
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-  </q-table>-->
   <q-page>
     <div class>
       <div class>
@@ -17,21 +8,21 @@
               <!-- <th class="text-left">ID</th> -->
               <th class="text-left">Name</th>
               <th class="text-left">Email</th>
-              <!-- <th class="text-left">Roles</th> -->
+              <th class="text-left">Roles</th>
               <th class="text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user.id">
+            <tr v-for="(user, key) in users" :key="key" :id="key">
               <!-- <td class="text-left">{{ user.id }}</td> -->
               <td class="text-left">{{ user.name }}</td>
               <td class="text-left">{{ user.email }}</td>
-              <!-- <td class="text-left">{{ user.roles }}</td> -->
+              <td class="text-left">{{ user.roles }}</td>
               <td class="text-left">
                 <q-btn
                   round
                   color="primary"
-                  @click="showEditUserModal(user)"
+                  @click="showEditUserModal(user, key)"
                   flat
                   dense
                   icon="edit"
@@ -52,92 +43,40 @@
       </div>
     </div>
     <q-dialog v-model="showEditUser">
-      <editusers :user="user"></editusers>
+      <editusers @close="showEditUser=false" :user="user" :id="key"></editusers>
     </q-dialog>
   </q-page>
 </template>
 
 <script>
 import { fb, db } from "boot/firebase";
+import { mapGetters, mapState } from "vuex";
 export default {
-  // props: ["user"],
   data() {
     return {
       showEditUser: false,
       current: 3,
-      users: {},
+      // users: {},
       user: {},
+      key:{},
       userToSubmit: {},
       filter: "",
-      columns: [
-        // {
-        //   field: row => row.id,
-        //   format: val => `${val}`,
-        //   name: "id",
-        //   label: "Name",
-        //   align: "left",
-        //   field: "id",
-        //   sortable: true
-        // },
-
-        {
-          name: "email",
-          align: "left",
-          label: "Email",
-          field: "email",
-          sortable: true
-        },
-        {
-          name: "name",
-          label: "Name",
-          align: "left",
-          field: "name",
-          sortable: true
-        },
-        {
-          name: "online",
-          label: "Name",
-          align: "left",
-          field: "online",
-          sortable: true
-        },
-        {
-          name: "roles",
-          align: "left",
-          label: "Roles",
-          field: "roles",
-          sortable: true
-        }
-      ],
-      data: []
+      
     };
   },
   methods: {
-    fbReadUsers() {
-      // let userID = fb.auth().currentUser.uid;
-      let userstable = db.ref("users/");
-      userstable.once(
-        "value",
-        snapshot => {
-          //   console.log(snapshot.val());
-          let data = snapshot.val();
-          // let arraydata = Object.values(data);
-          // this.data = arraydata;
-          this.users = data;
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    },
-    showEditUserModal(user) {
+    showEditUserModal(user, key) {
       this.showEditUser = true;
       this.user = user;
+      this.key = key
+      console.log(key)
     }
   },
-  mounted() {
-    this.fbReadUsers();
-    this.userToSubmit = Object.assign({}, this.user);
+   computed: {
+    //       ...mapGetters("auth", ["users"]),
+    // ...mapState("auth", ["usersDownloaded"])
+    ...mapGetters("auth", ["users"]),
+    ...mapState("auth", ["usersDownloaded"])
   },
   components: {
     editusers: require("components/Users/Modals/EditUsers").default
