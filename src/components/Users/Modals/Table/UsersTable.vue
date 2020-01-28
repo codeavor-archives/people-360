@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page padding>
     <div class>
       <div class>
         <q-markup-table>
@@ -27,6 +27,14 @@
                   dense
                   icon="edit"
                 ></q-btn>
+                <q-btn
+                  round
+                  color="primary"
+                  @click="showAddInspectorModal(user, key)"
+                  flat
+                  dense
+                  icon="add"
+                ></q-btn>
                 <!-- <q-btn round @click="deleteUser()" color="red" flat dense icon="delete"></q-btn> -->
               </td>
             </tr>
@@ -34,12 +42,7 @@
         </q-markup-table>
       </div>
       <div class>
-        <q-pagination
-          class="q-pt-lg"
-          v-model="current"
-          :max="5"
-          :direction-links="true"
-        ></q-pagination>
+        <q-pagination class="q-pt-lg" v-model="current" :max="5" :direction-links="true"></q-pagination>
       </div>
     </div>
     <q-dialog v-model="showEditUser">
@@ -58,23 +61,20 @@ export default {
       current: 3,
       // users: {},
       user: {},
-      key:{},
+      key: {},
       userToSubmit: {},
-      filter: "",
-      
+      filter: ""
     };
   },
   methods: {
     showEditUserModal(user, key) {
       this.showEditUser = true;
       this.user = user;
-      this.key = key
-      console.log(key)
+      this.key = key;
+      console.log(key);
     }
   },
-   computed: {
-    //       ...mapGetters("auth", ["users"]),
-    // ...mapState("auth", ["usersDownloaded"])
+  computed: {
     ...mapGetters("auth", ["users"]),
     ...mapState("auth", ["usersDownloaded"])
   },

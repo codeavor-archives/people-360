@@ -6,7 +6,7 @@ module.exports = function(ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-    boot: ["firebase", "router-auth"],
+    boot: ["firebase", "router-auth", "QCalendar"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -63,7 +63,7 @@ module.exports = function(ctx) {
         "QChatMessage",
         // "QChip",
         "QCircularProgress",
-        // "QColor",
+        "QColor",
         "QDialog",
         // "QEditor",
         "QExpansionItem",
@@ -92,7 +92,7 @@ module.exports = function(ctx) {
         "QItemSection",
         "QItemLabel",
         "QMarkupTable",
-        // "QMenu",
+        "QMenu",
         // "QNoSsr",
         // "QResizeObserver",
         // "QScrollObserver",
@@ -205,9 +205,9 @@ module.exports = function(ctx) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: "Asset Mangement",
-        short_name: "Asset Mangement",
-        description: "A Quasar Framework app",
+        name: "People 360",
+        short_name: "People 360",
+        description: "People 360",
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",

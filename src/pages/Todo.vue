@@ -31,12 +31,14 @@
             color="primary"
           />
         </div>
+        
       </template>
       <template v-else>
         <span class="absolute-center">
           <q-spinner color="primary" size="3em" />
         </span>
       </template>
+     
     </div>
     <q-dialog v-model="showAddTask">
       <addTask @close="showAddTask=false"></addTask>
@@ -69,7 +71,8 @@ export default {
       .default,
     "no-task": require("../components/Tasks/NoTask").default,
     search: require("../components/Tasks/Tools/SearchBar").default,
-    sort: require("../components/Tasks/Tools/Sort").default
+    sort: require("../components/Tasks/Tools/Sort").default,
+  
   },
   mounted() {
     this.$root.$on("showAddTask", () => {

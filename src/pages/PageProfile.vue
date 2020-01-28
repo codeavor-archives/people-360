@@ -1,6 +1,14 @@
 <template>
   <q-page padding>
-    <q-btn align="left" v-go-back.single dense flat color="primary" icon="arrow_back" label="Back" />
+    <q-btn
+      align="left"
+      v-go-back.single
+      dense
+      flat
+      color="primary"
+      icon="arrow_back"
+      label="Back"
+    />
     <div class="text-justify">
       <profile></profile>
     </div>
@@ -15,5 +23,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -27,12 +27,12 @@ export default {
   },
   methods: {
     ...mapActions("storetasks", ["updateTasks"]),
-    //  submitForm() {
-    //   this.$refs.taskname.$refs.name.validate();
-    //   if (!this.$refs.taskname.$refs.name.hasError) {
-    //     this.submitTask();
-    //   }
-    // },
+    submitForm() {
+      this.$refs.taskname.$refs.name.validate();
+      if (!this.$refs.taskname.$refs.name.hasError) {
+        this.submitTask();
+      }
+    },
     submitTask() {
       // console.log("submit Task");
       // this.addTask(this.taskToSubmit);

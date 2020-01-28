@@ -5,6 +5,9 @@ admin.initializeApp();
 
 exports.addAdminRole = functions.https.onCall((data, context) => {
   // get the user and add custom claims (admin)
+  if (context.auth.token.admin !== true) {
+    return { error: "Only admins can add other admins" };
+  }
   return admin
     .auth()
     .getUserByEmail(data.email)
@@ -24,6 +27,9 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
 });
 
 exports.newPassword = functions.https.onCall((data, context) => {
+  if (context.auth.token.admin !== true) {
+    return { error: "Only admins change other passwords" };
+  }
   return admin
     .auth()
     .getUserByEmail(data.email)

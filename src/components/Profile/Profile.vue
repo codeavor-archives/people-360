@@ -140,7 +140,7 @@ export default {
           error => {},
           () => {
             uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-              console.log(downloadURL);
+              // console.log(downloadURL);
               this.profile.photo = downloadURL;
               this.readytosubmit = true;
             });
@@ -158,7 +158,7 @@ export default {
     ...mapState("auth", ["loggedIn", "userDetails"])
   },
   mounted() {
-    console.log(this.userDetails.photo);
+    // console.log(this.userDetails.photo);
   }
 };
 </script>

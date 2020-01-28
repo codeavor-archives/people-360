@@ -8,6 +8,7 @@ const state = {
   loggedIn: false,
   userDetails: {},
   users: {},
+  systemUsers: {},
   messages: {},
   usersDownloaded: false,
   messagesDownloaded: false
@@ -65,6 +66,7 @@ const actions = {
                 position: "bottom",
                 timeout: 5000,
                 textColor: "white",
+                color: "teal-10",
                 actions: [{ icon: "close", color: "white" }]
               });
               let user = fb.auth().currentUser;
@@ -89,20 +91,7 @@ const actions = {
     Loading.show();
     fb.auth()
       .signInWithEmailAndPassword(payload.email, payload.password)
-      .then(user => {
-        if (!user.emailVerified) {
-          Notify.create({
-            message: "Please verify email address",
-            position: "bottom",
-            timeout: 1000,
-            textColor: "white",
-            actions: [{ icon: "close", color: "white" }]
-          });
-        }else{
-          
-        }
-        Loading.hide();
-      })
+      .then(user => {})
       .catch(error => {
         showErrorMessage(error.message);
       });
@@ -121,28 +110,42 @@ const actions = {
         db.ref("users/" + userID).once("value", snapshot => {
           let userDetails = snapshot.val();
           commit("setUserDetails", {
-            // emailVerified: userDetails.emailVerified,
             name: userDetails.name,
             email: userDetails.email,
             photo: userDetails.photo,
             userID: userID
           });
         });
-        if (user.emailVerified) {
-          commit("setLoggedIn", true);
-          LocalStorage.set("loggedIn", true);
-          dispatch("storetasks/fbReadData", null, {
-            root: true
-          });
-          dispatch("fbUpdateUser", {
-            userID: userID,
-            updates: {
-              online: true
-            }
-          });
-          dispatch("fbGetUsers", {});
-          this.$router.push("/").catch(err => {});
-        }
+        // if (user.emailVerified) {    == uncomment this after development
+        commit("setLoggedIn", true);
+        LocalStorage.set("loggedIn", true);
+        dispatch("storetasks/fbReadData", null, {
+          root: true
+        });
+        dispatch("fbUpdateUser", {
+          userID: userID,
+          updates: {
+            online: true
+          }
+        });
+        dispatch("fbGetUsers", {});
+        this.$router.push("/").catch(err => {});
+
+        //  == uncomment this after development
+
+        // } else {
+        //   Loading.hide();
+        //   Notify.create({
+        //     message: "Please verify email address",
+        //     position: "bottom",
+        //     color: "primary",
+        //     timeout: 5000,
+        //     textColor: "white",
+        //     actions: [{ icon: "close", color: "white" }]
+        //   });
+        // }
+
+        // == uncomment this after development
       } else {
         commit("storetasks/clearTask", null, { root: true });
         commit("storetasks/setTaskDownloaded", false, { root: true });

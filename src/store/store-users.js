@@ -87,13 +87,13 @@ const actions = {
       } else {
         // let keys = Object.keys(payload.userDetails);
         // if (!keys.length == 1) {
-          Notify.create({
-            message: "Task Updated",
-            position: "bottom",
-            timeout: 1000,
-            textColor: "white",
-            actions: [{ icon: "close", color: "white" }]
-          });
+        Notify.create({
+          message: "Users Updated",
+          position: "bottom",
+          timeout: 1000,
+          textColor: "white",
+          actions: [{ icon: "close", color: "amber" }]
+        });
         // }
       }
     });
@@ -131,7 +131,7 @@ const actions = {
   }
 };
 const getters = {
-   users: state => {
+  users: state => {
     let usersFiltered = {};
     Object.keys(state.users).forEach(key => {
       if (key !== state.userDetails.userID) {

@@ -1,12 +1,14 @@
 <template>
   <q-form @submit.prevent="submitForm">
     <div class="row q-mb-md">
-      <q-banner class="col">
-        <template v-slot:avatar>
+      <q-banner class="col text-center">
+        <q-img src="/img/svg/graphics.svg"></q-img>
+        <q-img src="../../../logo-with-CIP.jpg" class="logo"></q-img>
+        <!-- <template v-slot:avatar>
           <q-icon v-if="tab == 'login'" name="account_circle" color="primary" />
           <q-icon v-if="tab == 'register'" name="person_add" color="primary" />
-        </template>
-        {{ tab | titleCase }}
+        </template>-->
+        <!-- {{ tab | titleCase }} -->
       </q-banner>
     </div>
     <div class="row q-mb-md">
@@ -132,4 +134,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.logo {
+  height: 100px;
+  width: 200px;
+  max-width: 300px;
+}
+</style>
