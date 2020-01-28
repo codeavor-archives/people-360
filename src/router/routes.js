@@ -13,7 +13,15 @@ const routes = [
       { path: "auth", component: () => import("pages/PageAuth.vue") },
       { path: "chat/:id", component: () => import("pages/PageChat.vue") },
       { path: "contacts", component: () => import("pages/PageContact.vue") },
-      { path: "users", component: () => import("pages/PageUsers.vue") }
+      { path: "users", component: () => import("pages/PageUsers.vue") },
+      {
+        path: "inspectors",
+        component: () => import("pages/PageInspector.vue")
+      },
+      {
+        path: "reservation",
+        component: () => import("pages/PageReservation.vue")
+      }
     ]
   }
 ];

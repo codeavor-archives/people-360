@@ -15,11 +15,7 @@
           <!-- <q-btn round class="all-pointer-events" size="24px" icon="add" color="primary" /> -->
           <q-page-sticky class="all-pointer-events" :offset="[18, 18]">
             <q-fab icon="add" direction="up" color="primary">
-              <q-fab-action
-                @click="showAddUsers = true"
-                color="primary"
-                icon="person_add"
-              />
+              <q-fab-action @click="showAddUsers = true" color="primary" icon="person_add" />
               <!-- <q-fab-action @click="onClick" color="primary" icon="mail" /> -->
             </q-fab>
           </q-page-sticky>

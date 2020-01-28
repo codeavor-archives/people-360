@@ -48,23 +48,9 @@
         </div>-->
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
-         <q-btn
-          @click="makeAdmin"
-          icon="save"
-          label="Make Admin"
-          color="primary"
-        /><q-btn
-          @click="newPassword"
-          icon="save"
-          label="Reset Password"
-          color="primary"
-        /><q-btn
-          @click="editUser"
-          icon="save"
-          label="Save"
-          color="primary"
-        />
-       
+        <q-btn @click="makeAdmin" icon="save" label="Make Admin" color="primary" />
+        <q-btn @click="newPassword" icon="save" label="Reset Password" color="primary" />
+        <q-btn @click="editUser" icon="save" label="Save" color="primary" />
       </q-card-actions>
     </q-form>
   </q-card>
@@ -79,39 +65,38 @@ export default {
   data() {
     return {
       isPwd: true,
-      formData: {
-        name: "",
-        email: "",
-        online: false
-      }
+      formData: {}
     };
   },
   methods: {
     ...mapActions("storeusers", ["updateUser"]),
-    makeAdmin(){
-// =====================================================
+    makeAdmin() {
+      this.$q.loading.show();
+      // =====================================================
       // // This is working na
       const addAdminRole = fc.httpsCallable("addAdminRole");
       addAdminRole({ email: this.user.email }).then(result => {
         console.log(result);
+        this.$q.loading.hide();
       });
       // console.log(this.id)
-// ============================
+      // ============================
     },
     editUser() {
+      // var updates = db.ref("users/" + this.id).update(this.formData);
+      // return db.ref().update(updates);
       this.updateUser({
         id: this.id,
         userDetails: this.formData
       });
       this.$emit("close");
-
-
     },
     newPassword() {
       const newPassword = fc.httpsCallable("newPassword");
       newPassword({ email: this.user.email }).then(result => {
         console.log(result);
       });
+      this.$emit("close");
     },
     isValidEmailAddress(email) {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
