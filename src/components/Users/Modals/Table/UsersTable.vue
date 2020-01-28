@@ -48,6 +48,9 @@
     <q-dialog v-model="showEditUser">
       <editusers @close="showEditUser=false" :user="user" :id="key"></editusers>
     </q-dialog>
+    <q-dialog v-model="showAddInspector">
+      <add-inspector @close="showAddInspector=false" :user="user" :id="key"></add-inspector>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -58,6 +61,7 @@ export default {
   data() {
     return {
       showEditUser: false,
+      showAddInspector: false,
       current: 3,
       // users: {},
       user: {},
@@ -72,6 +76,12 @@ export default {
       this.user = user;
       this.key = key;
       console.log(key);
+    },
+    showAddInspectorModal(user, key) {
+      this.showAddInspector = true;
+      this.user = user;
+      this.key = key;
+      console.log(key);
     }
   },
   computed: {
@@ -79,7 +89,8 @@ export default {
     ...mapState("auth", ["usersDownloaded"])
   },
   components: {
-    editusers: require("components/Users/Modals/EditUsers").default
+    editusers: require("components/Users/Modals/EditUsers").default,
+    "add-inspector": require("components/Users/Modals/AddInspector").default
   }
 };
 </script>
