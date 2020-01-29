@@ -2,8 +2,8 @@
   <q-form @submit.prevent="submitForm">
     <div class="row q-mb-md">
       <q-banner class="col text-center">
-        <q-img src="/img/svg/graphics.svg"></q-img>
-        <q-img src="../../../logo-with-CIP.jpg" class="logo"></q-img>
+        <!-- <q-img src="/img/svg/graphics.svg"></q-img> -->
+        <q-img src="../../../download.jpg" class="logo"></q-img>
         <!-- <template v-slot:avatar>
           <q-icon v-if="tab == 'login'" name="account_circle" color="primary" />
           <q-icon v-if="tab == 'register'" name="person_add" color="primary" />
@@ -136,8 +136,8 @@ export default {
 
 <style>
 .logo {
-  height: 100px;
-  width: 200px;
+  height: 130px;
+  width: 150px;
   max-width: 300px;
 }
 </style>

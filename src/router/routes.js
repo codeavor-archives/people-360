@@ -14,6 +14,11 @@ const routes = [
       { path: "chat/:id", component: () => import("pages/PageChat.vue") },
       { path: "contacts", component: () => import("pages/PageContact.vue") },
       { path: "users", component: () => import("pages/PageUsers.vue") },
+      { path: "services", component: () => import("pages/PageServices.vue") },
+      {
+        path: "list-services",
+        component: () => import("pages/PageServicesList.vue")
+      },
       {
         path: "inspectors",
         component: () => import("pages/PageInspector.vue")

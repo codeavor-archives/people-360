@@ -1,15 +1,15 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw;">
-    <q-form @submit.prevent="fbEditEvent">
+    <q-form @submit.prevent="fbEditServices">
       <q-card-section class="row">
-        <div class="text-h6">Edit Event</div>
+        <div class="text-h6">Edit Services</div>
         <q-space></q-space>
         <div>
           <q-btn v-close-popup flat round dense icon="close"></q-btn>
         </div>
       </q-card-section>
       <q-card-section class="q-pt-none">
-        <q-input
+        <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="title"
           class="col"
@@ -66,7 +66,7 @@
               </q-popup-proxy>
             </q-icon>
           </template>
-        </q-input>
+        </q-input>-->
       </q-card-section>
 
       <q-card-actions align="right" class="bg-white text-teal">
@@ -77,51 +77,35 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import { uid } from "quasar";
 import { fb, db, fs } from "boot/firebase";
-
 export default {
-  props: ["event", "id"],
+  props: ["service", "id"],
   firestore() {
     return {
-      inspectionEvent: fs.collection("inspectionEvent")
-    };
-  },
-  data() {
-    return {
-      // event: {
-      //   title: "",
-      //   details: "",
-      //   start: "",
-      //   end: "",
-      //   color: "#027be3",
-      //   id: ""
-      // }
+      services: fs.collection("services")
     };
   },
   methods: {
-    ...mapActions("storeevents", ["addEvent"]),
-    fbEditEvent() {
+    fbEditServices() {
       this.$q.loading.show();
-      this.$firestore.inspectionEvent
+      this.$firestore.services
         .doc(this.id)
-        .update(this.event)
+        .update(this.service)
         .then(response => {
           console.log(response);
           this.$q.loading.hide();
-          this.showEditEvent = false;
+          this.showEditServices = false;
         })
         .catch(error => {
           console.log(error);
           this.$q.loading.hide;
-          this.showEditEvent = false;
+          this.showEditServices = false;
         });
       this.$emit("close");
     }
   }
 };
 </script>
-<style lang="sass" scoped>
 
+<style>
 </style>

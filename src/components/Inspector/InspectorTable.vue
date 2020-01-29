@@ -37,11 +37,7 @@
       </div>-->
     </div>
     <q-dialog v-model="showEditInspector">
-      <edit-inspector
-        @close="showEditInspector = false"
-        :inspector="inspector"
-        :id="key"
-      ></edit-inspector>
+      <edit-inspector @close="showEditInspector = false" :inspector="inspector" :id="key"></edit-inspector>
     </q-dialog>
   </q-page>
 </template>
