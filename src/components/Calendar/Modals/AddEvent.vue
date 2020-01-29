@@ -70,7 +70,7 @@
       </q-card-section>
 
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn icon="add" flat type="submit" label="Add" />
+        <q-btn icon="add" color="primary" type="submit" label="Add" />
       </q-card-actions>
     </q-form>
   </q-card>
@@ -95,7 +95,8 @@ export default {
         start: "",
         end: "",
         color: "#027be3",
-        id: ""
+        id: "",
+        allDay: "true"
       }
     };
   },

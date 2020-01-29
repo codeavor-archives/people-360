@@ -28,7 +28,7 @@
       </template>
     </div>
     <q-dialog v-model="showAddUsers">
-      <addusers></addusers>
+      <addusers @close="showAddUsers=false"></addusers>
     </q-dialog>
   </q-page>
 </template>

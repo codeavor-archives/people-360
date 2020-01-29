@@ -54,6 +54,7 @@
 <script>
 import { mapActions } from "vuex";
 import { uid } from "quasar";
+import { db, fb, fc } from "boot/firebase";
 export default {
   data() {
     return {
@@ -70,10 +71,24 @@ export default {
   methods: {
     ...mapActions("users", ["fbAddUser"]),
     addUser() {
+      this.$q.loading.show();
       this.$refs.email.validate();
       this.$refs.password.validate();
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
-        this.fbAddUser(this.formData);
+        const addUser = fc.httpsCallable("addUser");
+        addUser({
+          email: this.formData.email,
+          password: this.formData.password
+        })
+          .then(result => {
+            console.log(result);
+            this.$q.loading.hide();
+          })
+          .catch(error => {
+            console.log(error);
+            this.$q.loading.hide();
+          });
+        this.$emit("close");
       }
     },
     isValidEmailAddress(email) {

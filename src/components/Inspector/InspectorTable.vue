@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page class="q-mt-md">
     <div class>
       <div class>
         <q-markup-table>
@@ -13,16 +13,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-left"></td>
-              <td class="text-left"></td>
-              <td class="text-left"></td>
+            <tr v-for="(inspector, key) in inspectors" :key="key" :id="key">
+              <td class="text-left">{{ inspector.name }}</td>
+              <td class="text-left">{{ inspector.position }}</td>
+              <td class="text-left">{{ inspector.email }}</td>
               <td class="text-left"></td>
               <td class="text-left">
                 <q-btn
                   round
                   color="primary"
-                  @click="showEditInspectorModal(inspector)"
+                  @click="showEditInspectorModal(inspector, key)"
                   flat
                   dense
                   icon="edit"
@@ -32,12 +32,16 @@
           </tbody>
         </q-markup-table>
       </div>
-      <div class>
+      <!-- <div class>
         <q-pagination class="q-pt-lg" :max="5"></q-pagination>
-      </div>
+      </div>-->
     </div>
     <q-dialog v-model="showEditInspector">
-      <edit-inspector @close="showEditInspector=false" :inspector="inspector" :id="id"></edit-inspector>
+      <edit-inspector
+        @close="showEditInspector = false"
+        :inspector="inspector"
+        :id="key"
+      ></edit-inspector>
     </q-dialog>
   </q-page>
 </template>
@@ -47,11 +51,13 @@ import { fb, db, fs } from "boot/firebase";
 export default {
   firestore() {
     return {
-      inspectors: fs.collection("inspectors")
+      inspectors: fs.collection("inspectors"),
+      positions: fs.collection("positions")
     };
   },
   data() {
     return {
+      key: {},
       showEditInspector: false,
       inspector: {
         id: "",
@@ -75,5 +81,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

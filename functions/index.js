@@ -25,6 +25,29 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
       console.log("Error fetching user data:", error);
     });
 });
+exports.addUser = functions.https.onCall((data, context) => {
+  // get the user and add custom claims (admin)
+  if (context.auth.token.admin !== true) {
+    return { error: "Only admins can add other user" };
+  }
+  return admin
+    .auth()
+    .createUser(data)
+    .then(user => {
+      // admin
+      //   .firestore()
+      //   .doc("inspector/")
+      //   .set(data);
+    })
+    .then(() => {
+      return {
+        message: `Success! ${data} has been created`
+      };
+    })
+    .catch(error => {
+      console.log("Error fetching user data:", error);
+    });
+});
 
 exports.newPassword = functions.https.onCall((data, context) => {
   if (context.auth.token.admin !== true) {

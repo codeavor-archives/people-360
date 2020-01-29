@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page>
     <div class>
       <div class>
         <q-markup-table>

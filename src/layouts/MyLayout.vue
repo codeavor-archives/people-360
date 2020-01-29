@@ -22,11 +22,15 @@
           v-go-back.single
         />
         <q-toolbar-title class="text-center" v-if="loggedIn">
-          {{
-          title
-          }}
+          {{ title }}
         </q-toolbar-title>
-        <q-btn-dropdown flat v-if="loggedIn" push dropdown-icon="more_vert" dense>
+        <q-btn-dropdown
+          flat
+          v-if="loggedIn"
+          push
+          dropdown-icon="more_vert"
+          dense
+        >
           <div class="row no-wrap q-pa-sm">
             <div class="column">
               <div class="text-h6">Settings</div>
@@ -52,7 +56,9 @@
               <q-avatar size="72px">
                 <img :src="userDetails.photo" />
               </q-avatar>
-              <div class="text-subtitle1 q-mt-md q-mb-xs">{{ userDetails.email }}</div>
+              <div class="text-subtitle1 q-mt-md q-mb-xs">
+                {{ userDetails.email }}
+              </div>
               <q-btn
                 color="primary"
                 label="Logout"
@@ -91,14 +97,26 @@
     >
       <q-list>
         <q-item-label header>Navigation</q-item-label>
-        <q-item to="/inspectors" exact clickable>
-          <q-item-section avatar>
-            <q-icon name="perm_identity" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Inspectors</q-item-label>
-          </q-item-section>
-        </q-item>
+
+        <q-expansion-item icon="perm_identity" label="Inspectors">
+          <q-item to="/inspectors" exact clickable class="q-pl-xl">
+            <q-item-section avatar>
+              <q-icon name="perm_identity" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Inspectors</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item to="/positions" exact clickable class="q-pl-xl">
+            <q-item-section avatar>
+              <q-icon name="build" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Positions</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
+
         <q-item to="/reservation" exact clickable>
           <q-item-section avatar>
             <q-icon name="calendar_today" />
@@ -115,7 +133,13 @@
             <q-item-label>Manage User</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-for="nav in navs" :key="nav.label" :to="nav.to" exact clickable>
+        <q-item
+          v-for="nav in navs"
+          :key="nav.label"
+          :to="nav.to"
+          exact
+          clickable
+        >
           <q-item-section avatar>
             <q-icon :name="nav.icon" />
           </q-item-section>

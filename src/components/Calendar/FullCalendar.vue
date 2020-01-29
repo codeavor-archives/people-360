@@ -17,7 +17,9 @@
         :type="type"
         :title="title"
         v-model="date"
+        :hiddenDays="hiddenDays"
         :weekends="calendarWeekends"
+        selectable="true"
         :header="{
           left: 'prev,next today',
           center: 'title',
@@ -54,7 +56,7 @@
         </q-card>
       </q-menu>-->
     </div>
-    <div class="row">
+    <div class="q-mt-xl">
       <calendar-table></calendar-table>
     </div>
     <q-dialog v-model="medium">
@@ -87,6 +89,7 @@ export default {
   },
   data() {
     return {
+      hiddenDays: [0],
       medium: false,
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       calendarWeekends: true,

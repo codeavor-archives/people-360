@@ -19,6 +19,10 @@ const routes = [
         component: () => import("pages/PageInspector.vue")
       },
       {
+        path: "positions",
+        component: () => import("pages/PagePosition.vue")
+      },
+      {
         path: "reservation",
         component: () => import("pages/PageReservation.vue")
       }

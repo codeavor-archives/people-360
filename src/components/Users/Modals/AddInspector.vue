@@ -1,27 +1,14 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw;">
     <q-card-section class="row">
-      <div class="text-h6">Edit User</div>
+      <div class="text-h6">Add as Inspector</div>
       <q-space></q-space>
       <q-btn v-close-popup flat round dense icon="close" />
     </q-card-section>
-    <q-form>
+    <q-form @submit.prevent="addToInspector">
       <q-card-section class="addusers">
         <div class="row q-mb-md">
-          <q-input
-            ref="name"
-            class="col"
-            v-model="formData.name"
-            label="Name"
-          />
-        </div>
-        <div class="row q-mb-md">
-          <q-input
-            ref="role"
-            class="col"
-            v-model="formData.roles"
-            label="Role"
-          />
+          <q-input ref="name" class="col" v-model="formData.name" label="Name" />
         </div>
         <div class="row q-mb-xs">
           <q-input
@@ -37,40 +24,9 @@
             label="Email"
           />
         </div>
-        <!-- <div class="row q-mb-md">
-          <q-input
-            ref="password"
-            label="Password"
-            class="col"
-            v-model="formData.password"
-            :type="isPwd ? 'password' : 'text'"
-            :rules="[val => val.length >= 6 || 'Please enter atleast 6 characters']"
-            lazy-rules
-          >
-            <template v-slot:append>
-              <q-icon
-                :name="isPwd ? 'visibility_off' : 'visibility'"
-                class="cursor-pointer"
-                @click="isPwd = !isPwd"
-              />
-            </template>
-          </q-input>
-        </div>-->
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn
-          @click="makeAdmin"
-          icon="save"
-          label="Make Admin"
-          color="primary"
-        />
-        <q-btn
-          @click="newPassword"
-          icon="save"
-          label="Reset Password"
-          color="primary"
-        />
-        <q-btn @click="editUser" icon="save" label="Save" color="primary" />
+        <q-btn type="submit" icon="add" label="Add to Inspector" color="primary" />
       </q-card-actions>
     </q-form>
   </q-card>
@@ -78,10 +34,15 @@
 
 <script>
 import { mapActions } from "vuex";
-import { db, fb, fc } from "boot/firebase";
+import { db, fb, fc, fs } from "boot/firebase";
 import { uid } from "quasar";
 export default {
   props: ["user", "id"],
+  firestore() {
+    return {
+      inspectors: fs.collection("inspectors")
+    };
+  },
   data() {
     return {
       isPwd: true,
@@ -90,6 +51,26 @@ export default {
   },
   methods: {
     ...mapActions("storeusers", ["updateUser"]),
+    addToInspector() {
+      this.$q.loading.show();
+      this.formData.id = this.id;
+      this.$firestore.inspectors
+        .doc(this.id)
+        .set({
+          id: this.id,
+          name: this.formData.name,
+          email: this.formData.email
+        })
+        .then(response => {
+          console.log(response);
+          this.$q.loading.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          this.$q.loading.hide();
+        });
+      this.$emit("close");
+    },
     makeAdmin() {
       this.$q.loading.show();
       // =====================================================

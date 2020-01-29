@@ -5,7 +5,14 @@
         <div class="text-h6">Edit Inspector</div>
         <q-space></q-space>
         <div>
-          <q-btn v-close-popup flat round dense icon="close"></q-btn>
+          <q-btn
+            @click="clear"
+            v-close-popup
+            flat
+            round
+            dense
+            icon="close"
+          ></q-btn>
         </div>
       </q-card-section>
       <q-card-section class="q-pt-none">
@@ -17,20 +24,20 @@
           v-model="inspector.name"
         >
           <template v-slot:append>
-            <q-icon v-if="inspector.name" name="close" class="cursor-pointer"></q-icon>
+            <q-icon
+              v-if="inspector.name"
+              name="close"
+              class="cursor-pointer"
+            ></q-icon>
           </template>
         </q-input>
-        <q-input
+        <q-select
           :rules="[val => !!val || 'Field is required']"
-          ref="name"
-          class="col"
-          label="Inspector Position"
           v-model="inspector.position"
-        >
-          <template v-slot:append>
-            <q-icon v-if="inspector.position" name="close" class="cursor-pointer"></q-icon>
-          </template>
-        </q-input>
+          class="col"
+          :options="options"
+          label="Inspector Position"
+        ></q-select>
         <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
@@ -39,7 +46,11 @@
           v-model="inspector.schedule"
         >
           <template v-slot:append>
-            <q-icon v-if="inspector.schedule" name="close" class="cursor-pointer"></q-icon>
+            <q-icon
+              v-if="inspector.schedule"
+              name="close"
+              class="cursor-pointer"
+            ></q-icon>
           </template>
         </q-input>
         <q-input
@@ -50,7 +61,11 @@
           v-model="inspector.available"
         >
           <template v-slot:append>
-            <q-icon v-if="inspector.available" name="close" class="cursor-pointer"></q-icon>
+            <q-icon
+              v-if="inspector.available"
+              name="close"
+              class="cursor-pointer"
+            ></q-icon>
           </template>
         </q-input>
       </q-card-section>
@@ -62,15 +77,24 @@
 </template>
 
 <script>
+import * as firebase from "firebase/app";
 import { fb, db, fs } from "boot/firebase";
 export default {
   props: ["inspector", "id"],
+  data() {
+    return {
+      options: {}
+    };
+  },
   firestore() {
     return {
-      inspectors: fs.collection("inspectors")
+      positions: fs.collection("positions")
     };
   },
   methods: {
+    clear() {
+      this.inspector = "";
+    },
     fbEditInspector() {
       this.$q.loading.show();
       this.$firestore.inspectors
@@ -88,9 +112,23 @@ export default {
         });
       this.$emit("close");
     }
+  },
+  mounted() {
+    let options = [];
+    let positionRef = fs.collection("positions");
+    let allPostion = positionRef
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          options.push(doc.data().positionName);
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+    this.options = options;
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>
