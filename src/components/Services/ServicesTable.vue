@@ -5,26 +5,32 @@
         <q-markup-table>
           <thead>
             <tr>
-              <th colspan="5">
+              <th colspan="7">
                 <div class="row no-wrap items-center">
                   <div class="text-h5 text-primary">Services Table</div>
                 </div>
               </th>
             </tr>
             <tr>
-              <th class="text-left">Dummy</th>
-              <th class="text-left">Dummy</th>
-              <th class="text-left">Dummy</th>
-              <th class="text-left">Dummy</th>
+              <th class="text-left">Name</th>
+              <th class="text-left">Equipment</th>
+              <th class="text-left">Person Count</th>
+              <th class="text-left">Days Count</th>
+              <th class="text-left">Photo</th>
+              <th class="text-left">Status</th>
               <th class="text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="text-left">Dummy</td>
-              <td class="text-left">Dummy</td>
-              <td class="text-left">Dummy</td>
-              <td class="text-left">Dummy</td>
+            <tr v-for="service in services" :key="service.id">
+              <td class="text-left">{{service.name}}</td>
+              <td class="text-left">{{service.equipment}}</td>
+              <td class="text-left">{{service.personCount}}</td>
+              <td class="text-left">{{service.dayCount}}</td>
+              <td class="text-left">
+                <q-img avatar :src="service.photo" />
+              </td>
+              <td class="text-left">{{service.available}}</td>
               <td class="text-left">
                 <q-btn
                   @click="showEditServiceModal(service, key)"

@@ -1,9 +1,8 @@
 <template>
-  <q-page>
-    <div class="row items-start" v-for="service in services" :key="service.key">
-      <q-card class="col-md-4 col-sm-6 col-xs-6">
+  <div class="row items-start">
+    <div v-for="service in services" :key="service.key" class="col-md-3 col-lg-3 col-xs-6 col-sm-6">
+      <q-card class="q-ma-xs">
         <q-img :src="service.photo" />
-
         <q-card-section>
           <q-btn
             fab
@@ -38,7 +37,7 @@
         </q-card-actions>
       </q-card>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>

@@ -101,6 +101,7 @@ export default {
   methods: {
     addServices() {
       this.$q.loading.show();
+      this.service.id = fb.auth.currentUser.uid;
       this.$firestore.services
         .add(this.service)
         .then(error => {
