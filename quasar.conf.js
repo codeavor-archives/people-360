@@ -101,7 +101,7 @@ module.exports = function(ctx) {
         // "QPopupEdit",
         "QPopupProxy",
         // "QPullToRefresh",
-        // "QRating",
+        "QRating",
         "QScrollArea",
         "QSeparator",
         // "QSkeleton",

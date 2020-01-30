@@ -24,6 +24,16 @@
             label="Email"
           />
         </div>
+        <div class="row q-mb-xs">
+          <q-select
+            :rules="[val => !!val || 'Field is required']"
+            lazy-rules
+            v-model="formData.position"
+            class="col"
+            :options="options"
+            label="Inspector Position"
+          ></q-select>
+        </div>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn type="submit" icon="add" label="Add to Inspector" color="primary" />
@@ -40,13 +50,17 @@ export default {
   props: ["user", "id"],
   firestore() {
     return {
-      inspectors: fs.collection("inspectors")
+      inspectors: fs.collection("inspectors"),
+      positions: fs.collection("positions")
     };
   },
   data() {
     return {
+      options: [],
       isPwd: true,
-      formData: {}
+      formData: {
+        position: ""
+      }
     };
   },
   methods: {
@@ -59,7 +73,9 @@ export default {
         .set({
           id: this.id,
           name: this.formData.name,
-          email: this.formData.email
+          email: this.formData.email,
+          position: this.formData.position,
+          available: true
         })
         .then(response => {
           console.log(response);
@@ -106,6 +122,20 @@ export default {
   },
   mounted() {
     this.formData = Object.assign({}, this.user);
+
+    let options = [];
+    let positionRef = fs.collection("positions");
+    let allPostion = positionRef
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          options.push(doc.data().positionName);
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+    this.options = options;
   }
 };
 </script>

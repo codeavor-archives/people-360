@@ -5,6 +5,13 @@
         <q-markup-table>
           <thead>
             <tr>
+              <th colspan="5">
+                <div class="row no-wrap items-center">
+                  <div class="text-h5 text-primary">Inspector Position Table</div>
+                </div>
+              </th>
+            </tr>
+            <tr>
               <th class="text-left">Name</th>
               <th class="text-left">Action</th>
             </tr>
@@ -32,11 +39,7 @@
       </div>-->
     </div>
     <q-dialog v-model="showEditPosition">
-      <edit-positon
-        @close="showEditPosition = false"
-        :position="position"
-        :id="id"
-      ></edit-positon>
+      <edit-positon @close="showEditPosition = false" :position="position" :id="id"></edit-positon>
     </q-dialog>
   </q-page>
 </template>
@@ -63,6 +66,7 @@ export default {
       this.showEditPosition = true;
       this.position = position;
       this.id = position.id;
+      console.log(this.id);
     }
   },
   components: {

@@ -5,9 +5,16 @@
         <q-markup-table>
           <thead>
             <tr>
+              <th colspan="5">
+                <div class="row no-wrap items-center">
+                  <div class="text-h5 text-primary">Inspector Table</div>
+                </div>
+              </th>
+            </tr>
+            <tr>
               <th class="text-left">Name</th>
-              <th class="text-left">Position/Forty</th>
-              <th class="text-left">Schedule</th>
+              <th class="text-left">Position</th>
+              <th class="text-left">Email</th>
               <th class="text-left">Available</th>
               <th class="text-left">Action</th>
             </tr>
@@ -17,7 +24,11 @@
               <td class="text-left">{{ inspector.name }}</td>
               <td class="text-left">{{ inspector.position }}</td>
               <td class="text-left">{{ inspector.email }}</td>
-              <td class="text-left"></td>
+              <td class="text-left">
+                <q-badge
+                  :color="inspector.available ? 'green-7' : 'grey-4'"
+                >{{ inspector.available ? 'Available': 'Deployed' }}</q-badge>
+              </td>
               <td class="text-left">
                 <q-btn
                   round
@@ -26,6 +37,14 @@
                   flat
                   dense
                   icon="edit"
+                ></q-btn>
+                <q-btn
+                  round
+                  color="primary"
+                  @click="showAddInspectorSchedule(inspector, key)"
+                  flat
+                  dense
+                  icon="add"
                 ></q-btn>
               </td>
             </tr>
@@ -37,7 +56,14 @@
       </div>-->
     </div>
     <q-dialog v-model="showEditInspector">
-      <edit-inspector @close="showEditInspector = false" :inspector="inspector" :id="key"></edit-inspector>
+      <edit-inspector @close="showEditInspector = false" :inspector="inspector" :id="id"></edit-inspector>
+    </q-dialog>
+    <q-dialog v-model="showAddInspectorSched">
+      <add-inspector-schedule
+        @close="showAddInspectorSched = false"
+        :inspector="inspector"
+        :id="id"
+      ></add-inspector-schedule>
     </q-dialog>
   </q-page>
 </template>
@@ -53,8 +79,13 @@ export default {
   },
   data() {
     return {
+      inspectorSchedule: "",
+      idInspector: "",
+
       key: {},
+      id: "",
       showEditInspector: false,
+      showAddInspectorSched: false,
       inspector: {
         id: "",
         name: "",
@@ -68,10 +99,18 @@ export default {
       this.inspector = inspector;
       this.id = inspector.id;
       console.log(inspector.id);
+    },
+    showAddInspectorSchedule(inspector) {
+      this.showAddInspectorSched = true;
+      this.inspector = inspector;
+      this.id = inspector.id;
+      console.log(inspector.id);
     }
   },
   components: {
     "edit-inspector": require("components/Inspector/Modal/EditInspector")
+      .default,
+    "add-inspector-schedule": require("components/Inspector/Modal/AddInspectorSchedule")
       .default
   }
 };

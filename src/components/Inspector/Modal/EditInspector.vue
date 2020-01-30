@@ -5,14 +5,7 @@
         <div class="text-h6">Edit Inspector</div>
         <q-space></q-space>
         <div>
-          <q-btn
-            @click="clear"
-            v-close-popup
-            flat
-            round
-            dense
-            icon="close"
-          ></q-btn>
+          <q-btn v-close-popup flat round dense icon="close"></q-btn>
         </div>
       </q-card-section>
       <q-card-section class="q-pt-none">
@@ -24,11 +17,7 @@
           v-model="inspector.name"
         >
           <template v-slot:append>
-            <q-icon
-              v-if="inspector.name"
-              name="close"
-              class="cursor-pointer"
-            ></q-icon>
+            <q-icon v-if="inspector.name" name="close" class="cursor-pointer"></q-icon>
           </template>
         </q-input>
         <q-select
@@ -38,7 +27,7 @@
           :options="options"
           label="Inspector Position"
         ></q-select>
-        <q-input
+        <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
@@ -52,8 +41,8 @@
               class="cursor-pointer"
             ></q-icon>
           </template>
-        </q-input>
-        <q-input
+        </q-input>-->
+        <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
@@ -67,7 +56,7 @@
               class="cursor-pointer"
             ></q-icon>
           </template>
-        </q-input>
+        </q-input>-->
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn icon="save" color="primary" type="submit" label="Save"></q-btn>
@@ -83,19 +72,18 @@ export default {
   props: ["inspector", "id"],
   data() {
     return {
-      options: {}
+      options: []
     };
   },
   firestore() {
     return {
-      positions: fs.collection("positions")
+      positions: fs.collection("positions"),
+      inspectors: fs.collection("inspectors")
     };
   },
   methods: {
-    clear() {
-      this.inspector = "";
-    },
     fbEditInspector() {
+      console.log(this.id);
       this.$q.loading.show();
       this.$firestore.inspectors
         .doc(this.id)
@@ -121,6 +109,7 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           options.push(doc.data().positionName);
+          // console.log(Object.values(doc));
         });
       })
       .catch(err => {

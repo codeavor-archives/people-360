@@ -5,6 +5,13 @@
         <q-markup-table>
           <thead>
             <tr>
+              <th colspan="5">
+                <div class="row no-wrap items-center">
+                  <div class="text-h5 text-primary">Users Table</div>
+                </div>
+              </th>
+            </tr>
+            <tr>
               <!-- <th class="text-left">ID</th> -->
               <th class="text-left">Name</th>
               <th class="text-left">Email</th>
