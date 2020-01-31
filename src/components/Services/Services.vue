@@ -8,13 +8,17 @@
       <q-card class="q-ma-xs">
         <q-img :src="service.photo" />
         <q-card-section>
-          <q-btn
-            round
-            color="primary"
-            icon="add_shopping_cart"
-            class="absolute"
-            style="top: 0; right: 12px; transform: translateY(-50%);"
-          />
+          <!-- <add-to-cart></add-to-cart>  -->
+          <add-to-cart
+            :id="service.id"
+            :serviceName="service.name"
+            :serviceprice="service.price"
+            :servicePhoto="service.photo"
+            :serviceEquipment="service.equipment"
+            :servicePersonCount="service.personCount"
+            :servicedayCount="service.dayCount"
+          ></add-to-cart>
+          <!-- <add-to-cart></add-to-cart> -->
 
           <div class="row no-wrap items-center">
             <div class="col text-h6 ellipsis">{{service.name}}</div>
@@ -55,6 +59,9 @@ export default {
     return {
       stars: 4
     };
+  },
+  components: {
+    "add-to-cart": require("components/Services/Cart/AddToCart").default
   }
 };
 </script>

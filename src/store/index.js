@@ -8,6 +8,7 @@ import changepassword from "./store-change-password";
 import changeprofile from "./store-change-profile";
 import storeusers from "./store-users";
 import storeevents from "./store-events";
+import storeservices from "./store-services";
 
 Vue.use(Vuex);
 
@@ -29,7 +30,8 @@ export default function(/* { ssrContext } */) {
       auth,
       changepassword,
       changeprofile,
-      storeevents
+      storeevents,
+      storeservices
     },
 
     // enable strict mode (adds overhead!)

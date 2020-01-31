@@ -33,6 +33,17 @@
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
+          label="Price"
+          v-model="service.price"
+        >
+          <template v-slot:append>
+            <q-icon v-if="service.price" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
           label="Person Needed"
           v-model="service.personCount"
         >

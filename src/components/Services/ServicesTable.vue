@@ -73,6 +73,7 @@ export default {
         equipment: "",
         personCount: "",
         dayCount: "",
+        price: "",
         available: "true"
       }
     };

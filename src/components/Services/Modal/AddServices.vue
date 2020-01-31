@@ -22,6 +22,17 @@
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
+          label="Price"
+          v-model="service.price"
+        >
+          <template v-slot:append>
+            <q-icon v-if="service.price" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
           label="Equipment"
           v-model="service.equipment"
         >
@@ -91,6 +102,7 @@ export default {
         id: "",
         name: "",
         equipment: "",
+        price: "",
         personCount: "",
         dayCount: "",
         available: "true",
