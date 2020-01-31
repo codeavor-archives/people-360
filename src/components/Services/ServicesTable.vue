@@ -50,7 +50,7 @@
       </div>-->
     </div>
     <q-dialog v-model="showEditServices">
-      <edit-services @close="showEditServices = false" :service="service" :id="key"></edit-services>
+      <edit-services @close="showEditServices = false" :service="service" :id="id"></edit-services>
     </q-dialog>
   </q-page>
 </template>
@@ -66,6 +66,7 @@ export default {
     return {
       showEditServices: false,
       key: {},
+      id: "",
       service: {
         id: "",
         name: "",

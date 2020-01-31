@@ -25,7 +25,23 @@
           <q-img src="../../download.jpg" class="logo"></q-img>
           {{ title }}
         </q-toolbar-title>
-        <q-btn-dropdown flat v-if="loggedIn" push dropdown-icon="more_vert" dense>
+        <q-btn round flat icon="shopping_cart">
+          <q-menu :offset="[0, 20]">
+            <q-card class="my-card">
+              <q-card-section class="bg-white text-primary">
+                <div class="text-h6">Our Changing Planet</div>
+                <div class="text-subtitle2">by John Doe</div>
+              </q-card-section>
+
+              <q-separator />
+
+              <q-card-actions align="right" class="q-pa-xs">
+                <q-btn flat color="primary" label="Proceed"></q-btn>
+              </q-card-actions>
+            </q-card>
+          </q-menu>
+        </q-btn>
+        <q-btn-dropdown round flat v-if="loggedIn" push dropdown-icon="more_vert" dense>
           <div class="row no-wrap q-pa-sm">
             <div class="column">
               <div class="text-h6">Settings</div>
