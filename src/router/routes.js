@@ -16,6 +16,7 @@ const routes = [
       { path: "contacts", component: () => import("pages/PageContact.vue") },
       { path: "users", component: () => import("pages/PageUsers.vue") },
       { path: "services", component: () => import("pages/PageServices.vue") },
+      { path: "checkout", component: () => import("pages/PageCheckout.vue") },
       {
         path: "list-services",
         component: () => import("pages/PageServicesList.vue")

@@ -26,17 +26,38 @@
           {{ title }}
         </q-toolbar-title>
         <q-btn round flat icon="shopping_cart">
-          <q-menu :offset="[0, 20]">
-            <q-card class="my-card">
+          <q-menu :offset="[40, 10]">
+            <q-card class="my-card" flat>
               <q-card-section class="bg-white text-primary">
-                <div class="text-h6">Our Changing Planet</div>
-                <div class="text-subtitle2">by John Doe</div>
+                <div class="text-subtitle2">
+                  <q-list>
+                    <q-item v-for="item in cart" :key="item.id">
+                      <q-item-section top avatar>
+                        <q-avatar>
+                          <img :src="item.service_photo" />
+                        </q-avatar>
+                      </q-item-section>
+
+                      <q-item-section>
+                        <q-item-label>{{item.service_name}}</q-item-label>
+                        <q-item-label caption>{{item.service_equipment}}</q-item-label>
+                      </q-item-section>
+
+                      <q-item-section side top>
+                        <q-badge>₱ {{item.service_price}}</q-badge>
+                        <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </div>
               </q-card-section>
-
               <q-separator />
-
               <q-card-actions align="right" class="q-pa-xs">
-                <q-btn flat color="primary" label="Proceed"></q-btn>
+                <q-space></q-space>
+                <q-item-label caption>Total &nbsp;</q-item-label>
+                <q-badge>₱ {{totalPrice}}</q-badge>
+                <q-space></q-space>
+                <q-btn to="/checkout" flat color="primary" label="Proceed"></q-btn>
               </q-card-actions>
             </q-card>
           </q-menu>
@@ -102,7 +123,7 @@
       :breakpoint="767"
       v-model="leftDrawerOpen"
       bordered
-      content-class="bg-grey-2"
+      content-class="bg-secondary"
     >
       <q-list>
         <q-item-label header>Navigation</q-item-label>
@@ -214,7 +235,9 @@ export default {
   },
   computed: {
     ...mapState("auth", ["loggedIn", "userDetails"]),
+    ...mapState("storeservices", ["cart"]),
     ...mapGetters("storesettings", ["settings"]),
+    ...mapGetters("storeservices", ["totalPrice"]),
     show12HourFormat: {
       get() {
         return this.settings.show12HourFormat;
@@ -254,7 +277,8 @@ export default {
       "setshow12HourFormat",
       "setshowTaskInOneList"
     ])
-  }
+  },
+  mounted() {}
 };
 </script>
 
@@ -270,6 +294,10 @@ export default {
   max-width: 30px;
   max-height: 27px;
 }
+.my-card {
+  width: 300px;
+  max-width: 350px;
+}
 // @media screen and (max-width: 768px) {
 //   .hamburger {
 //     display: none;
@@ -279,3 +307,5 @@ export default {
 //   color: white !important;
 // }     ====================This can be applied if your changing the background color of the drawer
 </style>
+
+

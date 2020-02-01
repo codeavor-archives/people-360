@@ -3,16 +3,16 @@
     <div
       v-for="service in services"
       :key="service.key"
-      class="col-md-3 col-xl-2 col-lg-2 col-xs-6 col-sm-6"
+      class="col-md-3 col-xl-2 col-lg-2 col-xs-6 col-sm-4"
     >
       <q-card class="q-ma-xs">
         <q-img :src="service.photo" />
         <q-card-section>
           <!-- <add-to-cart></add-to-cart>  -->
           <add-to-cart
-            :id="service.id"
+            :serviceId="service.id"
             :serviceName="service.name"
-            :serviceprice="service.price"
+            :servicePrice="service.price"
             :servicePhoto="service.photo"
             :serviceEquipment="service.equipment"
             :servicePersonCount="service.personCount"
@@ -32,7 +32,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle1">$ {{service.dayCount}}</div>
+          <div class="text-subtitle1">$ {{service.price}}</div>
           <div class="text-caption text-grey">{{service.equipment}}</div>
         </q-card-section>
 

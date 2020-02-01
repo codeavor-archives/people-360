@@ -10,11 +10,13 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   props: {
-    id: String,
+    serviceId: String,
     serviceName: String,
-    serviceprice: String,
+    servicePrice: String,
     servicePhoto: String,
     serviceEquipment: String,
     servicePersonCount: String,
@@ -23,8 +25,9 @@ export default {
   data() {
     return {
       service: {
+        service_Id: this.serviceId,
         service_name: this.serviceName,
-        service_price: this.serviceprice,
+        service_price: this.servicePrice,
         service_photo: this.servicePhoto,
         service_equipment: this.serviceEquipment,
         service_personCount: this.servicePersonCount,
@@ -35,7 +38,9 @@ export default {
   },
   methods: {
     addToCart() {
-      this.$storeservices.commit("addToCart", this.service);
+      this.$store.commit("storeservices/addToCart", this.service);
+      // console.log(this.service.service_price);
+      // console.log(this.service);
     }
   }
 };
