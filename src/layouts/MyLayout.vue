@@ -57,7 +57,7 @@
                 <q-item-label caption>Total &nbsp;</q-item-label>
                 <q-badge>₱ {{totalPrice}}</q-badge>
                 <q-space></q-space>
-                <q-btn to="/checkout" flat color="primary" label="Proceed"></q-btn>
+                <q-btn to="/checkout" flat color="primary" label="Checkout"></q-btn>
               </q-card-actions>
             </q-card>
           </q-menu>
@@ -123,7 +123,7 @@
       :breakpoint="767"
       v-model="leftDrawerOpen"
       bordered
-      content-class="bg-secondary"
+      content-class="bg-grey-2"
     >
       <q-list>
         <q-item-label header>Navigation</q-item-label>

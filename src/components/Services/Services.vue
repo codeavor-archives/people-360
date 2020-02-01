@@ -32,7 +32,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle1">$ {{service.price}}</div>
+          <div class="text-subtitle1">₱ {{service.price}}</div>
           <div class="text-caption text-grey">{{service.equipment}}</div>
         </q-card-section>
 
