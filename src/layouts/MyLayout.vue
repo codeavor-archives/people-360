@@ -46,6 +46,7 @@
                       <q-item-section side top>
                         <q-badge>₱ {{item.service_price}}</q-badge>
                         <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
+                        <q-btn dense round size="8px" @click="removeToCart(item)" icon="clear" flat></q-btn>
                       </q-item-section>
                     </q-item>
                   </q-list>
@@ -163,6 +164,14 @@
               <q-item-label>List of Services</q-item-label>
             </q-item-section>
           </q-item>
+          <q-item to="/equipment-category" exact clickable class="q-pl-xl">
+            <q-item-section avatar>
+              <q-icon name="category" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Equipment Category</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-expansion-item>
         <q-item to="/reservation" exact clickable>
           <q-item-section avatar>
@@ -276,7 +285,10 @@ export default {
     ...mapActions("storesettings", [
       "setshow12HourFormat",
       "setshowTaskInOneList"
-    ])
+    ]),
+    removeToCart(item) {
+      this.$store.commit("storeservices/removeItemFromCart", item);
+    }
   },
   mounted() {}
 };

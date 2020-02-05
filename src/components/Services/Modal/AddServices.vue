@@ -1,23 +1,23 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw;">
     <q-card-section class="row">
-      <div class="text-h6">Add Services</div>
+      <div class="text-h6">Add Equipment</div>
       <q-space></q-space>
       <q-btn v-close-popup flat round dense icon="close" />
     </q-card-section>
     <q-form @submit.prevent="addServices">
       <q-card-section class="addusers">
-        <q-input
+        <q-select
           :rules="[val => !!val || 'Field is required']"
-          ref="name"
+          v-model="service.type"
           class="col"
-          label="Equipment/Service Name"
-          v-model="service.name"
+          label="Equipment Type"
+          :options="optionCategories"
         >
           <template v-slot:append>
-            <q-icon v-if="service.name" name="close" class="cursor-pointer" />
+            <q-icon v-if="service.type" name="close" class="cursor-pointer" />
           </template>
-        </q-input>
+        </q-select>
         <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
@@ -92,15 +92,17 @@ import { db, fb, fc, fs } from "boot/firebase";
 export default {
   firestore() {
     return {
-      services: fs.collection("services")
+      services: fs.collection("services"),
+      equipmentCategories: fs.collection("equipmentCategories")
     };
   },
   data() {
     return {
+      optionCategories: [],
       value: null,
       service: {
         id: "",
-        name: "",
+        type: "",
         equipment: "",
         price: "",
         personCount: "",
@@ -154,6 +156,22 @@ export default {
         );
       }
     }
+  },
+  mounted() {
+    let options = [];
+    let categoryRef = fs.collection("equipmentCategories");
+    let allCategory = categoryRef
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          options.push(doc.data().type);
+          // console.log(Object.values(doc));
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+    this.optionCategories = options;
   }
 };
 </script>

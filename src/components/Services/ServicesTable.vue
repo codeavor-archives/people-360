@@ -12,7 +12,7 @@
               </th>
             </tr>
             <tr>
-              <th class="text-left">Name</th>
+              <th class="text-left">Type</th>
               <th class="text-left">Equipment</th>
               <th class="text-left">Person Count</th>
               <th class="text-left">Days Count</th>
@@ -23,7 +23,7 @@
           </thead>
           <tbody>
             <tr v-for="service in services" :key="service.id">
-              <td class="text-left">{{service.name}}</td>
+              <td class="text-left">{{service.type}}</td>
               <td class="text-left">{{service.equipment}}</td>
               <td class="text-left">{{service.personCount}}</td>
               <td class="text-left">{{service.dayCount}}</td>

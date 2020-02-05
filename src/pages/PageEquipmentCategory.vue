@@ -1,15 +1,12 @@
 <template>
   <q-page padding>
-    <services-table></services-table>
+    <equipment-category></equipment-category>
     <q-page-sticky class="all-pointer-events" :offset="[18, 18]">
       <q-fab icon="add" direction="up" color="primary">
-        <q-fab-action @click="showAddServices = true" color="primary" icon="build" />
         <q-fab-action @click="showAddEquipment = true" color="primary" icon="note_add" />
       </q-fab>
     </q-page-sticky>
-    <q-dialog v-model="showAddServices">
-      <add-services @close="showAddServices = false"></add-services>
-    </q-dialog>
+
     <q-dialog v-model="showAddEquipment">
       <add-equipment-category @close="showAddEquipment = false"></add-equipment-category>
     </q-dialog>
@@ -20,13 +17,12 @@
 export default {
   data() {
     return {
-      showAddServices: false,
       showAddEquipment: false
     };
   },
   components: {
-    "services-table": require("components/Services/ServicesTable").default,
-    "add-services": require("components/Services/Modal/AddServices").default,
+    "equipment-category": require("components/Services/EquipmentCategoryTable")
+      .default,
     "add-equipment-category": require("components/Services/Modal/AddEquipmentType")
       .default
   }

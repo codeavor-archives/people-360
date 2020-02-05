@@ -14,18 +14,44 @@
           ref="name"
           class="col"
           label="Inspector Name"
-          v-model="inspector.name"
+          v-model="inspectorSchedule.name"
         >
           <template v-slot:append>
-            <q-icon v-if="inspector.name" name="close" class="cursor-pointer"></q-icon>
+            <q-icon v-if="inspectorSchedule.name" name="close" class="cursor-pointer"></q-icon>
           </template>
         </q-input>
         <q-select
           :rules="[val => !!val || 'Field is required']"
-          v-model="inspector.position"
+          v-model="inspectorSchedule.position"
           class="col"
           label="Inspector Position"
         ></q-select>
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          ref="title"
+          class="col"
+          label="Event Title"
+          v-model="inspectorSchedule.title"
+        >
+          <template v-slot:append>
+            <q-icon v-if="inspectorSchedule.title" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
+        <q-input
+          v-model="inspectorSchedule.start"
+          :rules="[val => !!val || 'Field is required']"
+          class="col"
+          label="Start Date"
+        >
+          <template v-slot:append>
+            <q-icon v-if="inspectorSchedule.start" name="close" class="cursor-pointer" />
+            <q-icon name="access_time" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-date mask="YYYY-MM-DD" landscape v-model="inspectorSchedule.start" />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn icon="save" color="primary" type="submit" label="Save"></q-btn>
@@ -41,18 +67,41 @@ export default {
   firestore() {
     return {
       positions: fs.collection("positions"),
-      inspectors: fs.collection("inspectors")
+      inspectors: fs.collection("inspectors"),
+      inspectionEvent: fs.collection("inspectionEvent")
+    };
+  },
+  data() {
+    return {
+      inspectorSchedule: {
+        name: "",
+        position: "",
+        start: "",
+        title: ""
+      }
     };
   },
   methods: {
     fbAddInspectorSchedule() {
       console.log(this.id);
       this.$q.loading.show();
-
       // Add some firestore add methods here
-
+      this.$firestore.inspectionEvent
+        .add(this.inspectorSchedule)
+        .then(response => {
+          console.log(response);
+          this.$q.loading.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          this.$q.loading.hide;
+        });
       this.$emit("close");
     }
+  },
+  mounted() {
+    this.inspectorSchedule.name = this.inspector.name;
+    this.inspectorSchedule.position = this.inspector.position;
   }
 };
 </script>

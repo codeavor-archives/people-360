@@ -6,7 +6,7 @@ module.exports = function(ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-    boot: ["firebase", "router-auth", "QCalendar"],
+    boot: ["firebase", "router-auth", "QCalendar", "Vue2Filters"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -70,7 +70,7 @@ module.exports = function(ctx) {
         "QInput",
         "QSelect",
         "QForm",
-        // "QField",
+        "QField",
         // "QRadio",
         "QCheckbox",
         "QToggle",
@@ -106,7 +106,7 @@ module.exports = function(ctx) {
         "QSeparator",
         // "QSkeleton",
         // "QSlideItem",
-        // "QSlideTransition",
+        "QSlideTransition",
         "QSpace",
         "QSpinner",
         // "QSplitter",
@@ -126,7 +126,7 @@ module.exports = function(ctx) {
         // "QTimelineEntry",
         "QToolbar",
         "QToolbarTitle",
-        // "QTooltip",
+        "QTooltip",
         // "QTree",
         // "QUploader",
         // "QVideo",
@@ -139,8 +139,27 @@ module.exports = function(ctx) {
         "QDrawer",
         "QFab",
         "QFabAction",
-        "QPageSticky"
-        // "QPageScroller"
+        "QPageSticky",
+        // "QPageScroller",
+        "QSpinnerAudio",
+        "QSpinnerBall",
+        "QSpinnerBars",
+        "QSpinnerComment",
+        "QSpinnerCube",
+        "QSpinnerDots",
+        "QSpinnerFacebook",
+        "QSpinnerGears",
+        "QSpinnerGrid",
+        "QSpinnerHearts",
+        "QSpinnerHourglass",
+        "QSpinnerInfinity",
+        "QSpinnerIos",
+        "QSpinnerOval",
+        "QSpinnerPie",
+        "QSpinnerPuff",
+        "QSpinnerRadio",
+        "QSpinnerRings",
+        "QSpinnerTail"
       ],
       directives: [
         "Ripple",

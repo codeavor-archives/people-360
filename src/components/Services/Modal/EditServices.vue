@@ -7,17 +7,17 @@
     </q-card-section>
     <q-form @submit.prevent="fbEditServices">
       <q-card-section class="addusers">
-        <q-input
+        <q-select
           :rules="[val => !!val || 'Field is required']"
-          ref="name"
+          v-model="service.type"
           class="col"
-          label="Equipment/Service Name"
-          v-model="service.name"
+          label="Equipment Type"
+          :options="optionCategories"
         >
           <template v-slot:append>
-            <q-icon v-if="service.name" name="close" class="cursor-pointer" />
+            <q-icon v-if="service.type" name="close" class="cursor-pointer" />
           </template>
-        </q-input>
+        </q-select>
         <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
@@ -81,7 +81,7 @@
         </q-input>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn type="submit" icon="add" label="Add Service/Equipment" color="primary" />
+        <q-btn type="submit" icon="save" label="Save" color="primary" />
       </q-card-actions>
     </q-form>
   </q-card>
@@ -93,11 +93,13 @@ export default {
   props: ["service", "id"],
   firestore() {
     return {
-      services: fs.collection("services")
+      services: fs.collection("services"),
+      equipmentCategories: fs.collection("equipmentCategories")
     };
   },
   data() {
     return {
+      optionCategories: [],
       value: null
     };
   },
@@ -115,7 +117,7 @@ export default {
         })
         .catch(error => {
           console.log(error);
-          this.$q.loading.hide;
+          this.$q.loading.hide();
           this.showEditServices = false;
         });
       this.$emit("close");
@@ -145,6 +147,22 @@ export default {
         );
       }
     }
+  },
+  mounted() {
+    let options = [];
+    let categoryRef = fs.collection("equipmentCategories");
+    let allCategory = categoryRef
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          options.push(doc.data().type);
+          // console.log(Object.values(doc));
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+    this.optionCategories = options;
   }
 };
 </script>

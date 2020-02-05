@@ -32,6 +32,10 @@ const routes = [
       {
         path: "reservation",
         component: () => import("pages/PageReservation.vue")
+      },
+      {
+        path: "equipment-category",
+        component: () => import("pages/PageEquipmentCategory.vue")
       }
     ]
   }
