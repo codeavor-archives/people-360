@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
-    <equipment-category></equipment-category>
-    <q-page-sticky class="all-pointer-events" :offset="[18, 18]">
+    <equipment-category v-if="admin"></equipment-category>
+    <q-page-sticky v-if="admin" class="all-pointer-events" :offset="[18, 18]">
       <q-fab icon="add" direction="up" color="primary">
         <q-fab-action @click="showAddEquipment = true" color="primary" icon="note_add" />
       </q-fab>
@@ -14,9 +14,11 @@
 </template>
 
 <script>
+import { fb, db } from "boot/firebase";
 export default {
   data() {
     return {
+      admin: false,
       showAddEquipment: false
     };
   },
@@ -25,6 +27,17 @@ export default {
       .default,
     "add-equipment-category": require("components/Services/Modal/AddEquipmentType")
       .default
+  },
+  mounted() {
+    let user = fb.auth().currentUser;
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        if (admin == true) {
+          this.admin = true;
+        }
+      });
+    }
   }
 };
 </script>

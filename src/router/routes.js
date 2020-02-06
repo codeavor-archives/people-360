@@ -18,6 +18,10 @@ const routes = [
       { path: "services", component: () => import("pages/PageServices.vue") },
       { path: "checkout", component: () => import("pages/PageCheckout.vue") },
       {
+        path: "pre-proposals",
+        component: () => import("pages/PagePreProposal.vue")
+      },
+      {
         path: "list-services",
         component: () => import("pages/PageServicesList.vue")
       },

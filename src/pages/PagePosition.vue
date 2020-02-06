@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
-    <inspector-position-table></inspector-position-table>
-    <q-page-sticky class="all-pointer-events" :offset="[18, 18]">
+    <inspector-position-table v-if="admin"></inspector-position-table>
+    <q-page-sticky v-if="admin" class="all-pointer-events" :offset="[18, 18]">
       <q-fab icon="add" direction="up" color="primary">
         <q-fab-action @click="showAddPosition = true" color="primary" icon="build" />
       </q-fab>
@@ -12,10 +12,11 @@
   </q-page>
 </template>
 
-<script>
+<script>import { fb, db } from "boot/firebase";
 export default {
   data() {
     return {
+      admin: false,
       showAddPosition: false
     };
   },
@@ -24,6 +25,17 @@ export default {
       .default,
     "add-inspector-position": require("components/Inspector/Modal/AddInspectorPosition")
       .default
+  },
+  mounted() {
+    let user = fb.auth().currentUser;
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        if (admin == true) {
+          this.admin = true;
+        }
+      });
+    }
   }
 };
 </script>

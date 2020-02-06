@@ -56,7 +56,7 @@
         </q-card>
       </q-menu>-->
     </div>
-    <div class="q-mt-xl">
+    <div class="q-mt-xl" v-if="admin">
       <calendar-table></calendar-table>
     </div>
     <q-dialog v-model="medium">
@@ -89,6 +89,7 @@ export default {
   },
   data() {
     return {
+      admin: false,
       hiddenDays: [0],
       medium: false,
       calendarPlugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -237,7 +238,15 @@ export default {
     }
   },
   created() {
-    console.log(this.inspectionEvent);
+    let user = fb.auth().currentUser;
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        if (admin == true) {
+          this.admin = true;
+        }
+      });
+    }
   },
   beforeMount() {
     this.locale = this.$q.lang.getLocale() || "en-PH";

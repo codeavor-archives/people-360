@@ -129,8 +129,8 @@
       <q-list>
         <q-item-label header>Navigation</q-item-label>
 
-        <q-expansion-item icon="how_to_reg" label="Inspectors">
-          <q-item to="/inspectors" exact clickable class="q-pl-xl">
+        <q-expansion-item v-if="admin" icon="how_to_reg" label="Inspectors">
+          <q-item v-if="admin" to="/inspectors" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="how_to_reg" />
             </q-item-section>
@@ -138,7 +138,7 @@
               <q-item-label>Inspectors</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item to="/positions" exact clickable class="q-pl-xl">
+          <q-item v-if="admin" to="/positions" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="playlist_add_check" />
             </q-item-section>
@@ -156,7 +156,7 @@
               <q-item-label>Services</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item to="/list-services" exact clickable class="q-pl-xl">
+          <q-item v-if="admin" to="/list-services" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="format_list_bulleted" />
             </q-item-section>
@@ -164,7 +164,7 @@
               <q-item-label>List of Services</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item to="/equipment-category" exact clickable class="q-pl-xl">
+          <q-item v-if="admin" to="/equipment-category" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="category" />
             </q-item-section>
@@ -181,7 +181,15 @@
             <q-item-label>Reservation</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/users" exact clickable>
+        <q-item to="/pre-proposals" exact clickable>
+          <q-item-section avatar>
+            <q-icon name="assessment" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Pre Proposals</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="admin" to="/users" exact clickable>
           <q-item-section avatar>
             <q-icon name="people" />
           </q-item-section>
@@ -225,6 +233,7 @@ export default {
   props: ["tab"],
   data() {
     return {
+      admin: false,
       profilePhoto: {},
       chat: "",
       leftDrawerOpen: this.$q.platform.is.desktop,
@@ -290,7 +299,17 @@ export default {
       this.$store.commit("storeservices/removeItemFromCart", item);
     }
   },
-  mounted() {}
+  mounted() {
+    let user = fb.auth().currentUser;
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        if (admin == true) {
+          this.admin = true;
+        }
+      });
+    }
+  }
 };
 </script>
 

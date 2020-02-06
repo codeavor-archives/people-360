@@ -69,8 +69,11 @@
       >
         <q-banner class="fixed-center">
           <template v-slot:avatar class="absolute">
-            <q-spinner-ball color="primary" size="5em" />
-            <span>Please wait...</span>
+            <span>
+              Please wait
+              <q-spinner-dots size="1em" color="primary" />
+              <q-spinner-hourglass size="2em" color="primary" />
+            </span>
           </template>
         </q-banner>
       </transition>
