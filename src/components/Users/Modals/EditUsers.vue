@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { showErrorMessage } from "src/functions/function-show-error-message";
 import { mapActions } from "vuex";
 import { db, fb, fc } from "boot/firebase";
 import { uid } from "quasar";
@@ -75,10 +76,34 @@ export default {
       // =====================================================
       // // This is working na
       const addAdminRole = fc.httpsCallable("addAdminRole");
-      addAdminRole({ email: this.user.email }).then(result => {
-        console.log(result);
-        this.$q.loading.hide();
-      });
+      addAdminRole({ email: this.user.email })
+        .then(result => {
+          console.log(result);
+          this.$q.loading.hide();
+          this.$emit("close");
+          this.$q.notify({
+            message: "Successfully make as admin",
+            caption: "a minutes ago",
+            color: "primary",
+            actions: [
+              {
+                label: "Ok",
+                color: "yellow",
+                handler: () => {}
+              },
+              {
+                label: "Dismiss",
+                color: "white",
+                handler: () => {}
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          this.$q.loading.hide();
+          showErrorMessage(error.message);
+        });
+      this.$emit("close");
       // console.log(this.id)
       // ============================
     },

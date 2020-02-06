@@ -129,8 +129,8 @@
       <q-list>
         <q-item-label header>Navigation</q-item-label>
 
-        <q-expansion-item v-if="admin" icon="how_to_reg" label="Inspectors">
-          <q-item v-if="admin" to="/inspectors" exact clickable class="q-pl-xl">
+        <q-expansion-item v-if="setAdmin" icon="how_to_reg" label="Inspectors">
+          <q-item v-if="setAdmin" to="/inspectors" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="how_to_reg" />
             </q-item-section>
@@ -138,7 +138,7 @@
               <q-item-label>Inspectors</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item v-if="admin" to="/positions" exact clickable class="q-pl-xl">
+          <q-item v-if="setAdmin" to="/positions" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="playlist_add_check" />
             </q-item-section>
@@ -156,7 +156,7 @@
               <q-item-label>Services</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item v-if="admin" to="/list-services" exact clickable class="q-pl-xl">
+          <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="format_list_bulleted" />
             </q-item-section>
@@ -164,7 +164,7 @@
               <q-item-label>List of Services</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item v-if="admin" to="/equipment-category" exact clickable class="q-pl-xl">
+          <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="category" />
             </q-item-section>
@@ -189,7 +189,7 @@
             <q-item-label>Pre Proposals</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="admin" to="/users" exact clickable>
+        <q-item v-if="setAdmin" to="/users" exact clickable>
           <q-item-section avatar>
             <q-icon name="people" />
           </q-item-section>
@@ -252,7 +252,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("auth", ["loggedIn", "userDetails"]),
+    ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"]),
     ...mapState("storeservices", ["cart"]),
     ...mapGetters("storesettings", ["settings"]),
     ...mapGetters("storeservices", ["totalPrice"]),
@@ -297,17 +297,6 @@ export default {
     ]),
     removeToCart(item) {
       this.$store.commit("storeservices/removeItemFromCart", item);
-    }
-  },
-  mounted() {
-    let user = fb.auth().currentUser;
-    if (user) {
-      user.getIdTokenResult().then(idTokenResult => {
-        const admin = idTokenResult.claims.admin;
-        if (admin == true) {
-          this.admin = true;
-        }
-      });
     }
   }
 };

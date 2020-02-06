@@ -11,12 +11,16 @@ const state = {
   systemUsers: {},
   messages: {},
   usersDownloaded: false,
-  messagesDownloaded: false
+  messagesDownloaded: false,
+  setAdmin: false
 };
 
 const mutations = {
   setusersDownloaded(state, value) {
     state.usersDownloaded = value;
+  },
+  setusersAdmin(state, value) {
+    state.setAdmin = value;
   },
   setmessagesDownloaded(state, value) {
     state.messagesDownloaded = value;
@@ -104,7 +108,11 @@ const actions = {
       Loading.hide();
       if (user) {
         user.getIdTokenResult().then(idTokenResult => {
-          user.admin = idTokenResult.claims.admin;
+          const admin = idTokenResult.claims.admin;
+          // console.log(admin);
+          if (admin == true) {
+            commit("setusersAdmin", true);
+          }
         });
         let userID = fb.auth().currentUser.uid;
         db.ref("users/" + userID).once("value", snapshot => {
@@ -159,6 +167,7 @@ const actions = {
           }
         });
         commit("setUserDetails", {});
+        commit("setusersAdmin", false);
       }
     });
   },
