@@ -146,6 +146,14 @@
               <q-item-label>Positions</q-item-label>
             </q-item-section>
           </q-item>
+          <q-item v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
+            <q-item-section avatar>
+              <q-icon name="schedule" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Schedule</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-expansion-item>
         <q-expansion-item icon="build" label="Services">
           <q-item to="/services" exact clickable class="q-pl-xl">
@@ -195,6 +203,14 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>Manage User</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="setAdmin" to="/forms" exact clickable>
+          <q-item-section avatar>
+            <q-icon name="description" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Forms</q-item-label>
           </q-item-section>
         </q-item>
         <q-item v-for="nav in navs" :key="nav.label" :to="nav.to" exact clickable>

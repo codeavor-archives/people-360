@@ -16,6 +16,10 @@ const routes = [
       { path: "contacts", component: () => import("pages/PageContact.vue") },
       { path: "users", component: () => import("pages/PageUsers.vue") },
       { path: "services", component: () => import("pages/PageServices.vue") },
+      {
+        path: "schedules",
+        component: () => import("pages/PageInspectorSchedule.vue")
+      },
       { path: "checkout", component: () => import("pages/PageCheckout.vue") },
       {
         path: "pre-proposals",
@@ -40,6 +44,10 @@ const routes = [
       {
         path: "equipment-category",
         component: () => import("pages/PageEquipmentCategory.vue")
+      },
+      {
+        path: "forms",
+        component: () => import("pages/PageForms.vue")
       }
     ]
   }

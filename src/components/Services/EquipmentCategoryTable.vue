@@ -13,12 +13,14 @@
             </tr>
             <tr>
               <th class="text-left">Type</th>
+              <th class="text-left">Inspector Type</th>
               <th class="text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="category in equipmentCategories" :key="category.id">
               <td class="text-left">{{category.type}}</td>
+              <td class="text-left">{{category.position}}</td>
               <td class="text-left">
                 <q-btn
                   @click="showEditTypeModal(category)"

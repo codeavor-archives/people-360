@@ -18,6 +18,13 @@
             <q-icon v-if="equipmentCategory.type" name="close" class="cursor-pointer" />
           </template>
         </q-input>
+        <q-select
+          :rules="[val => !!val || 'Field is required']"
+          v-model="equipmentCategory.position"
+          class="col"
+          :options="options"
+          label="Inspector Position"
+        ></q-select>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn type="submit" icon="add" label="Add Equipment Type" color="primary" />
@@ -31,14 +38,17 @@ import { db, fb, fc, fs } from "boot/firebase";
 export default {
   firestore() {
     return {
-      equipmentCategories: fs.collection("equipmentCategories")
+      equipmentCategories: fs.collection("equipmentCategories"),
+      positions: fs.collection("positions")
     };
   },
   data() {
     return {
+      options: [],
       equipmentCategory: {
         id: "",
-        type: ""
+        type: "",
+        position: ""
       }
     };
   },
@@ -61,7 +71,26 @@ export default {
           console.log(error);
         });
       this.$emit("close");
+    },
+    getPositions() {
+      let options = [];
+      let positionRef = fs.collection("positions");
+      let allPostion = positionRef
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            options.push(doc.data().positionName);
+            // console.log(Object.values(doc));
+          });
+        })
+        .catch(err => {
+          console.log("Error getting documents", err);
+        });
+      this.options = options;
     }
+  },
+  mounted() {
+    this.getPositions();
   }
 };
 </script>
