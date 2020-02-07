@@ -1,125 +1,106 @@
 <template>
-  <div>
-    <template>
-      <div class="mt-3 row">
-        <div class="col-12">
-          <div class="q-pa-lg q-mb-lg">
-            <div class="row">
-              <div class="col-12">
-                <div class>
-                  <img
-                    src="https://cdn.quasar.dev/img/parallax2.jpg"
-                    width="100px"
-                    style="margin-left: 17%;"
-                  />
-                </div>
-                <p
-                  style="font-family:Palatino Linotype; font-size:18px; text-align:center; text-decoration: underline; "
-                >
-                  <strong>PROPERTY ACKNOWLEDGEMENT RECEIPT</strong>
-                </p>
-                <div>
-                  <p
-                    style="font-family:Palatino Linotype; font-size:16px; text-align:left; "
-                  >
-                    <strong>Entity Name:</strong> DICT
-                  </p>
-                  <p style="font-family:Palatino Linotype; font-size:16px;  ">
-                    <strong>Fund Cluster:</strong>
-                    <strong class="float-right" style="text-align:right;">
-                      PAR No:
-                      <u></u>
-                    </strong>
-                  </p>
-                </div>
+  <div id="app">
+    <div class="q-mt-3 row">
+      <div class="col-12">
+        <div class="invoice q-pa-lg q-mb-lg">
+          <div class="row">
+            <div class="col-12">
+              <div class>
+                <img
+                  src="https://cdn.quasar.dev/img/parallax2.jpg"
+                  width="100px"
+                  style="margin-left: 17%;"
+                />
               </div>
-            </div>
-            <div class="row">
-              <div class="q-pa-sm" style="text-align:center; font-size:16px;">
-                <q-markup-table>
-                  <tbody>
-                    <tr>
-                      <th width="8%">Qty.</th>
-                      <th width="8%">Unit</th>
-                      <th width="30%">Description</th>
-                      <th width="14%">Property No.</th>
-                      <th width="10%">Date Acquired</th>
-                      <th width="15%">Unit Cost</th>
-                      <th width="15%">Total Cost</th>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr>
-                      <td>Dummy</td>
-                      <td>Dummy</td>
-                      <td class="text-left">Dummy</td>
-                      <td>Dummy</td>
-                      <td>Dummy</td>
-                      <td>Dummy</td>
-                      <td>Dummy</td>
-                    </tr>
-                  </tbody>
-                </q-markup-table>
-                <p>
-                  x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x
-                  <i>NOTHING FOLLOWS x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x</i>
+              <p
+                style="font-family:Palatino Linotype; font-size:18px; text-align:center; text-decoration: underline; "
+              >
+                <strong>PROPERTY ACKNOWLEDGEMENT RECEIPT</strong>
+              </p>
+              <div>
+                <p style="font-family:Palatino Linotype; font-size:16px; text-align:left; ">
+                  <strong>Entity Name:</strong> DICT
+                </p>
+                <p style="font-family:Palatino Linotype; font-size:16px;  ">
+                  <strong>Fund Cluster:</strong>
+                  <strong class="float-right" style="text-align:right;">
+                    PAR No:
+                    <u></u>
+                  </strong>
                 </p>
               </div>
             </div>
-            <div class="row">
-              <div class="col-6">
-                <p style="margin-top: 50px;">
-                  <i>Received by:</i>
-                </p>
-                <p style="margin-top: 50px;  ">
-                  <strong></strong>
-                  <br />Signature over Printed Name of End User
-                </p>
-                <p style="margin-top: 30px;  ">
-                  <strong></strong>
-                  <br />Position / Office
-                </p>
-                <p style="margin-top: 10px;">
-                  <span></span>
-                  <br />Date
-                </p>
-              </div>
-              <template>
-                <div class="col-6">
-                  <p style="margin-top: 50px;">
-                    <i>Received from:</i>
-                  </p>
-                  <p style="margin-top: 50px;  ">
-                    <strong></strong>
-                    <br />Signature over Printed Name
-                  </p>
-                  <p style="margin-top: 30px;  ">
-                    <strong></strong>
-                    <br />Position / Office
-                  </p>
-                  <p style="margin-top: 10px;">
-                    <span></span>
-                    <br />Date
-                  </p>
-                </div>
-              </template>
+          </div>
+          <div class="row" id="customers">
+            <div class="q-pa-sm" style="text-align:center; font-size:16px;">
+              <q-markup-table id="tab_customers" class="table table-striped">
+                <thead class="q-pa-none">
+                  <tr class="warning">
+                    <th>Country</th>
+                    <th>Population</th>
+                    <th>Date</th>
+                    <th>Age</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Chinna</td>
+                    <td>1,363,480,000</td>
+                    <td>March 24, 2014</td>
+                    <td>19.1</td>
+                  </tr>
+                  <tr>
+                    <td>India</td>
+                    <td>1,241,900,000</td>
+                    <td>March 24, 2014</td>
+                    <td>17.4</td>
+                  </tr>
+                  <tr>
+                    <td>United States</td>
+                    <td>317,746,000</td>
+                    <td>March 24, 2014</td>
+                    <td>4.44</td>
+                  </tr>
+                  <tr>
+                    <td>Indonesia</td>
+                    <td>249,866,000</td>
+                    <td>July 1, 2013</td>
+                    <td>3.49</td>
+                  </tr>
+                  <tr>
+                    <td>Brazil</td>
+                    <td>201,032,714</td>
+                    <td>July 1, 2013</td>
+                    <td>2.81</td>
+                  </tr>
+                </tbody>
+              </q-markup-table>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <q-btn label="Preview" @click="downloadPDF"> </q-btn>
-              </div>
+          </div>
+          <div class="row">
+            <div id="paragraph">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, assumenda facilis. Delectus laborum dolore deleniti incidunt sint quidem accusantium. Odit perspiciatis iste non aut quisquam minima eos eius nulla illum!</p>
+            </div>
+            <div class="col-12">
+              <q-btn label="Preview" @click="downloadPDF"></q-btn>
+              <q-btn label="PrintME" @click="printme"></q-btn>
             </div>
           </div>
         </div>
       </div>
-    </template>
+    </div>
+    <!-- <div id="customers">
+      
+    </div>-->
+    <!-- <q-btn @click="downloadPDF">PDF</q-btn> -->
   </div>
 </template>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
 // import jsPDF from "jspdf";
 import * as jsPDF from "jspdf";
 import "jspdf-autotable";
+import $ from "jquery";
 
 export default {
   data() {
@@ -138,8 +119,17 @@ export default {
     };
   },
   methods: {
+    printme() {
+      window.print();
+    },
     downloadPDF() {
+      // ================///From demoFromHTML
       var doc = new jsPDF();
+      doc.canvas.height = 72 * 11;
+      doc.canvas.width = 72 * 8.5;
+
+      // ================///From demoFromHTML
+
       doc.setFontSize(12);
       doc.setFont("times");
       doc.addImage(
@@ -179,16 +169,37 @@ export default {
       doc.setFontStyle("normal");
       doc.text(this.noOfDaysWork + "," + this.noOfDaysDoc, 55, 115);
 
+      // var source = $("#customers")[0];
+      // doc.fromHTML(source, 15, 150, { width: 500 });
+      var source = $("#paragraph")[0];
+      doc.fromHTML(source, 15, 150, { width: 180 });
+
       doc.autoTable({
+        theme: "grid",
+        headerStyles: { 0: { halign: "center", fillColor: [255, 255, 0] } },
         margin: { top: 120 },
         head: [
           ["Item", "Description", "Unit Price", "Qty", "Total Investment"]
         ],
         body: [
-          ["David", "david@example.com", "Sweden"],
-          ["Castille", "castille@example.com", "Norway"]
+          ["David", "david@example.com", "Sweden", "Jose", "Pedro"],
+          ["Castille", "castille@example.com", "Norway", "Finland", "China"]
         ]
       });
+
+      // doc.setFontSize(12);
+      // doc.setFontStyle("normal");
+      // doc.text("GROSS TOTAL INVESTMENT:", 85, 160);
+      // doc.text("ADD 12% VAT:", 85, 165);
+      // doc.text("MOBILIZATION FEE:", 85, 170);
+      // doc.text("TOTAL INVESTMENT:", 85, 175);
+
+      // doc.text(
+      //   "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis obcaecati eaque molestiae, quam molestias, ipsam voluptatibus sapiente porro hic sequi doloribus voluptates, animi possimus fuga eius aspernatur! Eum unde, inventore maiores commodi voluptate aliquam consequatur, ad quasi quisquam sapiente provident dolore minima, veniam possimus reprehenderit ab laborum accusantium quia assumenda.",
+      //   10,
+      //   180
+      // );
+
       window.open(doc.output("bloburl"), "_blank");
     }
   },
@@ -196,4 +207,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@media print {
+  .invoice {
+    padding: 10px 20px;
+  }
+
+  .invoice {
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
+@page {
+  margin: 0;
+}
+</style>

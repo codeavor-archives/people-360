@@ -21,6 +21,7 @@
     "firebase": "^7.6.1",
     "firebase-admin": "^8.9.1",
     "http2": "^3.3.7",
+    "jquery": "^3.4.1",
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.2.11",
     "quasar": "^1.0.0",
