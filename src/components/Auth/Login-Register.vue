@@ -11,48 +11,54 @@
         <!-- {{ tab | titleCase }} -->
       </q-banner>
     </div>
-    <div class="row q-mb-md">
-      <q-input
-        v-if="tab == 'register'"
-        ref="name"
-        class="col"
-        v-model="formData.name"
-        label="Name"
-      />
-    </div>
-    <div class="row q-mb-xs">
-      <q-input
-        type="email"
-        ref="email"
-        :rules="[
-          val =>
-            isValidEmailAddress(val) || 'Please enter a valid email address'
-        ]"
-        lazy-rules
-        class="col"
-        v-model="formData.email"
-        label="Email"
-      />
-    </div>
-    <div class="row q-mb-md">
-      <q-input
-        ref="password"
-        label="Password"
-        class="col"
-        v-model="formData.password"
-        :type="isPwd ? 'password' : 'text'"
-        :rules="[val => val.length >= 6 || 'Please enter atleast 6 characters']"
-        lazy-rules
-      >
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd = !isPwd"
-          />
-        </template>
-      </q-input>
-    </div>
+    <q-input
+      mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+      v-if="tab == 'register'"
+      ref="name"
+      class="col"
+      v-model="formData.name"
+      label="Name"
+      :rules="[val => !!val || 'Field is required']"
+      lazy-rules
+    />
+    <q-input
+      mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+      :rules="[val => !!val || 'Field is required']"
+      lazy-rules
+      v-if="tab == 'register'"
+      ref="lastName"
+      class="col"
+      v-model="formData.lastName"
+      label="Last Name"
+    />
+    <q-input
+      type="email"
+      ref="email"
+      :rules="[
+        val => isValidEmailAddress(val) || 'Please enter a valid email address'
+      ]"
+      lazy-rules
+      class="col"
+      v-model="formData.email"
+      label="Email"
+    />
+    <q-input
+      ref="password"
+      label="Password"
+      class="col"
+      v-model="formData.password"
+      :type="isPwd ? 'password' : 'text'"
+      :rules="[val => val.length >= 6 || 'Please enter atleast 6 characters']"
+      lazy-rules
+    >
+      <template v-slot:append>
+        <q-icon
+          :name="isPwd ? 'visibility_off' : 'visibility'"
+          class="cursor-pointer"
+          @click="isPwd = !isPwd"
+        />
+      </template>
+    </q-input>
     <div class="row q-mb-md">
       <q-btn @click="resetPassword" dense flat color="primary" label="Reset Password" />
       <q-space></q-space>
@@ -71,8 +77,10 @@ export default {
   data() {
     return {
       isPwd: true,
+      isconfPwd: true,
       formData: {
         name: "",
+        lastName: "",
         email: "",
         password: ""
       }
@@ -108,7 +116,11 @@ export default {
         if (this.tab == "login") {
           this.loginUser(this.formData);
         } else {
-          this.registerUser(this.formData);
+          this.$refs.name.validate();
+          this.$refs.lastName.validate();
+          if (!this.$refs.name.hasError && !this.$refs.lastName.hasError) {
+            this.registerUser(this.formData);
+          }
         }
       }
     },

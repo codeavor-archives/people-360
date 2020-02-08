@@ -1,16 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" class="proposalForm">
     <div class="q-mt-3 row">
       <div class="col-12">
         <div class="invoice q-pa-lg q-mb-lg">
           <div class="row">
             <div class="col-12">
-              <div class>
-                <img
-                  src="https://cdn.quasar.dev/img/parallax2.jpg"
-                  width="100px"
-                  style="margin-left: 17%;"
-                />
+              <div class="text-center">
+                <img src="../../../logo-with-CIP.jpg" width="250px" />
               </div>
               <p
                 style="font-family:Palatino Linotype; font-size:18px; text-align:center; text-decoration: underline; "
@@ -25,15 +21,15 @@
                   <strong>Fund Cluster:</strong>
                   <strong class="float-right" style="text-align:right;">
                     PAR No:
-                    <u></u>
+                    <u>1515151</u>
                   </strong>
                 </p>
               </div>
             </div>
           </div>
-          <div class="row" id="customers">
-            <div class="q-pa-sm" style="text-align:center; font-size:16px;">
-              <q-markup-table id="tab_customers" class="table table-striped">
+          <div class="col" id="customers">
+            <div class="q-py-sm" style="text-align:center; font-size:16px;">
+              <q-markup-table class="table table-striped">
                 <thead class="q-pa-none">
                   <tr class="warning">
                     <th>Country</th>
@@ -81,10 +77,15 @@
             <div id="paragraph">
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, assumenda facilis. Delectus laborum dolore deleniti incidunt sint quidem accusantium. Odit perspiciatis iste non aut quisquam minima eos eius nulla illum!</p>
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
               <q-btn label="Preview" @click="downloadPDF"></q-btn>
-              <q-btn label="PrintME" @click="printme"></q-btn>
-            </div>
+              <q-btn label="PrintME" @click="print"></q-btn>
+            </div>-->
+            <q-page-sticky class="printButton" position="bottom-right" :offset="[18, 18]">
+              <q-fab icon="print" direction="up" color="primary">
+                <q-fab-action @click="print" color="primary" icon="print" />
+              </q-fab>
+            </q-page-sticky>
           </div>
         </div>
       </div>
@@ -119,7 +120,7 @@ export default {
     };
   },
   methods: {
-    printme() {
+    print() {
       window.print();
     },
     downloadPDF() {
@@ -209,16 +210,22 @@ export default {
 
 <style>
 @media print {
+  @page {
+    margin-left: -160px;
+    margin-top: -30px;
+  }
+  .proposalForm {
+    margin-left: -50px;
+  }
   .invoice {
     padding: 10px 20px;
   }
-
   .invoice {
     background-position: center center;
     background-repeat: no-repeat;
   }
-}
-@page {
-  margin: 0;
+  .printButton {
+    display: none;
+  }
 }
 </style>

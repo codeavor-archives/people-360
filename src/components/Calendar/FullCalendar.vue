@@ -2,6 +2,7 @@
   <q-page class="col">
     <div class="row">
       <FullCalendar
+        v-if="setAdmin"
         defaultView="dayGridMonth"
         ref="fullCalendar"
         @dateClick="handleDateClick"
@@ -26,6 +27,33 @@
           right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         }"
       />
+      <FullCalendar
+        v-else
+        defaultView="dayGridMonth"
+        ref="fullCalendar"
+        @dateClick="handleDateClick"
+        :events="clientReservation"
+        :plugins="calendarPlugins"
+        :event-color="getEventColor"
+        :now="today"
+        :view="type"
+        @click:event="showEvent"
+        @click:more="viewDay"
+        @click:date="viewDay"
+        @change="updateRange"
+        :type="type"
+        :title="title"
+        v-model="date"
+        :hiddenDays="hiddenDays"
+        :weekends="calendarWeekends"
+        selectable="true"
+        :header="{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        }"
+      />
+
       <!-- <q-menu
         full-width
         transition-show="scale"
@@ -59,6 +87,7 @@
     <div class="q-mt-xl" v-if="admin">
       <calendar-table></calendar-table>
     </div>
+
     <q-dialog v-model="medium">
       <add-event @close="medium=false"></add-event>
     </q-dialog>
@@ -66,6 +95,8 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
+
 import FullCalendar from "@fullcalendar/vue";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -89,6 +120,7 @@ export default {
   },
   data() {
     return {
+      clientReservation: [],
       admin: false,
       hiddenDays: [0],
       medium: false,
@@ -123,7 +155,7 @@ export default {
   methods: {
     showEditEventModal() {},
     handleDateClick(arg) {
-      this.medium = true;
+      // this.medium = true;
     },
     getEventColor(ev) {
       return ev.color;
@@ -230,10 +262,43 @@ export default {
     }
   },
   computed: {
+    ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"]),
+    ...mapState("storeevents", ["eventDownloaded"]),
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: "UTC",
         month: "long"
+      });
+    }
+  },
+  mounted() {
+    let user = fb.auth().currentUser;
+    let clientData = [];
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        // console.log(admin);
+        if (admin == true) {
+          this.admin = true;
+          this.$store.commit("storeevents/setEventDownloaded", true);
+        } else {
+          let dataRef = fs.collection("inspectionEvent");
+          let clientRef = dataRef
+            .where("id", "==", user.uid)
+            .get()
+            .then(snapshot => {
+              snapshot.forEach(doc => {
+                // console.log(doc.data());
+                // this.clientPreproposal = doc.data();
+                clientData.push(doc.data());
+                this.$store.commit("storeevents/setEventDownloaded", true);
+              });
+            })
+            .catch(err => {
+              console.log("Error getting documents", err);
+            });
+          this.clientReservation = clientData;
+        }
       });
     }
   },

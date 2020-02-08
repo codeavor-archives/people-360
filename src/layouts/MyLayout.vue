@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header elevated v-if="loggedIn">
+    <q-header class="header" elevated v-if="loggedIn">
       <q-toolbar>
         <q-btn
           v-if="loggedIn && !this.$route.params.id"
@@ -104,7 +104,7 @@
         </q-btn-dropdown>
       </q-toolbar>
     </q-header>
-    <q-footer v-if="loggedIn && !this.$route.params.id">
+    <q-footer class="footer" v-if="loggedIn && !this.$route.params.id">
       <q-tabs active-color="white" dense no-caps>
         <q-route-tab
           clickable
@@ -119,6 +119,7 @@
     </q-footer>
 
     <q-drawer
+      class="side-drawer"
       v-if="loggedIn && !this.$route.params.id"
       :width="260"
       :breakpoint="767"
@@ -321,6 +322,17 @@ export default {
 <style lang="scss" scoped>
 @media screen and (min-width: 768px) {
   .q-footer {
+    display: none;
+  }
+}
+@media print {
+  .header {
+    display: none;
+  }
+  .side-drawer {
+    display: none;
+  }
+  .footer {
     display: none;
   }
 }

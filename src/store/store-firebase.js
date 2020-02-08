@@ -57,6 +57,7 @@ const actions = {
           {
             // emailVerified: false,
             name: payload.name,
+            lastName: payload.lastName,
             email: payload.email,
             roles: "client",
             online: true
@@ -112,6 +113,9 @@ const actions = {
           // console.log(admin);
           if (admin == true) {
             commit("setusersAdmin", true);
+            this.$router.push("/").catch(err => {});
+          } else {
+            this.$router.push("/services").catch(err => {});
           }
         });
         let userID = fb.auth().currentUser.uid;
@@ -137,7 +141,7 @@ const actions = {
           }
         });
         dispatch("fbGetUsers", {});
-        this.$router.push("/").catch(err => {});
+        // this.$router.push("/").catch(err => {});
 
         //  == uncomment this after development
 
