@@ -15,21 +15,41 @@
       mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
       v-if="tab == 'register'"
       ref="name"
-      class="col"
+      class="col q-mb-none q-pb-sm"
       v-model="formData.name"
       label="Name"
       :rules="[val => !!val || 'Field is required']"
       lazy-rules
     />
+
     <q-input
       mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
       :rules="[val => !!val || 'Field is required']"
       lazy-rules
       v-if="tab == 'register'"
       ref="lastName"
-      class="col"
+      class="col q-mb-none q-pb-sm"
       v-model="formData.lastName"
       label="Last Name"
+    />
+
+    <q-input
+      v-if="tab == 'register'"
+      ref="companyName"
+      class="col q-mb-none q-pb-sm"
+      v-model="formData.companyName"
+      label="Company Name"
+      :rules="[val => !!val || 'Field is required']"
+      lazy-rules
+    />
+    <q-input
+      v-if="tab == 'register'"
+      ref="companyLocation"
+      class="col q-mb-none q-pb-sm"
+      v-model="formData.location"
+      label="Company Location"
+      :rules="[val => !!val || 'Field is required']"
+      lazy-rules
     />
     <q-input
       type="email"
@@ -38,7 +58,7 @@
         val => isValidEmailAddress(val) || 'Please enter a valid email address'
       ]"
       lazy-rules
-      class="col"
+      class="col q-mb-none q-pb-sm"
       v-model="formData.email"
       label="Email"
     />
@@ -82,7 +102,9 @@ export default {
         name: "",
         lastName: "",
         email: "",
-        password: ""
+        password: "",
+        companyName: "",
+        location: ""
       }
     };
   },

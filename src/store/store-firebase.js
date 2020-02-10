@@ -59,6 +59,9 @@ const actions = {
             name: payload.name,
             lastName: payload.lastName,
             email: payload.email,
+            companyName: payload.companyName,
+            companyLocation: payload.location,
+
             roles: "client",
             online: true
           },
@@ -125,6 +128,8 @@ const actions = {
             name: userDetails.name,
             email: userDetails.email,
             photo: userDetails.photo,
+            companyName: userDetails.companyName,
+            companyLocation: userDetails.companyLocation,
             userID: userID
           });
         });

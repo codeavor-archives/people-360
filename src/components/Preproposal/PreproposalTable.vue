@@ -80,11 +80,11 @@
                 <td class="text-left">{{proposal.proposalNumber}}</td>
                 <td class="text-left">{{proposal.companyName}}</td>
                 <td class="text-left">{{proposal.date}}</td>
-                <td class="text-left">{{proposal.equipment.equipment}}</td>
-                <td class="text-left">{{proposal.quantity.quantity}}</td>
-                <td class="text-left">{{proposal.service_price.price}}</td>
+                <td class="text-left">{{proposal.equipment}}</td>
+                <td class="text-left">{{proposal.quantity}}</td>
+                <td class="text-left">{{proposal.price}}</td>
                 <td class="text-left">{{proposal.location}}</td>
-                <td class="text-left">{{proposal.name.name}}</td>
+                <td class="text-left">{{proposal.name}}</td>
                 <td class="text-left">
                   <q-badge
                     :color="proposal.optionReport ? 'green-7' : 'grey-4'"
@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       admin: false,
-      clientPreproposal: []
+      clientPreproposal: {}
     };
   },
   firestore() {
@@ -138,21 +138,16 @@ export default {
         if (admin == true) {
           this.admin = true;
         } else {
-          let dataRef = fs.collection("preproposals");
-          let clientRef = dataRef
-            .where("id", "==", user.uid)
-            .get()
-            .then(snapshot => {
-              snapshot.forEach(doc => {
-                // console.log(doc.data());
-                // this.clientPreproposal = doc.data();
-                clientData.push(doc.data());
-              });
+          this.$binding(
+            "clientPreproposal",
+            fs.collection("preproposals").where("id", "==", user.uid)
+          )
+            .then(response => {
+              console.log(response);
             })
-            .catch(err => {
-              console.log("Error getting documents", err);
+            .catch(error => {
+              showErrorMessage(error.message);
             });
-          this.clientPreproposal = clientData;
         }
       });
     }

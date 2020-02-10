@@ -147,17 +147,17 @@ export default {
       this.event.id = arg.event.id;
       this.event.color = arg.event.borderColor;
       // this.event.start = arg.event.start.getDay();
-      let year = arg.event.start.getFullYear();
-      let month = arg.event.start.getDay();
-      let day = arg.event.start.getDate();
+      // let year = arg.event.start.getFullYear();
+      // let month = arg.event.start.getDay();
+      // let day = arg.event.start.getDate();
 
-      this.event.start = year + "-" + month + "-" + day;
+      // this.event.start = year + "-" + month + "-" + day;
 
-      let yearend = arg.event.end.getFullYear();
-      let monthend = arg.event.end.getMonth();
-      let dayend = arg.event.end.getDay();
+      // let yearend = arg.event.end.getFullYear();
+      // let monthend = arg.event.end.getMonth();
+      // let dayend = arg.event.end.getDay();
 
-      this.event.end = yearend + "-" + monthend + "-" + dayend;
+      // this.event.end = yearend + "-" + monthend + "-" + dayend;
     },
     handleSelect(arg) {
       this.medium = true;

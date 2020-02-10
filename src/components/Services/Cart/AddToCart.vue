@@ -1,12 +1,17 @@
 <template>
-  <q-btn
-    @click="addToCart()"
-    round
-    color="primary"
-    icon="add_shopping_cart"
-    class="absolute"
-    style="top: 0; right: 12px; transform: translateY(-50%);"
-  />
+  <div>
+    <q-btn
+      @click="addToCart(service)"
+      round
+      color="primary"
+      icon="add_shopping_cart"
+      class="absolute"
+      style="top: 0; right: 12px; transform: translateY(-50%);"
+    />
+    <q-dialog v-model="showReservationModal">
+      <reservation-modal @close="showReservationModal=false" :services="services"></reservation-modal>
+    </q-dialog>
+  </div>
 </template>
 
 <script>
@@ -24,24 +29,33 @@ export default {
   },
   data() {
     return {
+      services: {},
+      showReservationModal: false,
       service: {
-        service_Id: this.serviceId,
-        service_name: this.serviceName,
-        service_price: this.servicePrice,
-        service_photo: this.servicePhoto,
-        service_equipment: this.serviceEquipment,
-        service_personCount: this.servicePersonCount,
-        service_dayCount: this.servicedayCount,
-        service_quantity: 1
+        serviceID: this.serviceId,
+        serviceName: this.serviceName,
+        servicePrice: this.servicePrice,
+        servicePhoto: this.servicePhoto,
+        serviceEquipment: this.serviceEquipment,
+        servicePersonCount: this.servicePersonCount,
+        serviceDayCount: this.servicedayCount,
+        serviceQuantity: 1
       }
     };
   },
   methods: {
-    addToCart() {
-      this.$store.commit("storeservices/addToCart", this.service);
+    addToCart(service) {
+      // console.log(service);
+      this.services = service;
+      this.showReservationModal = true;
+      // this.$store.commit("storeservices/addToCart", this.service);
       // console.log(this.service.service_price);
       // console.log(this.service);
     }
+  },
+  components: {
+    "reservation-modal": require("components/Services/Cart/ReservationModal")
+      .default
   }
 };
 </script>
