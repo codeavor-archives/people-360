@@ -27,7 +27,7 @@
           label="Event Details"
           v-model="event.details"
         ></q-input>
-
+        <!-- 
         <q-input
           v-model="event.start"
           :rules="[val => !!val || 'Field is required']"
@@ -42,8 +42,8 @@
               </q-popup-proxy>
             </q-icon>
           </template>
-        </q-input>
-        <q-input
+        </q-input> -->
+        <!-- <q-input
           v-model="event.end"
           :rules="[val => !!val || 'Field is required']"
           class="col"
@@ -57,8 +57,12 @@
               </q-popup-proxy>
             </q-icon>
           </template>
-        </q-input>
-        <q-input v-model="event.color" :rules="['anyColor']" class="col my-input">
+        </q-input> -->
+        <q-input
+          v-model="event.color"
+          :rules="['anyColor']"
+          class="col my-input"
+        >
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -82,6 +86,7 @@ import { uid } from "quasar";
 import { fb, db, fs } from "boot/firebase";
 
 export default {
+  props: ["start", "end"],
   firestore() {
     return {
       inspectionEvent: fs.collection("inspectionEvent")
@@ -109,6 +114,8 @@ export default {
       this.event.id = userID;
       let id = uid();
 
+      this.event.start = this.start;
+      this.event.end = this.end;
       this.$firestore.inspectionEvent
         .add(this.event)
         .then(error => {
@@ -124,6 +131,7 @@ export default {
           console.log(error);
         });
       this.$emit("close");
+
       // let eventTask = db.ref("inspectionEvent/" + id);
       // eventTask.set(this.event, error => {
       //   if (error) {
@@ -138,6 +146,4 @@ export default {
   }
 };
 </script>
-<style lang="sass" scoped>
-
-</style>
+<style lang="sass" scoped></style>

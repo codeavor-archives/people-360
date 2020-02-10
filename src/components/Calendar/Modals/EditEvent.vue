@@ -82,7 +82,8 @@ import { uid } from "quasar";
 import { fb, db, fs } from "boot/firebase";
 
 export default {
-  props: ["event", "id"],
+  // props: ["event", "id"],
+  props: ["events", "title", "details", "id", "color", "start", "end"],
   firestore() {
     return {
       inspectionEvent: fs.collection("inspectionEvent")
@@ -90,19 +91,26 @@ export default {
   },
   data() {
     return {
-      // event: {
-      //   title: "",
-      //   details: "",
-      //   start: "",
-      //   end: "",
-      //   color: "#027be3",
-      //   id: ""
-      // }
+      event: {
+        title: "",
+        details: "",
+        start: "",
+        end: "",
+        color: ""
+      }
     };
   },
+  mounted() {
+    this.event.title = this.title;
+    this.event.details = this.details;
+    this.event.color = this.color;
+    this.event.start = this.start;
+    this.event.end = this.end;
+  },
   methods: {
-    ...mapActions("storeevents", ["addEvent"]),
+    // ...mapActions("storeevents", ["addEvent"]),
     fbEditEvent() {
+      this.event;
       this.$q.loading.show();
       this.$firestore.inspectionEvent
         .doc(this.id)

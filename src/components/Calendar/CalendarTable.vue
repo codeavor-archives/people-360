@@ -38,7 +38,7 @@
       </div>-->
     </div>
     <q-dialog v-model="showEditEvent">
-      <edit-event :event="event" :id="id" @close="showEditEvent=false"></edit-event>
+      <edit-event :events="events" :id="id" @close="showEditEvent=false"></edit-event>
     </q-dialog>
   </q-page>
 </template>
@@ -56,6 +56,7 @@ export default {
       showEditEvent: false,
       current: "",
       id: "",
+      events: {},
       event: {
         title: "",
         details: "",
@@ -69,7 +70,7 @@ export default {
   methods: {
     showEditEventModal(event) {
       this.showEditEvent = true;
-      this.event = event;
+      this.events = event;
       this.id = event.id;
       // console.log(event.id);
       // console.log(this.id);

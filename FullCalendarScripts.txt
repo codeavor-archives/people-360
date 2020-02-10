@@ -1,0 +1,39 @@
+
+
+FullCalendar 
+Plugins
+
+selectable: true, -- Can add and can select to multiple date 
+selectHelper: true, -- Can show the event when click and edit it
+editable: true, -- can be edit the event
+eventLimit: true -- can have a limit that shows like 2 remaining events
+events: events
+
+
+
+select:function(start, end){
+$.getScript('/events/new', funtion {
+$('#event_date_range').val(moment(start).format('MM/DD/YY HH:mm') + '-' + moment(end).format)
+})
+}
+
+eventDrop: function (event, delta, revertFunc) {
+event_data = {
+event: id
+start: ,
+end,
+}
+$.ajax({
+	url: event.update_url,
+	data: event_data,
+	type: 'PATCH'
+})
+}
+
+eventClick: function (event, jsEvent, view)
+$.getScript(event.edit_url, function() {
+$('#event_date_range').val(moment(event.start).format)
+$(.start_hidden))
+$('end_hidden')
+})
+

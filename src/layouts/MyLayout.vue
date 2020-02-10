@@ -187,7 +187,7 @@
             <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Reservation</q-item-label>
+            <q-item-label>My Reservation</q-item-label>
           </q-item-section>
         </q-item>
         <q-item to="/pre-proposals" exact clickable>

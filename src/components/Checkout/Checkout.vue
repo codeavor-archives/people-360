@@ -43,6 +43,28 @@
               <div class="text-h6">Pre Proposal Checklist</div>
               <!-- <div class="text-subtitle2">by John Doe</div> -->
             </q-card-section>
+            <!-- <FullCalendar
+              :plugins="calendarPlugins"
+              :header="{
+          left: 'next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek'
+        }"
+              @select="handleSelect"
+              selectable="true"
+              :events="clientReservation"
+              @eventClick="handleClick"
+              defaultView="dayGridMonth"
+              ref="fullCalendar"
+              :event-color="getEventColor"
+              :now="today"
+              :view="type"
+              :type="type"
+              :title="title"
+              v-model="date"
+              :hiddenDays="hiddenDays"
+              :weekends="calendarWeekends"
+            />-->
             <q-card-section class>
               <q-input
                 style="display: none"
@@ -58,6 +80,37 @@
                 v-model="preproposal.proposalNumber"
                 label="Proposal Number"
               ></q-input>
+
+              <q-input
+                v-model="preproposal.start"
+                :rules="[val => !!val || 'Field is required']"
+                class="col q-mb-none q-pb-sm"
+                label="Start Date"
+              >
+                <template v-slot:append>
+                  <q-icon v-if="preproposal.start" name="close" class="cursor-pointer" />
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy transition-show="scale" transition-hide="scale">
+                      <q-date mask="YYYY-MM-DD" landscape v-model="preproposal.start" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                v-model="preproposal.end"
+                :rules="[val => !!val || 'Field is required']"
+                class="col q-mb-none q-pb-sm"
+                label="End Date"
+              >
+                <template v-slot:append>
+                  <q-icon v-if="preproposal.end" name="close" class="cursor-pointer" />
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy transition-show="scale" transition-hide="scale">
+                      <q-date mask="YYYY-MM-DD" landscape v-model="preproposal.end" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
               <q-input
                 v-model="preproposal.companyName"
                 ref="name"
@@ -104,10 +157,35 @@
         </q-banner>
       </transition>
     </template>
+    <q-dialog v-model="medium">
+      <add-event :start="start" :end="end" @close="medium = false"></add-event>
+    </q-dialog>
+
+    <q-dialog v-model="showEditEvent">
+      <edit-event
+        :title="event.title"
+        :details="event.details"
+        :start="event.start"
+        :end="event.end"
+        :id="event.id"
+        :color="event.color"
+        @close="showEditEvent = false"
+      ></edit-event>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
+import FullCalendar from "@fullcalendar/vue";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+
+import "@fullcalendar/core/main.css";
+import "@fullcalendar/daygrid/main.css";
+import "@fullcalendar/timegrid/main.css";
+
 import { fb, db, fs } from "boot/firebase";
 import { showErrorMessage } from "src/functions/function-show-error-message";
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -119,8 +197,30 @@ export default {
   },
   data() {
     return {
+      start: "",
+      end: "",
+      medium: false,
+      showEditEvent: false,
+      date: "",
+      hiddenDays: [0],
+      clientReservation: {},
+      calendarPlugins: [
+        dayGridPlugin,
+        timeGridPlugin,
+        interactionPlugin,
+        listPlugin
+      ],
+      title: null,
+      type: "month",
+      calendarWeekends: true,
+      today: new Date().toISOString().substr(0, 10),
       request: [],
       preproposal: {
+        allDay: "true",
+        color: "#027be3",
+        start: "",
+        end: "",
+        title: "",
         date: "",
         proposalNumber: [],
         companyName: "",
@@ -131,10 +231,47 @@ export default {
         name: []
       },
       stars: "",
-      optionsReport: ["Yes", "No"]
+      optionsReport: ["Yes", "No"],
+      event: {
+        title: "",
+        details: "",
+        start: "",
+        end: "",
+        color: "",
+        id: ""
+      }
     };
   },
   methods: {
+    handleSelect(arg) {
+      this.medium = true;
+      this.start = arg.startStr;
+      this.end = arg.endStr;
+    },
+    handleClick(arg) {
+      // console.log(arg.);
+      this.showEditEvent = true;
+      console.log(arg);
+      this.event.title = arg.event.title;
+      this.event.details = arg.event.extendedProps.details;
+      this.event.id = arg.event.id;
+      this.event.color = arg.event.borderColor;
+      // this.event.start = arg.event.start.getDay();
+      let year = arg.event.start.getFullYear();
+      let month = arg.event.start.getDay();
+      let day = arg.event.start.getDate();
+
+      this.event.start = year + "-" + month + "-" + day;
+
+      let yearend = arg.event.end.getFullYear();
+      let monthend = arg.event.end.getMonth();
+      let dayend = arg.event.end.getDay();
+
+      this.event.end = yearend + "-" + monthend + "-" + dayend;
+    },
+    getEventColor(ev) {
+      return ev.color;
+    },
     removeToCart(item) {
       this.$store.commit("storeservices/removeItemFromCart", item);
     },
@@ -182,6 +319,8 @@ export default {
         this.preproposal.optionReport = true;
       }
       // console.log(data, data2, data3, data4);
+      this.preproposal.title =
+        this.preproposal.companyName + " " + this.preproposal.location;
       this.$firestore.preproposals
         .add(this.preproposal)
         .then(response => {
@@ -189,7 +328,7 @@ export default {
           this.$q.loading.hide();
           this.$q.dialog({
             title: "Success",
-            message: "Please wait for appointment",
+            message: "Please wait for confirmation",
             persistent: true
           });
           this.$store.commit("storeservices/removeItemFromCart", this.cart);
@@ -199,9 +338,56 @@ export default {
         });
     }
   },
+  mounted() {
+    let user = fb.auth().currentUser;
+    let clientData = [];
+    if (user) {
+      user.getIdTokenResult().then(idTokenResult => {
+        const admin = idTokenResult.claims.admin;
+        if (admin == true) {
+          this.admin = true;
+          this.$store.commit("storeevents/setEventDownloaded", true);
+        } else {
+          this.$binding(
+            "clientReservation",
+            fs.collection("inspectionEvent").where("id", "==", user.uid)
+          )
+            .then(response => {
+              console.log(response);
+            })
+            .catch(error => {
+              showErrorMessage(error.message);
+            });
+          // let dataRef = fs.collection("inspectionEvent");
+          // let clientRef = dataRef
+          //   .where("id", "==", user.uid)
+          //   .get()
+          //   .then(snapshot => {
+          //     snapshot.forEach(doc => {
+          //       // clientData.id = doc.id;
+          //       // clientData.data = doc.data();
+          //       // clientData.push(doc.data());
+          //       clientData.push(doc.id, doc.data());
+          //       console.log(clientData);
+          //       this.$store.commit("storeevents/setEventDownloaded", true);
+          //     });
+          //   })
+          //   .catch(err => {
+          //     console.log("Error getting documents", err);
+          //   });
+          // this.clientReservation = clientData;
+        }
+      });
+    }
+  },
   computed: {
     ...mapState("storeservices", ["cart"]),
     ...mapGetters("storeservices", ["totalPrice"])
+  },
+  components: {
+    FullCalendar,
+    "add-event": require("components/Calendar/Modals/AddEvent").default,
+    "edit-event": require("components/Calendar/Modals/EditEvent").default
   }
 };
 </script>

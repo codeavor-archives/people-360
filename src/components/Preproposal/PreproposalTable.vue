@@ -22,7 +22,7 @@
                 <th class="text-left">Location</th>
                 <th class="text-left">Name</th>
                 <th class="text-left">Report</th>
-                <th class="text-left">Actions</th>
+                <th class="text-left" v-if="setAdmin">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -54,7 +54,7 @@
           <q-markup-table>
             <thead>
               <tr>
-                <th colspan="10">
+                <th colspan="12">
                   <div class="row no-wrap items-center">
                     <div class="text-h5 text-primary">Pre Proposals Table</div>
                   </div>
@@ -70,7 +70,8 @@
                 <th class="text-left">Location</th>
                 <th class="text-left">Name</th>
                 <th class="text-left">Report</th>
-                <th class="text-left">Actions</th>
+                <th class="text-left">Status</th>
+                <th class="text-left" v-if="setAdmin">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -90,6 +91,11 @@
                   >{{proposal.optionReport ? 'Yes': 'No' }}</q-badge>
                 </td>
                 <td class="text-left">
+                  <q-badge
+                    :color="proposal.optionReport ? 'green-7' : 'grey-4'"
+                  >{{proposal.optionReport ? 'For Approval': 'Approved' }}</q-badge>
+                </td>
+                <td class="text-left" v-if="setAdmin">
                   <q-btn round color="primary" flat dense icon="edit"></q-btn>
                 </td>
               </tr>
@@ -108,6 +114,7 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
 import { fb, db, fs } from "boot/firebase";
 export default {
   data() {
@@ -149,6 +156,9 @@ export default {
         }
       });
     }
+  },
+  computed: {
+    ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"])
   }
 };
 </script>
