@@ -42,7 +42,7 @@
               </q-popup-proxy>
             </q-icon>
           </template>
-        </q-input> -->
+        </q-input>-->
         <!-- <q-input
           v-model="event.end"
           :rules="[val => !!val || 'Field is required']"
@@ -57,12 +57,8 @@
               </q-popup-proxy>
             </q-icon>
           </template>
-        </q-input> -->
-        <q-input
-          v-model="event.color"
-          :rules="['anyColor']"
-          class="col my-input"
-        >
+        </q-input>-->
+        <q-input v-model="event.color" :rules="['anyColor']" class="col my-input">
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">

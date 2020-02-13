@@ -7,17 +7,6 @@
     </q-card-section>
     <q-form @submit.prevent="addReservation">
       <q-card-section>
-        <!-- <q-input
-          :rules="[val => !!val || 'Field is required']"
-          ref="name"
-          class="col"
-          label="Add Equipment Type"
-          v-model="services.serviceName"
-        >
-          <template v-slot:append>
-            <q-icon v-if="services.serviceName" name="close" class="cursor-pointer" />
-          </template>
-        </q-input>-->
         <q-input
           v-model="preproposal.start"
           lazy-rules
@@ -106,7 +95,7 @@ export default {
       optionsReport: ["Yes", "No"],
       preproposal: {
         id: "",
-        allDay: "true",
+        allDay: "false",
         color: "#027be3",
         start: "",
         end: "",
@@ -174,7 +163,7 @@ export default {
           this.$q.loading.hide();
           this.$q.dialog({
             title: "Success",
-            message: "Please wait for confirmation",
+            message: "Please wait for proper quotation",
             persistent: true
           });
         })

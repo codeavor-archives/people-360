@@ -25,7 +25,7 @@
           <q-img src="../../download.jpg" class="logo"></q-img>
           {{ title }}
         </q-toolbar-title>
-        <q-btn round flat icon="shopping_cart">
+        <q-btn @click="showMyCart" round flat icon="shopping_cart">
           <q-menu :offset="[40, 10]">
             <q-card class="my-card" flat>
               <q-card-section class="bg-white text-primary">
@@ -156,13 +156,13 @@
             </q-item-section>
           </q-item>
         </q-expansion-item>
-        <q-expansion-item icon="build" label="Services">
-          <q-item to="/services" exact clickable class="q-pl-xl">
+        <q-expansion-item icon="build" label="Equipments">
+          <q-item v-if="!setAdmin" to="/services" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="build" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Services</q-item-label>
+              <q-item-label>Equipments</q-item-label>
             </q-item-section>
           </q-item>
           <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
@@ -170,7 +170,7 @@
               <q-icon name="format_list_bulleted" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>List of Services</q-item-label>
+              <q-item-label>List of Equipments</q-item-label>
             </q-item-section>
           </q-item>
           <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
@@ -187,7 +187,8 @@
             <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>My Reservation</q-item-label>
+            <q-item-label v-if="!setAdmin">My Reservation</q-item-label>
+            <q-item-label v-if="setAdmin">Reservations</q-item-label>
           </q-item-section>
         </q-item>
         <q-item to="/pre-proposals" exact clickable>
@@ -241,17 +242,24 @@
 </template>
 
 <script>
+import { showErrorMessage } from "src/functions/function-show-error-message";
 import { mapState, mapActions, mapGetters } from "vuex";
-import { fb, db } from "boot/firebase";
+import { fb, db, fc, fs } from "boot/firebase";
 import mixinOtherUserDetails from "src/mixins/mixin-other-user-details";
 export default {
   name: "MyLayout",
   mixins: [mixinOtherUserDetails],
   props: ["tab"],
+  firestore() {
+    return {
+      preproposals: fs.collection("preproposals")
+    };
+  },
   data() {
     return {
       admin: false,
       profilePhoto: {},
+      clientPreproposal: {},
       chat: "",
       leftDrawerOpen: this.$q.platform.is.desktop,
       navs: [
@@ -314,8 +322,31 @@ export default {
     ]),
     removeToCart(item) {
       this.$store.commit("storeservices/removeItemFromCart", item);
+    },
+    showMyCart() {
+      let user = fb.auth().currentUser;
+      if (user) {
+        user.getIdTokenResult().then(idTokenResult => {
+          const admin = idTokenResult.claims.admin;
+          if (admin == true) {
+            this.admin = true;
+          } else {
+            this.$binding(
+              "clientPreproposal",
+              fs.collection("preproposals").where("id", "==", user.uid)
+            )
+              .then(response => {
+                console.log(response);
+              })
+              .catch(error => {
+                showErrorMessage(error.message);
+              });
+          }
+        });
+      }
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <template v-if="services.length">
-      <div class="row items-start">
+      <div class="row items-start" v-if="userDetails.roles=='new'">
         <div
           v-for="service in services"
           :key="service.key"
@@ -12,9 +12,10 @@
             <q-card-section>
               <!-- <add-to-cart></add-to-cart>  -->
               <add-to-cart
+                v-if="!setAdmin"
                 :serviceId="service.id"
                 :serviceName="service.type"
-                :servicePrice="service.price"
+                :servicePrice="service.newClientPrice"
                 :servicePhoto="service.photo"
                 :serviceEquipment="service.equipment"
                 :servicePersonCount="service.personCount"
@@ -42,18 +43,66 @@
                 />
               </div>
             </q-card-section>
-
             <q-card-section class="q-pt-none">
-              <div class="text-subtitle1">₱ {{service.price}}</div>
+              <div
+                class="text-subtitle1"
+              >{{service.newClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</div>
               <div class="text-caption text-grey">{{service.equipment}}</div>
             </q-card-section>
+          </q-card>
+        </div>
+        <q-dialog v-model="showDetails">
+          <show-details @close="showDetails = false" :service="service" :id="id"></show-details>
+        </q-dialog>
+      </div>
+      <div class="row items-start" v-if="userDetails.roles=='old'">
+        <div
+          v-for="service in services"
+          :key="service.key"
+          class="col-md-3 col-xl-2 col-lg-2 col-xs-6 col-sm-4"
+        >
+          <q-card class="q-ma-xs">
+            <q-img :src="service.photo" />
+            <q-card-section>
+              <!-- <add-to-cart></add-to-cart>  -->
+              <add-to-cart
+                v-if="!setAdmin"
+                :serviceId="service.id"
+                :serviceName="service.type"
+                :servicePrice="service.oldClientPrice"
+                :servicePhoto="service.photo"
+                :serviceEquipment="service.equipment"
+                :servicePersonCount="service.personCount"
+                :servicedayCount="service.dayCount"
+              ></add-to-cart>
+              <!-- <add-to-cart></add-to-cart> -->
 
-            <!-- <q-separator /> -->
-
-            <!-- <q-card-actions>
-          <q-btn flat round icon="event" />
-          <q-btn flat color="primary">Reserve</q-btn>
-            </q-card-actions>-->
+              <div class="row no-wrap items-center">
+                <div class="col text-h6 ellipsis">{{service.type}}</div>
+                <!-- <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
+                  <q-icon name="place" />
+                  {{service.personCount}}
+                </div>-->
+              </div>
+              <div class="row">
+                <q-rating v-model="stars" :max="5" size="15px" />
+                <q-space></q-space>
+                <q-btn
+                  @click="showDetailsModal(service)"
+                  flat
+                  color="primary"
+                  round
+                  icon="remove_red_eye"
+                  size="10px"
+                />
+              </div>
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <div
+                class="text-subtitle1"
+              >{{service.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</div>
+              <div class="text-caption text-grey">{{service.equipment}}</div>
+            </q-card-section>
           </q-card>
         </div>
         <q-dialog v-model="showDetails">
@@ -82,6 +131,7 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
 import { fb, db, fs } from "boot/firebase";
 export default {
   firestore() {
@@ -108,6 +158,9 @@ export default {
   components: {
     "add-to-cart": require("components/Services/Cart/AddToCart").default,
     "show-details": require("components/Services/Modal/ShowDetails").default
+  },
+  computed: {
+    ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"])
   }
 };
 </script>

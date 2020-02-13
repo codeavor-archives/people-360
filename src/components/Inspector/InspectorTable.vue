@@ -38,14 +38,14 @@
                   dense
                   icon="edit"
                 ></q-btn>
-                <q-btn
+                <!-- <q-btn
                   round
                   color="primary"
                   @click="showAddInspectorSchedule(inspector, key)"
                   flat
                   dense
                   icon="add"
-                ></q-btn>
+                ></q-btn>-->
               </td>
             </tr>
           </tbody>

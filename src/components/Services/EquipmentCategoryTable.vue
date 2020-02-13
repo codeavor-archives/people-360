@@ -13,6 +13,7 @@
             </tr>
             <tr>
               <th class="text-left">Type</th>
+              <!-- <th class="text-left">Sub-Category</th> -->
               <th class="text-left">Inspector Type</th>
               <th class="text-left">Action</th>
             </tr>
@@ -20,6 +21,7 @@
           <tbody>
             <tr v-for="category in equipmentCategories" :key="category.id">
               <td class="text-left">{{category.type}}</td>
+              <!-- <td class="text-left">{{category.subCategory}}</td> -->
               <td class="text-left">{{category.position}}</td>
               <td class="text-left">
                 <q-btn
@@ -59,7 +61,8 @@ export default {
       showEditType: false,
       equipmentCategory: {
         id: "",
-        type: ""
+        type: "",
+        subCategory: ""
       }
     };
   },

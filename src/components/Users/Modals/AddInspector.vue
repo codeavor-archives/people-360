@@ -7,33 +7,42 @@
     </q-card-section>
     <q-form @submit.prevent="addToInspector">
       <q-card-section class="addusers">
-        <div class="row q-mb-md">
-          <q-input ref="name" class="col" v-model="formData.name" label="Name" />
-        </div>
-        <div class="row q-mb-xs">
-          <q-input
-            type="email"
-            ref="email"
-            :rules="[
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          ref="name"
+          class="col q-mb-none q-pb-sm"
+          v-model="formData.name"
+          label="Name"
+        />
+        <q-input
+          type="email"
+          ref="email"
+          :rules="[
               val =>
                 isValidEmailAddress(val) || 'Please enter a valid email address'
             ]"
-            lazy-rules
-            class="col"
-            v-model="formData.email"
-            label="Email"
-          />
-        </div>
-        <div class="row q-mb-xs">
-          <q-select
-            :rules="[val => !!val || 'Field is required']"
-            lazy-rules
-            v-model="formData.position"
-            class="col"
-            :options="options"
-            label="Inspector Position"
-          ></q-select>
-        </div>
+          lazy-rules
+          class="col q-mb-none q-pb-sm"
+          v-model="formData.email"
+          label="Email"
+        />
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          ref="role"
+          class="col q-mb-none q-pb-sm"
+          v-model="formData.roles"
+          label="Role"
+        />
+        <q-select
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          v-model="formData.position"
+          class="col q-mb-none q-pb-sm"
+          :options="options"
+          label="Inspector Position"
+        ></q-select>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn type="submit" icon="add" label="Add to Inspector" color="primary" />
@@ -68,6 +77,12 @@ export default {
     addToInspector() {
       this.$q.loading.show();
       this.formData.id = this.id;
+
+      this.updateUser({
+        id: this.id,
+        userDetails: this.formData
+      });
+
       this.$firestore.inspectors
         .doc(this.id)
         .set({
@@ -75,6 +90,8 @@ export default {
           name: this.formData.name,
           email: this.formData.email,
           position: this.formData.position,
+          label: this.formData.email,
+          value: this.formData.email,
           available: true
         })
         .then(response => {

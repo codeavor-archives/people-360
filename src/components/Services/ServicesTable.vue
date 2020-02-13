@@ -5,17 +5,19 @@
         <q-markup-table>
           <thead>
             <tr>
-              <th colspan="7">
+              <th colspan="15">
                 <div class="row no-wrap items-center">
-                  <div class="text-h5 text-primary">Services Table</div>
+                  <div class="text-h5 text-primary">Equipments Table</div>
                 </div>
               </th>
             </tr>
             <tr>
               <th class="text-left">Type</th>
+              <th class="text-left">New Client Price</th>
+              <th class="text-left">Old Client Price</th>
               <th class="text-left">Equipment</th>
-              <th class="text-left">Person Count</th>
-              <th class="text-left">Days Count</th>
+              <!-- <th class="text-left">Person Count</th>
+              <th class="text-left">Days Count</th>-->
               <th class="text-left">Photo</th>
               <th class="text-left">Status</th>
               <th class="text-left">Actions</th>
@@ -24,9 +26,15 @@
           <tbody>
             <tr v-for="service in services" :key="service.id">
               <td class="text-left">{{service.type}}</td>
+              <td
+                class="text-left"
+              >{{service.newClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
+              <td
+                class="text-left"
+              >{{service.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
               <td class="text-left">{{service.equipment}}</td>
-              <td class="text-left">{{service.personCount}}</td>
-              <td class="text-left">{{service.dayCount}}</td>
+              <!-- <td class="text-left">{{service.personCount}}</td>
+              <td class="text-left">{{service.dayCount}}</td>-->
               <td class="text-left">
                 <q-img avatar :src="service.photo" />
               </td>

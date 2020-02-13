@@ -28,7 +28,10 @@
       </q-list>
     </div>
     <q-separator />
+
     <q-card-actions align="right" class="q-pr-md">
+      <q-badge color="red">Note: Please review items before to submit</q-badge>
+      <q-space></q-space>
       <q-item-label class="text-grey-8">
         Total:
         {{
@@ -96,7 +99,7 @@
                 </q-icon>
               </template>
             </q-input>
-            <q-input
+            <!-- <q-input
               v-model="preproposal.end"
               :rules="[val => !!val || 'Field is required']"
               class="col q-mb-none q-pb-sm"
@@ -110,14 +113,14 @@
                   </q-popup-proxy>
                 </q-icon>
               </template>
-            </q-input>
-            <q-input
+            </q-input>-->
+            <!-- <q-input
               v-model="preproposal.companyName"
               ref="name"
               class="col q-mb-none q-pb-sm"
               :rules="[val => !!val || 'Field is required']"
               label="Company Name"
-            ></q-input>
+            ></q-input>-->
             <q-input
               v-model="preproposal.location"
               :rules="[val => !!val || 'Field is required']"
@@ -135,7 +138,7 @@
           </q-card-section>
           <q-card-actions>
             <q-space></q-space>
-            <q-btn type="submit" color="primary" label="Submit"></q-btn>
+            <q-btn type="submit" :disable="!cart.length" color="primary" label="Submit"></q-btn>
           </q-card-actions>
         </q-card>
       </q-form>
@@ -222,10 +225,12 @@ export default {
         end: "",
         title: "",
         date: "",
+        totalPrice: "",
         proposalNumber: [],
         companyName: "",
         location: "",
         optionReport: "",
+        status: "",
         quantity: [],
         equipment: [],
         name: []
@@ -275,6 +280,20 @@ export default {
     removeToCart(item) {
       this.$store.commit("storeservices/removeItemFromCart", item);
     },
+    clear() {
+      this.preproposal.start = "";
+      this.preproposal.end = "";
+      this.preproposal.title = "";
+      this.preproposal.date = "";
+      this.preproposal.proposalNumber = "";
+      this.preproposal.companyName = "";
+      this.preproposal.location = "";
+      this.preproposal.optionReport = "";
+      this.preproposal.quantity = "";
+      this.preproposal.equipment = "";
+      this.preproposal.name = "";
+      this.preproposal.status = "";
+    },
     requestProposal() {
       var today = new Date();
       var year = new Date();
@@ -295,35 +314,44 @@ export default {
       // Add to Request Proposals
       // this.$q.loading.show();
       let data = this.cart.map(item => ({
-        quantity: item.service_quantity
+        [item.service_Id]: item.service_quantity
       }));
       data = Object.assign({}, ...data);
       let data2 = this.cart.map(item => ({
-        price: item.service_price
+        [item.service_Id]: item.service_price
       }));
       data2 = Object.assign({}, ...data2);
       let data3 = this.cart.map(item => ({
-        equipment: item.service_equipment
+        [item.service_Id]: item.service_equipment
       }));
       data3 = Object.assign({}, ...data3);
       let data4 = this.cart.map(item => ({
-        name: item.service_name
+        [item.service_Id]: item.service_name
       }));
       data4 = Object.assign({}, ...data4);
+
+      // let data = this.cart.map(item => [item.service_quantity]);
+      // let data2 = this.cart.map(item => [item.service_price]);
+      // let data3 = this.cart.map(item => [item.service_equipment]);
+      // let data4 = this.cart.map(item => [item.service_name]);
       this.preproposal.id = fb.auth().currentUser.uid;
       this.preproposal.quantity = data;
       this.preproposal.service_price = data2;
       this.preproposal.equipment = data3;
       this.preproposal.name = data4;
+      this.preproposal.companyName = this.userDetails.companyName;
+      this.preproposal.status = false;
       if (this.preproposal.optionReport === "Yes") {
         this.preproposal.optionReport = true;
       }
       // console.log(data, data2, data3, data4);
+      this.preproposal.totalPrice = this.totalPrice;
       this.preproposal.title =
         this.preproposal.companyName + " " + this.preproposal.location;
       this.$firestore.preproposals
         .add(this.preproposal)
         .then(response => {
+          this.clear();
           console.log(response);
           this.$q.loading.hide();
           this.$q.dialog({
@@ -336,6 +364,7 @@ export default {
         .catch(error => {
           showErrorMessage(error.message);
         });
+      this.$store.commit("storeservices/removeItemFromCart", this.cart);
     }
   },
   mounted() {
@@ -382,7 +411,8 @@ export default {
   },
   computed: {
     ...mapState("storeservices", ["cart"]),
-    ...mapGetters("storeservices", ["totalPrice"])
+    ...mapGetters("storeservices", ["totalPrice"]),
+    ...mapState("auth", ["loggedIn", "userDetails"])
   },
   components: {
     FullCalendar,

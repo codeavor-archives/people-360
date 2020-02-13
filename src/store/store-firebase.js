@@ -1,4 +1,4 @@
-import { fb, db } from "boot/firebase";
+import { fb, db, fs } from "boot/firebase";
 import Vue from "vue";
 import { Loading, LocalStorage, Notify } from "quasar";
 import { showErrorMessage } from "src/functions/function-show-error-message";
@@ -52,6 +52,34 @@ const actions = {
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
         let userID = fb.auth().currentUser.uid;
+
+        fs.collection("users")
+          .doc()
+          .set(
+            {
+              name: payload.name,
+              lastName: payload.lastName,
+              email: payload.email,
+              companyName: payload.companyName,
+              companyLocation: payload.location,
+              roles: "new"
+            },
+            error => {
+              if (error) {
+                showErrorMessage(error.message);
+              } else {
+                Notify.create({
+                  message:
+                    "Sucessfully Registered, Please Verify email address",
+                  position: "bottom",
+                  timeout: 5000,
+                  textColor: "white",
+                  color: "teal-10",
+                  actions: [{ icon: "close", color: "white" }]
+                });
+              }
+            }
+          );
 
         db.ref("users/" + userID).set(
           {
@@ -127,6 +155,7 @@ const actions = {
           commit("setUserDetails", {
             name: userDetails.name,
             email: userDetails.email,
+            roles: userDetails.roles,
             photo: userDetails.photo,
             companyName: userDetails.companyName,
             companyLocation: userDetails.companyLocation,

@@ -7,26 +7,34 @@
     </q-card-section>
     <q-form>
       <q-card-section class="addusers">
-        <div class="row q-mb-md">
-          <q-input ref="name" class="col" v-model="formData.name" label="Name" />
-        </div>
-        <div class="row q-mb-md">
-          <q-input ref="role" class="col" v-model="formData.roles" label="Role" />
-        </div>
-        <div class="row q-mb-xs">
-          <q-input
-            type="email"
-            ref="email"
-            :rules="[
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          ref="name"
+          class="col q-mb-none q-pb-sm"
+          v-model="formData.name"
+          label="Name"
+        />
+        <q-input
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          ref="role"
+          class="col q-mb-none q-pb-sm"
+          v-model="formData.roles"
+          label="Role"
+        />
+        <q-input
+          type="email"
+          ref="email"
+          :rules="[
               val =>
                 isValidEmailAddress(val) || 'Please enter a valid email address'
             ]"
-            lazy-rules
-            class="col"
-            v-model="formData.email"
-            label="Email"
-          />
-        </div>
+          lazy-rules
+          class="col q-mb-none q-pb-sm"
+          v-model="formData.email"
+          label="Email"
+        />
         <!-- <div class="row q-mb-md">
           <q-input
             ref="password"

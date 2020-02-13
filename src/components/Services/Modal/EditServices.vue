@@ -33,14 +33,25 @@
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
-          label="Price"
-          v-model="service.price"
+          label="Price for new client"
+          v-model="service.newClientPrice"
         >
           <template v-slot:append>
-            <q-icon v-if="service.price" name="close" class="cursor-pointer" />
+            <q-icon v-if="service.newClientPrice" name="close" class="cursor-pointer" />
           </template>
         </q-input>
         <q-input
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
+          label="Price for old client"
+          v-model="service.oldClientPrice"
+        >
+          <template v-slot:append>
+            <q-icon v-if="service.oldClientPrice" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
+        <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
@@ -61,7 +72,7 @@
           <template v-slot:append>
             <q-icon v-if="service.dayCount" name="close" class="cursor-pointer" />
           </template>
-        </q-input>
+        </q-input>-->
         <q-input v-model="service.photo" class="col-12" type="file" @change="uploadPhoto">
           <template v-slot:append>
             <q-circular-progress

@@ -10,7 +10,14 @@
         >Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
       </q-card-section>
       <q-card-actions>
-        <q-badge class="q-ml-sm">{{service.price | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
+        <q-badge
+          v-if="userDetails.roles=='new'"
+          class="q-ml-sm"
+        >{{service.newClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
+        <q-badge
+          v-if="userDetails.roles=='old'"
+          class="q-ml-sm"
+        >{{service.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
         <q-space />
         <q-btn
           color="grey"
@@ -32,6 +39,7 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
 import { fb, db, fs } from "boot/firebase";
 export default {
   props: ["service", "id"],
@@ -46,6 +54,9 @@ export default {
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     };
+  },
+  computed: {
+    ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"])
   }
 };
 </script>

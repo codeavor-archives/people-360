@@ -11,11 +11,11 @@
               <p
                 style="font-family:Palatino Linotype; font-size:18px; text-align:center; text-decoration: underline; "
               >
-                <strong>PROPERTY ACKNOWLEDGEMENT RECEIPT</strong>
+                <strong>PEOPLE 360 CORPORATION</strong>
               </p>
               <div>
                 <p style="font-family:Palatino Linotype; font-size:16px; text-align:left; ">
-                  <strong>Entity Name:</strong> DICT
+                  <strong>Entity Name:</strong> P360
                 </p>
                 <p style="font-family:Palatino Linotype; font-size:16px;  ">
                   <strong>Fund Cluster:</strong>

@@ -8,9 +8,9 @@
       class="absolute"
       style="top: 0; right: 12px; transform: translateY(-50%);"
     />
-    <q-dialog v-model="showReservationModal">
-      <reservation-modal @close="showReservationModal=false" :services="services"></reservation-modal>
-    </q-dialog>
+    <!-- <q-dialog v-model="showReservationModal"> -->
+    <!-- <reservation-modal @close="showReservationModal=false" :services="services"></reservation-modal> -->
+    <!-- </q-dialog> -->
   </div>
 </template>
 
@@ -32,25 +32,34 @@ export default {
       services: {},
       showReservationModal: false,
       service: {
-        serviceID: this.serviceId,
-        serviceName: this.serviceName,
-        servicePrice: this.servicePrice,
-        servicePhoto: this.servicePhoto,
-        serviceEquipment: this.serviceEquipment,
-        servicePersonCount: this.servicePersonCount,
-        serviceDayCount: this.servicedayCount,
-        serviceQuantity: 1
+        service_Id: this.serviceId,
+        service_name: this.serviceName,
+        service_price: this.servicePrice,
+        service_photo: this.servicePhoto,
+        service_equipment: this.serviceEquipment,
+        service_personCount: this.servicePersonCount,
+        service_dayCount: this.servicedayCount,
+        service_quantity: 1
       }
     };
   },
   methods: {
     addToCart(service) {
-      // console.log(service);
-      this.services = service;
-      this.showReservationModal = true;
-      // this.$store.commit("storeservices/addToCart", this.service);
-      // console.log(this.service.service_price);
-      // console.log(this.service);
+      this.$q
+        .dialog({
+          title: "Confirm",
+          message: "Would you add this on cart?",
+          cancel: true,
+          persistent: true
+        })
+        .onOk(() => {
+          // console.log(service);
+          this.services = service;
+          // this.showReservationModal = true;
+          this.$store.commit("storeservices/addToCart", this.service);
+          // console.log(this.service.service_price);
+          // console.log(this.service);
+        });
     }
   },
   components: {

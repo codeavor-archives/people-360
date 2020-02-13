@@ -47,9 +47,9 @@
         :weekends="calendarWeekends"
       />
     </div>
-    <div class="q-mt-xl" v-if="setAdmin">
+    <!-- <div class="q-mt-xl" v-if="setAdmin">
       <calendar-table></calendar-table>
-    </div>
+    </div>-->
 
     <q-dialog v-model="medium">
       <add-event :start="start" :end="end" @close="medium = false"></add-event>
@@ -65,6 +65,18 @@
         :color="event.color"
         @close="showEditEvent = false"
       ></edit-event>
+    </q-dialog>
+    <q-dialog v-model="showEventDetails">
+      <show-event
+        :extendedProps="extendedProps"
+        :title="event.title"
+        :details="event.details"
+        :start="event.start"
+        :end="event.end"
+        :id="event.id"
+        :color="event.color"
+        @close="showEventDetails = false"
+      ></show-event>
     </q-dialog>
   </q-page>
 </template>
@@ -92,11 +104,13 @@ export default {
   components: {
     FullCalendar,
     "add-event": require("components/Calendar/Modals/AddEvent").default,
+    "show-event": require("components/Calendar/Modals/ShowEvent").default,
     "edit-event": require("components/Calendar/Modals/EditEvent").default,
     "calendar-table": require("components/Calendar/CalendarTable").default
   },
   data() {
     return {
+      clientPreproposals: {},
       start: "",
       end: "",
       clientReservation: {},
@@ -104,6 +118,7 @@ export default {
       hiddenDays: [0],
       medium: false,
       showEditEvent: false,
+      showEventDetails: false,
       calendarPlugins: [
         dayGridPlugin,
         timeGridPlugin,
@@ -124,6 +139,7 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
+      extendedProps: {},
       events: [],
       dialog: false,
       event: {
@@ -139,14 +155,16 @@ export default {
   },
   methods: {
     handleClick(arg) {
-      // console.log(arg.);
-      this.showEditEvent = true;
-      console.log(arg);
+      console.log(arg.event.extendedProps);
+      // this.showEditEvent = true;
+      this.showEventDetails = true;
+      // console.log(arg.event.extendedProps);
       this.event.title = arg.event.title;
-      this.event.details = arg.event.extendedProps.details;
+      // this.event.details = arg.event.extendedProps.details;
+      this.extendedProps = arg.event.extendedProps;
       this.event.id = arg.event.id;
       this.event.color = arg.event.borderColor;
-      // this.event.start = arg.event.start.getDay();
+      this.event.start = arg.event.start.toUTCString();
       // let year = arg.event.start.getFullYear();
       // let month = arg.event.start.getDay();
       // let day = arg.event.start.getDate();
@@ -160,7 +178,8 @@ export default {
       // this.event.end = yearend + "-" + monthend + "-" + dayend;
     },
     handleSelect(arg) {
-      this.medium = true;
+      console.log(arg);
+      // this.medium = true;
       this.start = arg.startStr;
       this.end = arg.endStr;
     },
@@ -168,106 +187,6 @@ export default {
     getEventColor(ev) {
       return ev.color;
     }
-    // updateFormatter() {
-    //   try {
-    //     this.titleFormatter = new Intl.DateTimeFormat(this.locale || void 0, {
-    //       month: this.shortMonthLabel ? "short" : "long",
-    //       year: "numeric",
-    //       timeZone: "UTC"
-    //     });
-    //   } catch (e) {
-    //     // console.error('Intl.DateTimeFormat not supported')
-    //     this.titleFormatter = void 0;
-    //   }
-    // },
-    // handleSwipe({ evt }) {
-    //   if (this.dragging === false) {
-    //     if (info.duration >= 30 && this.ignoreNextSwipe === false) {
-    //       if (info.direction === "right") {
-    //         this.calendarPrev();
-    //       } else if (info.direction === "left") {
-    //         this.calendarNext();
-    //       }
-    //     } else {
-    //       this.ignoreNextSwipe = false;
-    //     }
-    //   }
-    //   stopAndPrevent(evt);
-    //   evt.cancelable !== false && evt.preventDefault();
-    //   evt.stopPropagation();
-    // },
-    // calendarNext() {
-    //   this.$refs.calendar.next();
-    // },
-
-    // calendarPrev() {
-    //   this.$refs.calendar.prev();
-    // },
-    // viewDay({ date }) {
-    //   this.date = date;
-    //   this.type = "day";
-    // },
-    // setToday() {
-    //   // this.focus = this.today;
-    //   // setToday = new Date()
-    // },
-    // showEvent({ nativeEvent, event }) {
-    //   const open = () => {
-    //     this.selectedEvent = event;
-    //     this.selectedElement = nativeEvent.target;
-    //     setTimeout(() => (this.selectedOpen = true), 10);
-    //   };
-
-    //   if (this.selectedOpen) {
-    //     this.selectedOpen = false;
-    //     setTimeout(open, 10);
-    //   } else {
-    //     open();
-    //   }
-
-    //   nativeEvent.stopPropagation();
-    // },
-    // updateRange({ start, end }) {
-    //   const events = [];
-
-    //   const min = new Date(`${start.date}T00:00:00`);
-    //   const max = new Date(`${end.date}T23:59:59`);
-    //   const days = (max.getTime() - min.getTime()) / 86400000;
-    //   const eventCount = this.rnd(days, days + 20);
-
-    //   for (let i = 0; i < eventCount; i++) {
-    //     const allDay = this.rnd(0, 3) === 0;
-    //     const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-    //     const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-    //     const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-    //     const second = new Date(first.getTime() + secondTimestamp);
-
-    //     events.push({
-    //       name: this.names[this.rnd(0, this.names.length - 1)],
-    //       start: this.formatDate(first, !allDay),
-    //       end: this.formatDate(second, !allDay),
-    //       color: this.colors[this.rnd(0, this.colors.length - 1)]
-    //     });
-    //   }
-
-    //   this.start = start;
-    //   this.end = end;
-    //   this.events = events;
-    // },
-    // nth(d) {
-    //   return d > 3 && d < 21
-    //     ? "th"
-    //     : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
-    // },
-    // rnd(a, b) {
-    //   return Math.floor((b - a + 1) * Math.random()) + a;
-    // },
-    // formatDate(a, withTime) {
-    //   return withTime
-    //     ? `${a.getFullYear()}-${a.getMonth() +
-    //         1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-    //     : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
-    // }
   },
   computed: {
     ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"]),
@@ -287,6 +206,10 @@ export default {
         const admin = idTokenResult.claims.admin;
         if (admin == true) {
           this.admin = true;
+          this.$binding(
+            "clientPreproposals",
+            fs.collection("preproposals").orderBy("companyName")
+          );
           this.$store.commit("storeevents/setEventDownloaded", true);
         } else {
           this.$binding(
@@ -299,53 +222,10 @@ export default {
             .catch(error => {
               showErrorMessage(error.message);
             });
-          // let dataRef = fs.collection("inspectionEvent");
-          // let clientRef = dataRef
-          //   .where("id", "==", user.uid)
-          //   .get()
-          //   .then(snapshot => {
-          //     snapshot.forEach(doc => {
-          //       // clientData.id = doc.id;
-          //       // clientData.data = doc.data();
-          //       // clientData.push(doc.data());
-          //       clientData.push(doc.id, doc.data());
-          //       console.log(clientData);
-          //       this.$store.commit("storeevents/setEventDownloaded", true);
-          //     });
-          //   })
-          //   .catch(err => {
-          //     console.log("Error getting documents", err);
-          //   });
-          // this.clientReservation = clientData;
-        }
-      });
-    }
-  },
-  created() {
-    let user = fb.auth().currentUser;
-    if (user) {
-      user.getIdTokenResult().then(idTokenResult => {
-        const admin = idTokenResult.claims.admin;
-        if (admin == true) {
-          this.admin = true;
         }
       });
     }
   }
-  // beforeMount() {
-  //   this.locale = this.$q.lang.getLocale() || "en-PH";
-  //   this.updateFormatter();
-  // },
-  // watch: {
-  //   locale() {
-  //     if (this.locale.length > 2) {
-  //       this.updateFormatter();
-  //     }
-  //   },
-  //   shortMonthLabel() {
-  //     this.updateFormatter();
-  //   }
-  // }
 };
 </script>
 

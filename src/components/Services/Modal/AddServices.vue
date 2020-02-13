@@ -22,17 +22,6 @@
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
-          label="Price"
-          v-model="service.price"
-        >
-          <template v-slot:append>
-            <q-icon v-if="service.price" name="close" class="cursor-pointer" />
-          </template>
-        </q-input>
-        <q-input
-          :rules="[val => !!val || 'Field is required']"
-          ref="name"
-          class="col"
           label="Equipment"
           v-model="service.equipment"
         >
@@ -41,6 +30,31 @@
           </template>
         </q-input>
         <q-input
+          type="number"
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
+          label="Price for new client"
+          v-model="service.newClientPrice"
+        >
+          <template v-slot:append>
+            <q-icon v-if="service.newClientPrice" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
+        <q-input
+          type="number"
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
+          label="Price for old client"
+          v-model="service.oldClientPrice"
+        >
+          <template v-slot:append>
+            <q-icon v-if="service.oldClientPrice" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
+
+        <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
@@ -61,7 +75,7 @@
           <template v-slot:append>
             <q-icon v-if="service.dayCount" name="close" class="cursor-pointer" />
           </template>
-        </q-input>
+        </q-input>-->
         <q-input v-model="service.photo" class="col-12" type="file" @change="uploadPhoto">
           <template v-slot:append>
             <q-circular-progress
@@ -81,7 +95,13 @@
         </q-input>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn type="submit" icon="add" label="Add Service/Equipment" color="primary" />
+        <q-btn
+          :disable="!readytosubmit"
+          type="submit"
+          icon="add"
+          label="Add Equipment"
+          color="primary"
+        />
       </q-card-actions>
     </q-form>
   </q-card>
@@ -98,13 +118,15 @@ export default {
   },
   data() {
     return {
+      readytosubmit: false,
       optionCategories: [],
       value: null,
       service: {
         id: "",
         type: "",
         equipment: "",
-        price: "",
+        newClientPrice: "",
+        oldClientPrice: "",
         personCount: "",
         dayCount: "",
         available: "true",
@@ -113,6 +135,9 @@ export default {
     };
   },
   methods: {
+    getConsole(optionCategories) {
+      console.log(optionCategories);
+    },
     addServices() {
       this.$q.loading.show();
       this.service.id = fb.auth().currentUser.uid;
@@ -151,6 +176,7 @@ export default {
             uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
               console.log(downloadURL);
               this.service.photo = downloadURL;
+              this.readytosubmit = true;
             });
           }
         );

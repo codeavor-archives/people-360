@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw;">
     <q-card-section class="row">
-      <div class="text-h6">Add Equipment Type</div>
+      <div class="text-h6">Edit Equipment Type</div>
       <q-space></q-space>
       <q-btn v-close-popup flat round dense icon="close" />
     </q-card-section>
@@ -18,6 +18,17 @@
             <q-icon v-if="equipmentCategory.type" name="close" class="cursor-pointer" />
           </template>
         </q-input>
+        <!-- <q-input
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
+          label="Add Equipment Type"
+          v-model="equipmentCategory.subCategory"
+        >
+          <template v-slot:append>
+            <q-icon v-if="equipmentCategory.subCategory" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>-->
         <q-select
           :rules="[val => !!val || 'Field is required']"
           v-model="equipmentCategory.position"
