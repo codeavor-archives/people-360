@@ -121,13 +121,13 @@
               :rules="[val => !!val || 'Field is required']"
               label="Company Name"
             ></q-input>-->
-            <q-input
+            <!-- <q-input
               v-model="preproposal.location"
               :rules="[val => !!val || 'Field is required']"
               ref="name"
               class="col q-mb-none q-pb-sm"
               label="Location(Area)"
-            ></q-input>
+            ></q-input>-->
             <q-select
               :rules="[val => !!val || 'Field is required']"
               class="col"
@@ -304,7 +304,7 @@ export default {
       this.preproposal.date = today;
       year = mm;
       this.preproposal.proposalNumber =
-        "RN" +
+        "PN" +
         "-" +
         "IN" +
         "-" +
@@ -336,6 +336,7 @@ export default {
       // let data4 = this.cart.map(item => [item.service_name]);
       this.preproposal.id = fb.auth().currentUser.uid;
       this.preproposal.quantity = data;
+      this.preproposal.location = this.userDetails.companyLocation;
       this.preproposal.service_price = data2;
       this.preproposal.equipment = data3;
       this.preproposal.name = data4;

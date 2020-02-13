@@ -21,6 +21,16 @@
       :rules="[val => !!val || 'Field is required']"
       lazy-rules
     />
+    <q-input
+      mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
+      v-if="tab == 'register'"
+      ref="middleName"
+      class="col q-mb-none q-pb-sm"
+      v-model="formData.middleName"
+      label="Middle Name"
+      :rules="[val => !!val || 'Field is required']"
+      lazy-rules
+    />
 
     <q-input
       mask="ASSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
@@ -42,6 +52,18 @@
       :rules="[val => !!val || 'Field is required']"
       lazy-rules
     />
+    <q-input
+      v-if="tab == 'register'"
+      ref="phoneNumber"
+      class="col q-mb-none q-pb-sm"
+      v-model="formData.phoneNumber"
+      label="Phone Number"
+      :rules="[val => !!val || 'Field is required']"
+      lazy-rules
+      mask="(+63)-###-###-####"
+      hint="PH:(+63)-912-345-6789"
+    />
+
     <q-input
       v-if="tab == 'register'"
       ref="companyLocation"
@@ -100,6 +122,7 @@ export default {
       isconfPwd: true,
       formData: {
         name: "",
+        middleName: "",
         lastName: "",
         email: "",
         password: "",

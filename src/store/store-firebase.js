@@ -1,11 +1,14 @@
 import { fb, db, fs } from "boot/firebase";
 import Vue from "vue";
+import $ from "jquery";
 import { Loading, LocalStorage, Notify } from "quasar";
 import { showErrorMessage } from "src/functions/function-show-error-message";
 let messagesRef;
+let ip;
 
 const state = {
   loggedIn: false,
+  ip: "",
   userDetails: {},
   users: {},
   systemUsers: {},
@@ -58,11 +61,14 @@ const actions = {
           .set(
             {
               name: payload.name,
+              middleName: payload.middleName,
               lastName: payload.lastName,
               email: payload.email,
+              roles: "new",
               companyName: payload.companyName,
               companyLocation: payload.location,
-              roles: "new"
+              phoneNumber: payload.phoneNumber,
+              createdBy: userID
             },
             error => {
               if (error) {
@@ -80,18 +86,19 @@ const actions = {
               }
             }
           );
-
         db.ref("users/" + userID).set(
           {
             // emailVerified: false,
             name: payload.name,
+            middleName: payload.middleName,
             lastName: payload.lastName,
             email: payload.email,
             companyName: payload.companyName,
             companyLocation: payload.location,
-
-            roles: "client",
-            online: true
+            phoneNumber: payload.phoneNumber,
+            roles: "new",
+            online: true,
+            createdBy: userID
           },
           error => {
             if (error) {
@@ -154,11 +161,14 @@ const actions = {
           let userDetails = snapshot.val();
           commit("setUserDetails", {
             name: userDetails.name,
+            middleName: userDetails.middleName,
+            lastName: userDetails.lastName,
             email: userDetails.email,
             roles: userDetails.roles,
             photo: userDetails.photo,
             companyName: userDetails.companyName,
             companyLocation: userDetails.companyLocation,
+            phoneNumber: userDetails.phoneNumber,
             userID: userID
           });
         });
@@ -168,10 +178,23 @@ const actions = {
         dispatch("storetasks/fbReadData", null, {
           root: true
         });
+        let ipadd = "";
+        $.getJSON("http://gd.geobytes.com/GetCityDetails?callback=?", data => {
+          this.ipadd = JSON.stringify(data.responseJSON);
+          // JSON.stringify(data.geobytesremoteip);
+          console.log(JSON.stringify(data.geobytesremoteip));
+          dispatch("fbUpdateUser", {
+            userID: userID,
+            updates: {
+              ip: JSON.stringify(data.geobytesremoteip)
+            }
+          });
+        });
         dispatch("fbUpdateUser", {
           userID: userID,
           updates: {
             online: true
+            // ip: this.state.ip
           }
         });
         dispatch("fbGetUsers", {});

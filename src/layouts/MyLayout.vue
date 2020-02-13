@@ -104,7 +104,7 @@
         </q-btn-dropdown>
       </q-toolbar>
     </q-header>
-    <q-footer class="footer" v-if="loggedIn && !this.$route.params.id">
+    <!-- <q-footer class="footer" v-if="loggedIn && !this.$route.params.id">
       <q-tabs active-color="white" dense no-caps>
         <q-route-tab
           clickable
@@ -116,7 +116,7 @@
           :label="nav.label"
         />
       </q-tabs>
-    </q-footer>
+    </q-footer>-->
 
     <q-drawer
       class="side-drawer"
@@ -242,6 +242,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 import { showErrorMessage } from "src/functions/function-show-error-message";
 import { mapState, mapActions, mapGetters } from "vuex";
 import { fb, db, fc, fs } from "boot/firebase";
@@ -346,7 +347,15 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    // $.getJSON("http://gd.geobytes.com/GetCityDetails?callback=?", function(
+    //   data
+    // ) {
+    //   console.log(JSON.stringify(data, null, 2));
+    //   console.log(JSON.stringify(data.geobytesremoteip));
+    // });
+    // console.log(window.location.protocol + "//" + window.location.host)
+  }
 };
 </script>
 

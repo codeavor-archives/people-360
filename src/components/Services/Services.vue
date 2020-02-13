@@ -25,10 +25,10 @@
 
               <div class="row no-wrap items-center">
                 <div class="col text-h6 ellipsis">{{service.type}}</div>
-                <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
+                <!-- <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
                   <q-icon name="place" />
                   {{service.personCount}}
-                </div>
+                </div>-->
               </div>
               <div class="row">
                 <q-rating v-model="stars" :max="5" size="15px" />
