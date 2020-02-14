@@ -1,4 +1,4 @@
-import { fb, db, fs } from "boot/firebase";
+import { fb, db, fs, fc } from "boot/firebase";
 import Vue from "vue";
 import $ from "jquery";
 import { Loading, LocalStorage, Notify } from "quasar";
@@ -55,7 +55,6 @@ const actions = {
       .createUserWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
         let userID = fb.auth().currentUser.uid;
-
         fs.collection("users")
           .doc()
           .set(

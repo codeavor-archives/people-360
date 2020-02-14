@@ -22,7 +22,7 @@ const routes = [
       },
       { path: "checkout", component: () => import("pages/PageCheckout.vue") },
       {
-        path: "pre-proposals",
+        path: "reservation-table",
         component: () => import("pages/PagePreProposal.vue")
       },
       {

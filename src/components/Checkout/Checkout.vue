@@ -231,9 +231,10 @@ export default {
         location: "",
         optionReport: "",
         status: "",
-        quantity: [],
-        equipment: [],
-        name: []
+        itemPurchase: []
+        // quantity: [],
+        // equipment: [],
+        // name: []
       },
       stars: "",
       optionsReport: ["Yes", "No"],
@@ -312,7 +313,7 @@ export default {
         "-" +
         year;
       // Add to Request Proposals
-      // this.$q.loading.show();
+      this.$q.loading.show();
       let data = this.cart.map(item => ({
         [item.service_Id]: item.service_quantity
       }));
@@ -335,13 +336,20 @@ export default {
       // let data3 = this.cart.map(item => [item.service_equipment]);
       // let data4 = this.cart.map(item => [item.service_name]);
       this.preproposal.id = fb.auth().currentUser.uid;
-      this.preproposal.quantity = data;
       this.preproposal.location = this.userDetails.companyLocation;
-      this.preproposal.service_price = data2;
-      this.preproposal.equipment = data3;
-      this.preproposal.name = data4;
+
+      // this.preproposal.quantity = data;
+      // this.preproposal.service_price = data2;
+      // this.preproposal.equipment = data3;
+      // this.preproposal.name = data4;
+      this.preproposal.itemPurchase = this.cart;
       this.preproposal.companyName = this.userDetails.companyName;
-      this.preproposal.status = false;
+      if (this.userDetails.roles == "new") {
+        this.preproposal.status = false;
+      } else {
+        this.preproposal.status = true;
+      }
+
       if (this.preproposal.optionReport === "Yes") {
         this.preproposal.optionReport = true;
       }

@@ -8,7 +8,7 @@
               <tr>
                 <th colspan="15">
                   <div class="row no-wrap items-center">
-                    <div class="text-h5 text-primary">Pre Proposals Table</div>
+                    <div class="text-h5 text-primary">Reservation Table</div>
                   </div>
                 </th>
               </tr>
@@ -18,8 +18,9 @@
                 <th class="text-left">Date</th>
                 <th class="text-left">Start Date</th>
                 <th class="text-left">Equipment</th>
-                <th class="text-left">Quantity</th>
                 <th class="text-left">Price</th>
+                <th class="text-left">Quantity</th>
+                <th class="text-left">Total Price</th>
                 <th class="text-left">Location</th>
                 <th class="text-left">Name</th>
                 <th class="text-left">Report</th>
@@ -38,37 +39,45 @@
                   <div class="row">
                     <div>
                       <q-card-section
-                        v-for="equipment in proposal.equipment"
+                        v-for="equipment in proposal.itemPurchase"
                         :key="equipment.id"
-                      >{{equipment}}</q-card-section>
+                      >{{equipment.service_equipment}}</q-card-section>
                     </div>
                   </div>
                 </td>
+
                 <td class="text-left">
                   <div class="row">
                     <div>
                       <q-card-section
-                        v-for="quantity in proposal.quantity"
-                        :key="quantity.id"
-                      >{{quantity}}</q-card-section>
-                    </div>
-                  </div>
-                </td>
-                <td class="text-left">
-                  <div class="row">
-                    <div>
-                      <q-card-section
-                        v-for="price in proposal.service_price"
+                        v-for="price in proposal.itemPurchase"
                         :key="price.id"
-                      >{{price}}</q-card-section>
+                      >{{price.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-card-section>
                     </div>
                   </div>
                 </td>
+                <td class="text-left">
+                  <div class="row">
+                    <div>
+                      <q-card-section
+                        v-for="quantity in proposal.itemPurchase"
+                        :key="quantity.id"
+                      >{{quantity.service_quantity}}</q-card-section>
+                    </div>
+                  </div>
+                </td>
+
+                <td
+                  class="text-left"
+                >{{proposal.totalPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
                 <td class="text-left">{{proposal.location}}</td>
                 <td class="text-left">
                   <div class="row">
                     <div>
-                      <q-card-section v-for="name in proposal.name" :key="name.id">{{name}}</q-card-section>
+                      <q-card-section
+                        v-for="name in proposal.itemPurchase"
+                        :key="name.id"
+                      >{{name.service_name}}</q-card-section>
                     </div>
                   </div>
                 </td>
@@ -80,7 +89,7 @@
                 <td class="text-left">
                   <q-badge
                     :color="proposal.status ? 'green-7' : 'orange-7'"
-                  >{{proposal.status ? 'Approved': 'For Quotation' }}</q-badge>
+                  >{{proposal.status ? 'Approved': 'For Approval' }}</q-badge>
                 </td>
                 <td class="text-left">
                   <q-btn
@@ -102,9 +111,9 @@
           <q-markup-table>
             <thead>
               <tr>
-                <th colspan="12">
+                <th colspan="15">
                   <div class="row no-wrap items-center">
-                    <div class="text-h5 text-primary">Pre Proposals Table</div>
+                    <div class="text-h5 text-primary">Reservation Table</div>
                   </div>
                 </th>
               </tr>
@@ -112,14 +121,15 @@
                 <th class="text-left">Pre-Proposal Number</th>
                 <th class="text-left">Company Name</th>
                 <th class="text-left">Date</th>
+                <th class="text-left">Start Date</th>
                 <th class="text-left">Equipment</th>
-                <th class="text-left">Quantity</th>
                 <th class="text-left">Price</th>
+                <th class="text-left">Quantity</th>
+                <th class="text-left">Total Price</th>
                 <th class="text-left">Location</th>
                 <th class="text-left">Name</th>
                 <th class="text-left">Report</th>
                 <th class="text-left">Status</th>
-                <th class="text-left" v-if="setAdmin">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -128,11 +138,52 @@
                 <td class="text-left">{{proposal.proposalNumber}}</td>
                 <td class="text-left">{{proposal.companyName}}</td>
                 <td class="text-left">{{proposal.date}}</td>
-                <td class="text-left">{{proposal.equipment}}</td>
-                <td class="text-left">{{proposal.quantity}}</td>
-                <td class="text-left">{{proposal.price}}</td>
+                <td class="text-left">{{proposal.start}}</td>
+                <td class="text-left">
+                  <div class="row">
+                    <div>
+                      <q-card-section
+                        v-for="equipment in proposal.itemPurchase"
+                        :key="equipment.id"
+                      >{{equipment.service_equipment}}</q-card-section>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-left">
+                  <div class="row">
+                    <div>
+                      <q-card-section
+                        v-for="price in proposal.itemPurchase"
+                        :key="price.id"
+                      >{{price.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-card-section>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-left">
+                  <div class="row">
+                    <div>
+                      <q-card-section
+                        v-for="quantity in proposal.itemPurchase"
+                        :key="quantity.id"
+                      >{{quantity.service_quantity}}</q-card-section>
+                    </div>
+                  </div>
+                </td>
+
+                <td
+                  class="text-left"
+                >{{proposal.totalPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
                 <td class="text-left">{{proposal.location}}</td>
-                <td class="text-left">{{proposal.name}}</td>
+                <td class="text-left">
+                  <div class="row">
+                    <div>
+                      <q-card-section
+                        v-for="name in proposal.itemPurchase"
+                        :key="name.id"
+                      >{{name.service_name}}</q-card-section>
+                    </div>
+                  </div>
+                </td>
                 <td class="text-left">
                   <q-badge
                     :color="proposal.optionReport ? 'green-7' : 'grey-4'"
@@ -140,8 +191,8 @@
                 </td>
                 <td class="text-left">
                   <q-badge
-                    :color="proposal.optionReport ? 'green-7' : 'grey-4'"
-                  >{{proposal.optionReport ? 'For Approval': 'Approved' }}</q-badge>
+                    :color="proposal.status ?'green-7' : 'orange-7'"
+                  >{{proposal.status ? 'Approved': 'For Approval' }}</q-badge>
                 </td>
                 <td class="text-left" v-if="setAdmin">
                   <q-btn round color="primary" flat dense icon="edit"></q-btn>
@@ -198,9 +249,16 @@ export default {
         // console.log(admin);
         if (admin == true) {
           // this.admin = true;
+          // this.$binding(
+          //   "clientPreproposals",
+          //   fs
+          //     .collection("preproposals")
+          //     .where("status", "==", true)
+          //     .orderBy("date")
+          // );
           this.$binding(
             "clientPreproposals",
-            fs.collection("preproposals").orderBy("companyName")
+            fs.collection("preproposals").orderBy("date")
           );
         } else {
           this.$binding(

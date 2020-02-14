@@ -191,12 +191,12 @@
             <q-item-label v-if="setAdmin">Reservations</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/pre-proposals" exact clickable>
+        <q-item to="/reservation-table" exact clickable>
           <q-item-section avatar>
             <q-icon name="assessment" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Pre Proposals</q-item-label>
+            <q-item-label>Reservation Table</q-item-label>
           </q-item-section>
         </q-item>
         <q-item v-if="setAdmin" to="/users" exact clickable>

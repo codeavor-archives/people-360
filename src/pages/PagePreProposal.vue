@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <pre-proposal v-if="setAdmin"></pre-proposal>
+    <pre-proposal></pre-proposal>
     <!-- <pre-proposal-folder></pre-proposal-folder> -->
   </q-page>
 </template>
