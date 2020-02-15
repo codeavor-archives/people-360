@@ -40,7 +40,9 @@
                   round
                   icon="remove_red_eye"
                   size="10px"
-                />
+                >
+                  <q-tooltip content-class="bg-deep-orange">View</q-tooltip>
+                </q-btn>
               </div>
             </q-card-section>
             <q-card-section class="q-pt-none">
@@ -94,7 +96,9 @@
                   round
                   icon="remove_red_eye"
                   size="10px"
-                />
+                >
+                  <q-tooltip content-class="bg-deep-orange">View</q-tooltip>
+                </q-btn>
               </div>
             </q-card-section>
             <q-card-section class="q-pt-none">

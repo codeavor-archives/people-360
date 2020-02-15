@@ -2,33 +2,56 @@
   <q-page>
     <div>
       <div>
-        <q-markup-table>
-          <thead>
-            <tr>
-              <th colspan="15">
-                <div class="row no-wrap items-center">
-                  <div class="text-h5 text-primary">Mobilization Table</div>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <th class="text-left">Location</th>
-              <th class="text-left">New Client Price</th>
-              <th class="text-left">Old Client Price</th>
-              <th class="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Dummy</td>
-              <td>Dummy</td>
-              <td>Dummy</td>
-              <td>Dummy</td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+        <q-table
+          :filter="filter"
+          title="Mobilization Fees"
+          color="primary"
+          :data="mobilizationFees"
+          :columns="columns"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td :props="props" key="location">{{props.row.location}}</q-td>
+              <q-td
+                :props="props"
+                key="oldClientPrice"
+              >{{props.row.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-td>
+              <q-td
+                :props="props"
+                key="newClientPrice"
+              >{{props.row.newClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-td>
+              <q-td>
+                <q-btn
+                  @click="showEditMobilizationFee(props.row)"
+                  round
+                  color="primary"
+                  flat
+                  dense
+                  icon="edit"
+                >
+                  <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
+                </q-btn>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
     </div>
+    <q-dialog v-model="showEditMobilization">
+      <edit-mobilization
+        @close="showEditMobilization = false"
+        :mobilizationFee="mobilizationFee"
+        :id="id"
+      ></edit-mobilization>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -39,6 +62,53 @@ export default {
     return {
       mobilizationFees: fs.collection("mobilizationFees")
     };
+  },
+  data() {
+    return {
+      filter: "",
+      showEditMobilization: false,
+      mobilizationFee: "",
+      id: "",
+      current: 1,
+      columns: [
+        {
+          name: "location",
+          align: "left",
+          label: "Location",
+          sortable: true,
+          field: "location"
+        },
+        {
+          name: "oldClientPrice",
+          align: "left",
+          label: "Old Client Price",
+          sortable: true,
+          field: "oldClientPrice"
+        },
+        {
+          name: "newClientPrice",
+          align: "left",
+          label: "New Client Price",
+          sortable: true,
+          field: "newClientPrice"
+        },
+        {
+          align: "left",
+          label: "Action"
+        }
+      ]
+    };
+  },
+  methods: {
+    showEditMobilizationFee(props) {
+      this.showEditMobilization = true;
+      this.mobilizationFee = props;
+      this.id = props.id;
+    }
+  },
+  components: {
+    "edit-mobilization": require("components/Mobilization/Modals/EditMobilizationFee")
+      .default
   }
 };
 </script>

@@ -3,7 +3,9 @@
     <mobilization-table></mobilization-table>
     <q-page-sticky v-if="setAdmin" class="all-pointer-events" :offset="[18, 18]">
       <q-fab icon="add" direction="up" color="primary">
-        <q-fab-action @click="showAddMobilization = true" color="primary" icon="note_add" />
+        <q-fab-action @click="showAddMobilization = true" color="primary" icon="note_add">
+          <q-tooltip content-class="bg-deep-orange">Add Mobilization</q-tooltip>
+        </q-fab-action>
       </q-fab>
     </q-page-sticky>
 

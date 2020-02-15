@@ -83,7 +83,9 @@
             </div>-->
             <q-page-sticky class="printButton" position="bottom-right" :offset="[18, 18]">
               <q-fab icon="print" direction="up" color="primary">
-                <q-fab-action @click="print" color="primary" icon="print" />
+                <q-fab-action @click="print" color="primary" icon="print">
+                  <q-tooltip content-class="bg-deep-orange">Print</q-tooltip>
+                </q-fab-action>
               </q-fab>
             </q-page-sticky>
           </div>

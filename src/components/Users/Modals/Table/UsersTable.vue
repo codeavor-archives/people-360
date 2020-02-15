@@ -2,56 +2,55 @@
   <q-page>
     <div class>
       <div class>
-        <q-markup-table>
-          <thead>
-            <tr>
-              <th colspan="5">
-                <div class="row no-wrap items-center">
-                  <div class="text-h5 text-primary">Users Table</div>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <!-- <th class="text-left">ID</th> -->
-              <th class="text-left">Full Name</th>
-              <th class="text-left">Email</th>
-              <th class="text-left">Login IP</th>
-              <th class="text-left">Roles</th>
-              <th class="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(user, key) in users" :key="key" :id="key">
-              <!-- <td class="text-left">{{ user.id }}</td> -->
-              <td class="text-left">{{ user.name }} {{user.middleName}} {{user.lastName}}</td>
-              <td class="text-left">{{ user.email }}</td>
-              <td class="text-left">{{ user.ip }}</td>
-              <td class="text-left">{{ user.roles }}</td>
-              <td class="text-left">
+        <q-table
+          :filter="filter"
+          title="Users Table"
+          color="primary"
+          :data="data"
+          :columns="columns"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td
+                :props="props"
+                key="name"
+              >{{props.row.name}} {{props.row.middleName}} {{props.row.lastName}}</q-td>
+              <q-td :props="props" key="email">{{props.row.email}}</q-td>
+              <q-td :props="props" key="ip">{{props.row.ip}}</q-td>
+              <q-td :props="props" key="roles">{{props.row.roles}}</q-td>
+              <q-td>
                 <q-btn
+                  @click="showEditUserModal(props.row)"
                   round
                   color="primary"
-                  @click="showEditUserModal(user, key)"
                   flat
                   dense
                   icon="edit"
-                ></q-btn>
+                >
+                  <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
+                </q-btn>
                 <q-btn
                   round
                   color="primary"
-                  @click="showAddInspectorModal(user, key)"
+                  @click="showAddInspectorModal(props.row)"
                   flat
                   dense
                   icon="add"
-                ></q-btn>
-                <!-- <q-btn round @click="deleteUser()" color="red" flat dense icon="delete"></q-btn> -->
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
-      </div>
-      <div class>
-        <q-pagination class="q-pt-lg" v-model="current" :max="5" :direction-links="true"></q-pagination>
+                >
+                  <q-tooltip content-class="bg-deep-orange">Add as Inspector</q-tooltip>
+                </q-btn>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
     </div>
     <q-dialog v-model="showEditUser">
@@ -72,25 +71,59 @@ export default {
       showEditUser: false,
       showAddInspector: false,
       current: 3,
-      // users: {},
-      user: {},
-      key: {},
+      user: "",
+      key: "",
+      data: [],
       userToSubmit: {},
-      filter: ""
+      filter: "",
+      columns: [
+        {
+          name: "name",
+          align: "left",
+          label: "Full Name",
+          sortable: true,
+          field: "name"
+        },
+        {
+          name: "email",
+          align: "left",
+          label: "Email",
+          sortable: true,
+          field: "email"
+        },
+        {
+          name: "ip",
+          align: "left",
+          label: "Login IP",
+          sortable: true,
+          field: "ip"
+        },
+        {
+          name: "roles",
+          align: "left",
+          label: "Roles",
+          sortable: true,
+          field: "roles"
+        },
+        {
+          align: "left",
+          label: "Action"
+        }
+      ]
     };
   },
   methods: {
-    showEditUserModal(user, key) {
+    showEditUserModal(props) {
       this.showEditUser = true;
-      this.user = user;
-      this.key = key;
-      console.log(key);
+      this.user = props;
+      this.key = props.id;
+      // console.log(key);
     },
-    showAddInspectorModal(user, key) {
+    showAddInspectorModal(props) {
       this.showAddInspector = true;
-      this.user = user;
-      this.key = key;
-      console.log(key);
+      this.user = props;
+      this.key = props.id;
+      // console.log(key);
     }
   },
   computed: {
@@ -100,6 +133,10 @@ export default {
   components: {
     editusers: require("components/Users/Modals/EditUsers").default,
     "add-inspector": require("components/Users/Modals/AddInspector").default
+  },
+  mounted() {
+    const usersArray = Object.values(this.users);
+    this.data = usersArray;
   }
 };
 </script>

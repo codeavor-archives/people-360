@@ -15,6 +15,7 @@
             clickable
             v-ripple
           >
+            <q-tooltip content-class="bg-deep-orange">Start Conversation</q-tooltip>
             <q-item-section avatar>
               <q-avatar color="primary" text-color="white">{{ user.name.charAt(0).toUpperCase() }}</q-avatar>
             </q-item-section>

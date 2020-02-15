@@ -168,15 +168,15 @@
             </q-item-section>
           </q-item>
         </q-expansion-item>
-        <q-expansion-item icon="build" label="Equipments">
-          <q-item v-if="!setAdmin" to="/services" exact clickable class="q-pl-xl">
-            <q-item-section avatar>
-              <q-icon name="build" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Equipments</q-item-label>
-            </q-item-section>
-          </q-item>
+        <q-item v-if="!setAdmin" to="/services" exact clickable>
+          <q-item-section avatar>
+            <q-icon name="build" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Equipments</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
           <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="format_list_bulleted" />

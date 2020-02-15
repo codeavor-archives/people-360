@@ -3,8 +3,13 @@
     <services-table v-if="admin"></services-table>
     <q-page-sticky v-if="admin" class="all-pointer-events" :offset="[18, 18]">
       <q-fab icon="add" direction="up" color="primary">
-        <q-fab-action @click="showAddServices = true" color="primary" icon="build" />
-        <q-fab-action @click="showAddEquipment = true" color="primary" icon="note_add" />
+        <q-fab-action @click="showAddServices = true" color="primary" icon="build">
+          <q-tooltip content-class="bg-deep-orange">Add Equipment</q-tooltip>
+        </q-fab-action>
+
+        <q-fab-action @click="showAddEquipment = true" color="primary" icon="note_add">
+          <q-tooltip content-class="bg-deep-orange">Add Equipment Type</q-tooltip>
+        </q-fab-action>
       </q-fab>
     </q-page-sticky>
     <q-dialog v-model="showAddServices">

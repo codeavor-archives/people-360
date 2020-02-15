@@ -2,44 +2,41 @@
   <q-page>
     <div class>
       <div class>
-        <q-markup-table>
-          <thead>
-            <tr>
-              <th colspan="5">
-                <div class="row no-wrap items-center">
-                  <div class="text-h5 text-primary">Equipment Category Table</div>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <th class="text-left">Type</th>
-              <!-- <th class="text-left">Sub-Category</th> -->
-              <th class="text-left">Inspector Type</th>
-              <th class="text-left">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="category in equipmentCategories" :key="category.id">
-              <td class="text-left">{{category.type}}</td>
-              <!-- <td class="text-left">{{category.subCategory}}</td> -->
-              <td class="text-left">{{category.position}}</td>
-              <td class="text-left">
+        <q-table
+          :filter="filter"
+          title="Equipment Category Table"
+          color="primary"
+          :data="equipmentCategories"
+          :columns="columns"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td :props="props" key="type">{{props.row.type}}</q-td>
+              <q-td :props="props" key="position">{{props.row.position}}</q-td>
+              <q-td>
                 <q-btn
-                  @click="showEditTypeModal(category)"
+                  @click="showEditTypeModal(props.row)"
                   round
                   color="primary"
                   flat
                   dense
                   icon="edit"
-                ></q-btn>
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+                >
+                  <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
+                </q-btn>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
-      <!-- <div class>
-        <q-pagination class="q-pt-lg" :max="5"></q-pagination>
-      </div>-->
     </div>
     <q-dialog v-model="showEditType">
       <edit-category @close="showEditType = false" :equipmentCategory="equipmentCategory" :id="id"></edit-category>
@@ -57,8 +54,29 @@ export default {
   },
   data() {
     return {
+      filter: "",
       id: "",
       showEditType: false,
+      columns: [
+        {
+          name: "type",
+          align: "left",
+          label: "Type",
+          sortable: true,
+          field: "type"
+        },
+        {
+          name: "position",
+          align: "left",
+          label: "Position",
+          sortable: true,
+          field: "position"
+        },
+        {
+          align: "left",
+          label: "Action"
+        }
+      ],
       equipmentCategory: {
         id: "",
         type: "",
@@ -67,11 +85,11 @@ export default {
     };
   },
   methods: {
-    showEditTypeModal(category) {
+    showEditTypeModal(props) {
       this.showEditType = true;
-      this.equipmentCategory = category;
-      this.id = category.id;
-      console.log(category.id);
+      this.equipmentCategory = props;
+      this.id = props.id;
+      // console.log(category.id);
     }
   },
   components: {

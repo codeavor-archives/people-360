@@ -2,58 +2,42 @@
   <q-page class="q-mt-md">
     <div class>
       <div class>
-        <q-markup-table>
-          <thead>
-            <tr>
-              <th colspan="5">
-                <div class="row no-wrap items-center">
-                  <div class="text-h5 text-primary">Inspector Table</div>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <th class="text-left">Name</th>
-              <th class="text-left">Position</th>
-              <th class="text-left">Email</th>
-              <!-- <th class="text-left">Available</th> -->
-              <th class="text-left">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(inspector, key) in inspectors" :key="key" :id="key">
-              <td class="text-left">{{ inspector.name }}</td>
-              <td class="text-left">{{ inspector.position }}</td>
-              <td class="text-left">{{ inspector.email }}</td>
-              <!-- <td class="text-left">
-                <q-badge
-                  :color="inspector.available ? 'green-7' : 'grey-4'"
-                >{{ inspector.available ? 'Available': 'Deployed' }}</q-badge>
-              </td>-->
-              <td class="text-left">
+        <q-table
+          :filter="filter"
+          title="Inspectors Table"
+          color="primary"
+          :data="inspectors"
+          :columns="columns"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td :props="props" key="name">{{props.row.name}}</q-td>
+              <q-td :props="props" key="position">{{props.row.position}}</q-td>
+              <q-td :props="props" key="email">{{props.row.email}}</q-td>
+              <q-td>
                 <q-btn
+                  @click="showEditInspectorModal(props.row)"
                   round
                   color="primary"
-                  @click="showEditInspectorModal(inspector, key)"
                   flat
                   dense
                   icon="edit"
-                ></q-btn>
-                <!-- <q-btn
-                  round
-                  color="primary"
-                  @click="showAddInspectorSchedule(inspector, key)"
-                  flat
-                  dense
-                  icon="add"
-                ></q-btn>-->
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+                >
+                  <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
+                </q-btn>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
-      <!-- <div class>
-        <q-pagination class="q-pt-lg" :max="5"></q-pagination>
-      </div>-->
     </div>
     <q-dialog v-model="showEditInspector">
       <edit-inspector @close="showEditInspector = false" :inspector="inspector" :id="id"></edit-inspector>
@@ -81,7 +65,6 @@ export default {
     return {
       inspectorSchedule: "",
       idInspector: "",
-
       key: {},
       id: "",
       showEditInspector: false,
@@ -90,15 +73,43 @@ export default {
         id: "",
         name: "",
         available: "true"
-      }
+      },
+      filter: "",
+      columns: [
+        {
+          name: "name",
+          align: "left",
+          label: "Full Name",
+          sortable: true,
+          field: "name"
+        },
+        {
+          name: "position",
+          align: "left",
+          label: "Position",
+          sortable: true,
+          field: "position"
+        },
+        {
+          name: "email",
+          align: "left",
+          label: "Email",
+          sortable: true,
+          field: "email"
+        },
+        {
+          align: "left",
+          label: "Action"
+        }
+      ]
     };
   },
   methods: {
-    showEditInspectorModal(inspector) {
+    showEditInspectorModal(props) {
       this.showEditInspector = true;
-      this.inspector = inspector;
-      this.id = inspector.id;
-      console.log(inspector.id);
+      this.inspector = props;
+      this.id = props.id;
+      // console.log(inspector.id);
     },
     showAddInspectorSchedule(inspector) {
       this.showAddInspectorSched = true;

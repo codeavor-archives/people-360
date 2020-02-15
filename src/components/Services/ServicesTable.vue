@@ -2,60 +2,52 @@
   <q-page class="q-mt-md">
     <div class>
       <div class>
-        <q-markup-table>
-          <thead>
-            <tr>
-              <th colspan="15">
-                <div class="row no-wrap items-center">
-                  <div class="text-h5 text-primary">Equipments Table</div>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <th class="text-left">Type</th>
-              <th class="text-left">New Client Price</th>
-              <th class="text-left">Old Client Price</th>
-              <th class="text-left">Equipment</th>
-              <!-- <th class="text-left">Person Count</th>
-              <th class="text-left">Days Count</th>-->
-              <th class="text-left">Photo</th>
-              <!-- <th class="text-left">Status</th> -->
-              <th class="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="service in services" :key="service.id">
-              <td class="text-left">{{service.type}}</td>
-              <td
-                class="text-left"
-              >{{service.newClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
-              <td
-                class="text-left"
-              >{{service.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
-              <td class="text-left">{{service.equipment}}</td>
-              <!-- <td class="text-left">{{service.personCount}}</td>
-              <td class="text-left">{{service.dayCount}}</td>-->
-              <td class="text-left">
-                <q-img avatar :src="service.photo" />
-              </td>
-              <!-- <td class="text-left">{{service.available}}</td> -->
-              <td class="text-left">
+        <q-table
+          :filter="filter"
+          title="Equipment Category Table"
+          color="primary"
+          :data="services"
+          :columns="columns"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td :props="props" key="type">{{props.row.type}}</q-td>
+              <q-td
+                :props="props"
+                key="oldClientPrice"
+              >{{props.row.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-td>
+              <q-td
+                :props="props"
+                key="newClientPrice"
+              >{{props.row.newClientPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-td>
+              <q-td :props="props" key="equipment">{{props.row.equipment}}</q-td>
+              <q-td :props="props" key="photo">
+                <q-img avatar :src="props.row.photo" />
+              </q-td>
+              <q-td>
                 <q-btn
-                  @click="showEditServiceModal(service, key)"
+                  @click="showEditServiceModal(props.row)"
                   round
                   color="primary"
                   flat
                   dense
                   icon="edit"
-                ></q-btn>
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+                >
+                  <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
+                </q-btn>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
       </div>
-      <!-- <div class>
-        <q-pagination class="q-pt-lg" :max="5"></q-pagination>
-      </div>-->
     </div>
     <q-dialog v-model="showEditServices">
       <edit-services @close="showEditServices = false" :service="service" :id="id"></edit-services>
@@ -72,6 +64,48 @@ export default {
   },
   data() {
     return {
+      filter: "",
+      columns: [
+        {
+          name: "type",
+          align: "left",
+          label: "Type",
+          sortable: true,
+          field: "type"
+        },
+        {
+          name: "oldClientPrice",
+          align: "left",
+          label: "Old Client Price",
+          sortable: true,
+          field: "oldClientPrice"
+        },
+        {
+          name: "newClientPrice",
+          align: "left",
+          label: "New Client Price",
+          sortable: true,
+          field: "newClientPrice"
+        },
+        {
+          name: "equipment",
+          align: "left",
+          label: "Equipment",
+          sortable: true,
+          field: "equipment"
+        },
+        {
+          name: "photo",
+          align: "left",
+          label: "Photo",
+          sortable: true,
+          field: "photo"
+        },
+        {
+          align: "left",
+          label: "Action"
+        }
+      ],
       showEditServices: false,
       key: {},
       id: "",
@@ -87,11 +121,11 @@ export default {
     };
   },
   methods: {
-    showEditServiceModal(service) {
+    showEditServiceModal(props) {
       this.showEditServices = true;
-      this.service = service;
-      this.id = service.id;
-      console.log(service.id);
+      this.service = props;
+      this.id = props.id;
+      // console.log(service.id);
     }
   },
   components: {
