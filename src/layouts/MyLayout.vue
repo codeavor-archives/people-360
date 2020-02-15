@@ -28,30 +28,42 @@
         <q-btn @click="showMyCart" round flat icon="shopping_cart">
           <q-menu :offset="[40, 10]">
             <q-card class="my-card" flat>
-              <q-card-section class="bg-white text-primary">
-                <div class="text-subtitle2">
-                  <q-list>
-                    <q-item v-for="item in cart" :key="item.id">
-                      <q-item-section top avatar>
-                        <q-avatar>
-                          <img :src="item.service_photo" />
-                        </q-avatar>
-                      </q-item-section>
+              <template v-if="cart.length">
+                <q-card-section class="bg-white text-primary">
+                  <div class="text-subtitle2">
+                    <q-list>
+                      <q-item v-for="item in cart" :key="item.id">
+                        <q-item-section top avatar>
+                          <q-avatar>
+                            <img :src="item.service_photo" />
+                          </q-avatar>
+                        </q-item-section>
 
-                      <q-item-section>
-                        <q-item-label>{{item.service_name}}</q-item-label>
-                        <q-item-label caption>{{item.service_equipment}}</q-item-label>
-                      </q-item-section>
+                        <q-item-section>
+                          <q-item-label>{{item.service_name}}</q-item-label>
+                          <q-item-label caption>{{item.service_equipment}}</q-item-label>
+                        </q-item-section>
 
-                      <q-item-section side top>
-                        <q-badge>₱ {{item.service_price}}</q-badge>
-                        <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
-                        <q-btn dense round size="8px" @click="removeToCart(item)" icon="clear" flat></q-btn>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </div>
-              </q-card-section>
+                        <q-item-section side top>
+                          <q-badge>₱ {{item.service_price}}</q-badge>
+                          <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
+                          <q-btn
+                            dense
+                            round
+                            size="8px"
+                            @click="removeToCart(item)"
+                            icon="clear"
+                            flat
+                          ></q-btn>
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </div>
+                </q-card-section>
+              </template>
+              <template v-else>
+                <div class="text-center q-pa-md">No items on cart</div>
+              </template>
               <q-separator />
               <q-card-actions align="right" class="q-pa-xs">
                 <q-space></q-space>
@@ -182,13 +194,21 @@
             </q-item-section>
           </q-item>
         </q-expansion-item>
+        <q-item to="/mobilization" exact clickable v-if="setAdmin">
+          <q-item-section avatar>
+            <q-icon name="local_shipping" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Mobilization Fee</q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item to="/reservation" exact clickable>
           <q-item-section avatar>
             <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
-            <q-item-label v-if="!setAdmin">My Reservation</q-item-label>
-            <q-item-label v-if="setAdmin">Reservations</q-item-label>
+            <q-item-label v-if="!setAdmin">My Calendar</q-item-label>
+            <q-item-label v-if="setAdmin">Reservations Calendar</q-item-label>
           </q-item-section>
         </q-item>
         <q-item to="/reservation-table" exact clickable>
@@ -196,7 +216,8 @@
             <q-icon name="assessment" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Reservation Table</q-item-label>
+            <q-item-label v-if="setAdmin">Reservation Table</q-item-label>
+            <q-item-label v-if="!setAdmin">My Reservation</q-item-label>
           </q-item-section>
         </q-item>
         <q-item v-if="setAdmin" to="/users" exact clickable>
@@ -207,12 +228,12 @@
             <q-item-label>Manage User</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="setAdmin" to="/forms" exact clickable>
+        <q-item v-if="setAdmin" to="/certificates" exact clickable>
           <q-item-section avatar>
             <q-icon name="description" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Forms</q-item-label>
+            <q-item-label>Certificates</q-item-label>
           </q-item-section>
         </q-item>
         <q-item v-for="nav in navs" :key="nav.label" :to="nav.to" exact clickable>

@@ -13,8 +13,9 @@
             </tr>
             <tr>
               <!-- <th class="text-left">ID</th> -->
-              <th class="text-left">Name</th>
+              <th class="text-left">Full Name</th>
               <th class="text-left">Email</th>
+              <th class="text-left">Login IP</th>
               <th class="text-left">Roles</th>
               <th class="text-left">Actions</th>
             </tr>
@@ -22,8 +23,9 @@
           <tbody>
             <tr v-for="(user, key) in users" :key="key" :id="key">
               <!-- <td class="text-left">{{ user.id }}</td> -->
-              <td class="text-left">{{ user.name }}</td>
+              <td class="text-left">{{ user.name }} {{user.middleName}} {{user.lastName}}</td>
               <td class="text-left">{{ user.email }}</td>
+              <td class="text-left">{{ user.ip }}</td>
               <td class="text-left">{{ user.roles }}</td>
               <td class="text-left">
                 <q-btn

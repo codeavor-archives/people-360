@@ -15,7 +15,7 @@
               <th class="text-left">Name</th>
               <th class="text-left">Position</th>
               <th class="text-left">Email</th>
-              <th class="text-left">Available</th>
+              <!-- <th class="text-left">Available</th> -->
               <th class="text-left">Action</th>
             </tr>
           </thead>
@@ -24,11 +24,11 @@
               <td class="text-left">{{ inspector.name }}</td>
               <td class="text-left">{{ inspector.position }}</td>
               <td class="text-left">{{ inspector.email }}</td>
-              <td class="text-left">
+              <!-- <td class="text-left">
                 <q-badge
                   :color="inspector.available ? 'green-7' : 'grey-4'"
                 >{{ inspector.available ? 'Available': 'Deployed' }}</q-badge>
-              </td>
+              </td>-->
               <td class="text-left">
                 <q-btn
                   round

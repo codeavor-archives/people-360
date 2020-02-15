@@ -231,7 +231,8 @@ export default {
         location: "",
         optionReport: "",
         status: "",
-        itemPurchase: []
+        itemPurchase: [],
+        fullName: ""
         // quantity: [],
         // equipment: [],
         // name: []
@@ -337,7 +338,12 @@ export default {
       // let data4 = this.cart.map(item => [item.service_name]);
       this.preproposal.id = fb.auth().currentUser.uid;
       this.preproposal.location = this.userDetails.companyLocation;
-
+      this.preproposal.fullName =
+        this.userDetails.name +
+        " " +
+        this.userDetails.middleName.charAt(0) +
+        ". " +
+        this.userDetails.lastName;
       // this.preproposal.quantity = data;
       // this.preproposal.service_price = data2;
       // this.preproposal.equipment = data3;

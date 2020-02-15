@@ -7,7 +7,9 @@
       icon="add_shopping_cart"
       class="absolute"
       style="top: 0; right: 12px; transform: translateY(-50%);"
-    />
+    >
+      <q-tooltip content-class="bg-deep-orange">Add to Cart</q-tooltip>
+    </q-btn>
     <!-- <q-dialog v-model="showReservationModal"> -->
     <!-- <reservation-modal @close="showReservationModal=false" :services="services"></reservation-modal> -->
     <!-- </q-dialog> -->

@@ -19,7 +19,7 @@
               <!-- <th class="text-left">Person Count</th>
               <th class="text-left">Days Count</th>-->
               <th class="text-left">Photo</th>
-              <th class="text-left">Status</th>
+              <!-- <th class="text-left">Status</th> -->
               <th class="text-left">Actions</th>
             </tr>
           </thead>
@@ -38,7 +38,7 @@
               <td class="text-left">
                 <q-img avatar :src="service.photo" />
               </td>
-              <td class="text-left">{{service.available}}</td>
+              <!-- <td class="text-left">{{service.available}}</td> -->
               <td class="text-left">
                 <q-btn
                   @click="showEditServiceModal(service, key)"

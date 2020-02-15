@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 700px; max-width: 90vw;">
+  <q-card style="width: 900px; max-width: 90vw;">
     <q-card-section class="row">
       <div class="text-h6">Edit Proposal</div>
       <q-space></q-space>
@@ -12,7 +12,7 @@
           ref="name"
           class="col"
           label="Add Equipment Type"
-          v-model="proposals.name"
+          v-model="proposals.itemPurchase"
         >
           <template v-slot:append>
             <q-icon name="close" class="cursor-pointer" />

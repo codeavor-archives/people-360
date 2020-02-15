@@ -34,18 +34,6 @@
           :rules="[val => !!val || 'Field is required']"
           ref="name"
           class="col"
-          label="Price for new client"
-          v-model="service.newClientPrice"
-        >
-          <template v-slot:append>
-            <q-icon v-if="service.newClientPrice" name="close" class="cursor-pointer" />
-          </template>
-        </q-input>
-        <q-input
-          type="number"
-          :rules="[val => !!val || 'Field is required']"
-          ref="name"
-          class="col"
           label="Price for old client"
           v-model="service.oldClientPrice"
         >
@@ -53,7 +41,18 @@
             <q-icon v-if="service.oldClientPrice" name="close" class="cursor-pointer" />
           </template>
         </q-input>
-
+        <q-input
+          type="number"
+          :rules="[val => !!val || 'Field is required']"
+          ref="name"
+          class="col"
+          label="Price for new client"
+          v-model="service.newClientPrice"
+        >
+          <template v-slot:append>
+            <q-icon v-if="service.newClientPrice" name="close" class="cursor-pointer" />
+          </template>
+        </q-input>
         <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"

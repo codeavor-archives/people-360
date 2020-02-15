@@ -17,24 +17,24 @@
           <div class="row">
             <div>
               <q-card-section
-                v-for="equipment in extendedProps.equipment"
+                v-for="equipment in extendedProps.itemPurchase"
                 :key="equipment.id"
-              >{{equipment}}</q-card-section>
+              >{{equipment.service_equipment}}</q-card-section>
             </div>
             <div>
               <q-card-section v-for="name in extendedProps.name" :key="name.id">{{name}}</q-card-section>
             </div>
             <div>
               <q-card-section
-                v-for="quantity in extendedProps.quantity"
+                v-for="quantity in extendedProps.itemPurchase"
                 :key="quantity.id"
-              >{{quantity}}</q-card-section>
+              >{{quantity.service_quantity}}</q-card-section>
             </div>
             <div>
               <q-card-section
-                v-for="price in extendedProps.service_price"
+                v-for="price in extendedProps.itemPurchase"
                 :key="price.id"
-              >{{price | currency("₱", 2, { decimalSeparator: "." })}}</q-card-section>
+              >{{price.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-card-section>
             </div>
           </div>
           <div class="text-subtitle">

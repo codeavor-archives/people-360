@@ -46,8 +46,12 @@ const routes = [
         component: () => import("pages/PageEquipmentCategory.vue")
       },
       {
-        path: "forms",
-        component: () => import("pages/PageForms.vue")
+        path: "certificates",
+        component: () => import("pages/PageCertificates.vue")
+      },
+      {
+        path: "mobilization",
+        component: () => import("pages/PageMobilization.vue")
       }
     ]
   }

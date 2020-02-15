@@ -15,13 +15,14 @@
           v-model="formData.name"
           label="Name"
         />
-        <q-input
+        <q-select
           :rules="[val => !!val || 'Field is required']"
           lazy-rules
           ref="role"
           class="col q-mb-none q-pb-sm"
           v-model="formData.roles"
           label="Role"
+          :options="options"
         />
         <q-input
           type="email"
@@ -73,6 +74,7 @@ export default {
   props: ["user", "id"],
   data() {
     return {
+      options: ["new", "old", "Inspector"],
       isPwd: true,
       formData: {}
     };
