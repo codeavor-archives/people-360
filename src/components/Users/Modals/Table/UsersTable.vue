@@ -40,7 +40,7 @@
                 <q-btn
                   round
                   color="primary"
-                  @click="showAddInspectorModal(props.row)"
+                  @click="showAddInspectorModal(props.row, )"
                   flat
                   dense
                   icon="add"
@@ -114,15 +114,16 @@ export default {
   },
   methods: {
     showEditUserModal(props) {
+      // console.log(props.createdBy);
       this.showEditUser = true;
       this.user = props;
-      this.key = props.id;
+      this.key = props.createdBy;
       // console.log(key);
     },
     showAddInspectorModal(props) {
       this.showAddInspector = true;
       this.user = props;
-      this.key = props.id;
+      this.key = props.createdBy;
       // console.log(key);
     }
   },
@@ -135,8 +136,12 @@ export default {
     "add-inspector": require("components/Users/Modals/AddInspector").default
   },
   mounted() {
+    this.allusers = this.users;
     const usersArray = Object.values(this.users);
     this.data = usersArray;
+
+    // console.log(usersArray);
+    // console.log(this.users);
   }
 };
 </script>

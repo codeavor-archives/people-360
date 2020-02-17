@@ -45,7 +45,7 @@
                         </q-item-section>
 
                         <q-item-section side top>
-                          <q-badge>₱ {{item.service_price}}</q-badge>
+                          <q-badge>{{item.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
                           <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
                           <q-btn
                             dense
@@ -68,7 +68,7 @@
               <q-card-actions align="right" class="q-pa-xs">
                 <q-space></q-space>
                 <q-item-label caption>Total &nbsp;</q-item-label>
-                <q-badge>₱ {{totalPrice}}</q-badge>
+                <q-badge>{{totalPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
                 <q-space></q-space>
                 <q-btn to="/checkout" flat color="primary" label="Checkout"></q-btn>
               </q-card-actions>
@@ -168,7 +168,12 @@
             </q-item-section>
           </q-item>
         </q-expansion-item>
-        <q-item v-if="!setAdmin" to="/services" exact clickable>
+        <q-item
+          v-if="userDetails.roles=='old' || userDetails.roles=='new'"
+          to="/services"
+          exact
+          clickable
+        >
           <q-item-section avatar>
             <q-icon name="build" />
           </q-item-section>
@@ -176,6 +181,7 @@
             <q-item-label>Equipments</q-item-label>
           </q-item-section>
         </q-item>
+
         <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
           <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
             <q-item-section avatar>
@@ -207,8 +213,8 @@
             <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
-            <q-item-label v-if="!setAdmin">My Calendar</q-item-label>
-            <q-item-label v-if="setAdmin">Reservations Calendar</q-item-label>
+            <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Calendar</q-item-label>
+            <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservations Calendar</q-item-label>
           </q-item-section>
         </q-item>
         <q-item to="/reservation-table" exact clickable>
@@ -216,8 +222,8 @@
             <q-icon name="assessment" />
           </q-item-section>
           <q-item-section>
-            <q-item-label v-if="setAdmin">Reservation Table</q-item-label>
-            <q-item-label v-if="!setAdmin">My Reservation</q-item-label>
+            <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservation Table</q-item-label>
+            <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label>
           </q-item-section>
         </q-item>
         <q-item v-if="setAdmin" to="/users" exact clickable>

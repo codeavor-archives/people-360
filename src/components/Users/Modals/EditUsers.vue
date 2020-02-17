@@ -120,6 +120,9 @@ export default {
     editUser() {
       // var updates = db.ref("users/" + this.id).update(this.formData);
       // return db.ref().update(updates);
+
+      // console.log(this.id);
+
       this.updateUser({
         id: this.id,
         userDetails: this.formData

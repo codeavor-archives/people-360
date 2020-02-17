@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class>
-      <template v-if="setAdmin">
+      <template v-if="setAdmin || userDetails.roles=='Inspector'">
         <div class>
           <q-markup-table>
             <thead>

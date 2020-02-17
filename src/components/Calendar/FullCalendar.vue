@@ -12,7 +12,7 @@
         :events="preproposals"
         @select="handleSelect"
         @eventClick="handleClick"
-        v-if="setAdmin"
+        v-if="setAdmin || userDetails.roles=='Inspector'"
         defaultView="dayGridMonth"
         ref="fullCalendar"
         :event-color="getEventColor"

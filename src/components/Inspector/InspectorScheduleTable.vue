@@ -23,7 +23,7 @@
               :events="inspectorSchedules"
               @select="handleSelect"
               @eventClick="handleClick"
-              v-if="setAdmin"
+              v-if="setAdmin  || userDetails.roles=='Inspector'"
               defaultView="timeGridWeek"
               ref="fullCalendar"
               :event-color="getEventColor"

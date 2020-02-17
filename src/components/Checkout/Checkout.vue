@@ -29,17 +29,55 @@
       </div>
       <q-separator />
 
-      <q-card-actions align="right" class="q-pr-md">
+      <q-card-actions align="right" class="q-pr-md row">
         <q-badge color="red">Note: Please review items before to submit</q-badge>
         <q-space></q-space>
-        <q-item-label class="text-grey-8">
-          Total:
-          {{
-          totalPrice | currency("₱", 2, { decimalSeparator: "." })
-          }}
-        </q-item-label>
+        <div align="right" class>
+          <q-item-label class="text-grey-8 q-pb-xs">
+            Total:
+            <strong>
+              {{
+              totalPrice | currency("₱", 2, { decimalSeparator: "." })
+              }}
+            </strong>
+          </q-item-label>
+
+          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles=='new'">
+            Mobilization Fee:
+            <strong>
+              {{
+              preproposal.mobilizationFee.newClientPrice | currency("₱", 2, { decimalSeparator: "." })
+              }}
+            </strong>
+          </q-item-label>
+          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles=='old'">
+            Mobilization Fee:
+            <strong>
+              {{
+              preproposal.mobilizationFee.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })
+              }}
+            </strong>
+          </q-item-label>
+
+          <q-item-label class="q-pb-xs" v-if="userDetails.roles=='new'">
+            <strong>GRAND TOTAL:</strong>
+            <strong style=" font-size: 15px;">
+              {{
+              grandTotalforNew | currency("₱", 2, { decimalSeparator: "." })
+              }}
+            </strong>
+          </q-item-label>
+          <q-item-label class="q-pb-xs" v-if="userDetails.roles=='old'">
+            <strong>GRAND TOTAL:</strong>
+            <strong style=" font-size: 15px;">
+              {{
+              grandTotalforOld | currency("₱", 2, { decimalSeparator: "." })
+              }}
+            </strong>
+          </q-item-label>
+        </div>
       </q-card-actions>
-      <div class="q-mt-md">
+      <div class="q-mt-xl">
         <q-form @submit.prevent="requestProposal">
           <q-card flat class="my-card bg-white text-primary">
             <q-card-section>
@@ -83,18 +121,30 @@
                 v-model="preproposal.proposalNumber"
                 label="Proposal Number"
               ></q-input>
-
+              <q-select
+                :rules="[val => !!val || 'Field is required']"
+                v-model="preproposal.mobilizationFee"
+                class="col q-mb-none q-pb-sm"
+                :options="locations"
+                label="Location"
+              ></q-select>
               <q-input
                 v-model="preproposal.start"
-                :rules="[val => !!val || 'Field is required']"
+                lazy-rules
                 class="col q-mb-none q-pb-sm"
                 label="Start Date"
               >
                 <template v-slot:append>
                   <q-icon v-if="preproposal.start" name="close" class="cursor-pointer" />
                   <q-icon name="access_time" class="cursor-pointer">
-                    <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-date mask="YYYY-MM-DD" landscape v-model="preproposal.start" />
+                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                      <q-date
+                        @input="() => $refs.qDateProxy.hide()"
+                        v-model="preproposal.start"
+                        mask="YYYY-MM-DD"
+                        landscape
+                        :options="optionsFn"
+                      />
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -195,16 +245,19 @@ import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   firestore() {
     return {
-      preproposals: fs.collection("preproposals")
+      preproposals: fs.collection("preproposals"),
+      mobilizationFees: fs.collection("mobilizationFees")
     };
   },
   data() {
     return {
+      todaysDate: "",
+      date: "2020/02/17",
+      locations: [],
       start: "",
       end: "",
       medium: false,
       showEditEvent: false,
-      date: "",
       hiddenDays: [0],
       clientReservation: {},
       calendarPlugins: [
@@ -218,6 +271,8 @@ export default {
       calendarWeekends: true,
       today: new Date().toISOString().substr(0, 10),
       request: [],
+      grandTotalforNewClient: "",
+      grandTotalforOldClient: "",
       preproposal: {
         allDay: "true",
         color: "#027be3",
@@ -232,7 +287,9 @@ export default {
         optionReport: "",
         status: "",
         itemPurchase: [],
-        fullName: ""
+        fullName: "",
+        mobilizationFee: ""
+
         // quantity: [],
         // equipment: [],
         // name: []
@@ -250,6 +307,18 @@ export default {
     };
   },
   methods: {
+    optionsFn(preproposal) {
+      var today = new Date();
+      var year = new Date();
+      var addDay = today.setDate(today.getDate() + 1);
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + "/" + mm + "/" + dd;
+      // console.log(today);
+
+      return preproposal > today && preproposal <= "3000/03/15";
+    },
     handleSelect(arg) {
       this.medium = true;
       this.start = arg.startStr;
@@ -297,6 +366,11 @@ export default {
       this.preproposal.status = "";
     },
     requestProposal() {
+      // console.log(this.preproposal.mobilizationFee);
+      console.log(this.grandTotalforNew);
+      console.log(this.grandTotalforOld);
+    },
+    requestProposals() {
       var today = new Date();
       var year = new Date();
       var dd = String(today.getDate()).padStart(2, "0");
@@ -359,8 +433,13 @@ export default {
       if (this.preproposal.optionReport === "Yes") {
         this.preproposal.optionReport = true;
       }
-      // console.log(data, data2, data3, data4);
-      this.preproposal.totalPrice = this.totalPrice;
+
+      if (this.userDetails.roles == "new") {
+        this.preproposal.totalPrice = this.grandTotalforNewClient;
+      } else {
+        this.preproposal.totalPrice = this.grandTotalforOldClient;
+      }
+
       this.preproposal.title =
         this.preproposal.companyName + " " + this.preproposal.location;
       this.$firestore.preproposals
@@ -383,6 +462,16 @@ export default {
     }
   },
   mounted() {
+    var today = new Date();
+    var year = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + "-" + mm + "-" + dd;
+    this.todaysDate = today;
+
+    this.$binding("locations", fs.collection("mobilizationFees"));
+
     let user = fb.auth().currentUser;
     let clientData = [];
     if (user) {
@@ -425,6 +514,28 @@ export default {
     }
   },
   computed: {
+    //   hasremarks() {
+    //   return (
+    //     this.form.remarks == "For Processing" ||
+    //     this.form.remarks == "Ready for Release"
+    //   );
+    // },
+    // disabled() {
+    //   return (
+    //     this.form.received_by === null ||
+    //     !this.form.received_by ||
+    //     this.form.issued_by === null ||
+    //     !this.form.issued_by
+    //   );
+    // }
+    grandTotalforNew() {
+      return (this.grandTotalforNewClient =
+        +this.totalPrice + +this.preproposal.mobilizationFee.newClientPrice);
+    },
+    grandTotalforOld() {
+      return (this.grandTotalforOldClient =
+        +this.totalPrice + +this.preproposal.mobilizationFee.oldClientPrice);
+    },
     ...mapState("storeservices", ["cart"]),
     ...mapGetters("storeservices", ["totalPrice"]),
     ...mapState("auth", ["loggedIn", "userDetails"])

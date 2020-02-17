@@ -145,16 +145,6 @@ const actions = {
     fb.auth().onAuthStateChanged(user => {
       Loading.hide();
       if (user) {
-        user.getIdTokenResult().then(idTokenResult => {
-          const admin = idTokenResult.claims.admin;
-          // console.log(admin);
-          if (admin == true) {
-            commit("setusersAdmin", true);
-            this.$router.push("/").catch(err => {});
-          } else {
-            this.$router.push("/services").catch(err => {});
-          }
-        });
         let userID = fb.auth().currentUser.uid;
         db.ref("users/" + userID).once("value", snapshot => {
           let userDetails = snapshot.val();
@@ -170,6 +160,17 @@ const actions = {
             phoneNumber: userDetails.phoneNumber,
             userID: userID
           });
+        });
+
+        user.getIdTokenResult().then(idTokenResult => {
+          const admin = idTokenResult.claims.admin;
+          // console.log(admin);
+          if (admin == true) {
+            commit("setusersAdmin", true);
+            this.$router.push("/").catch(err => {});
+          } else {
+            this.$router.push("/services").catch(err => {});
+          }
         });
         // if (user.emailVerified) {    == uncomment this after development
         commit("setLoggedIn", true);
