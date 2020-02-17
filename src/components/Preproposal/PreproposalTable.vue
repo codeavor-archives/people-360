@@ -6,7 +6,7 @@
           <q-markup-table>
             <thead>
               <tr>
-                <th colspan="15">
+                <th colspan="20">
                   <div class="row no-wrap items-center">
                     <div class="text-h5 text-primary">Reservation Table</div>
                   </div>
@@ -19,10 +19,12 @@
                 <th class="text-left">Date</th>
                 <th class="text-left">Start Date</th>
                 <th class="text-left">Equipment</th>
+                <th class="text-left">Mobilization Fee</th>
                 <th class="text-left">Price</th>
+                <th class="text-left">Total Equipment Price</th>
                 <th class="text-left">Quantity</th>
                 <th class="text-left">Total Price</th>
-                <th class="text-left">Location</th>
+                <th class="text-left">Project Location</th>
                 <th class="text-left">Name</th>
                 <th class="text-left">Report</th>
                 <th class="text-left">Status</th>
@@ -47,8 +49,10 @@
                     </div>
                   </div>
                 </td>
-
-                <td class="text-left">
+                <td
+                  class="text-right"
+                >{{proposal.mobilizationFee | currency("₱", 2, { decimalSeparator: "." })}}</td>
+                <td class="text-right">
                   <div class="row">
                     <div>
                       <q-card-section
@@ -58,6 +62,9 @@
                     </div>
                   </div>
                 </td>
+                <td
+                  class="text-right"
+                >{{proposal.totalEquipmentPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
                 <td class="text-left">
                   <div class="row">
                     <div class="row">
@@ -84,7 +91,7 @@
                 </td>
 
                 <td
-                  class="text-left"
+                  class="text-right"
                 >{{proposal.totalPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
                 <td class="text-left">{{proposal.location}}</td>
                 <td class="text-left">
@@ -166,6 +173,12 @@
                         {{proposal.start}}
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col">
+                        <strong>Project Location:</strong>
+                        {{proposal.projectLocation}}
+                      </div>
+                    </div>
                   </q-card-section>
                   <q-card-actions class="q-pt-none">
                     <q-space></q-space>
@@ -197,6 +210,15 @@
                             <div v-for="price in proposal.itemPurchase" :key="price.id">
                               <strong>Price:</strong>
                               {{price.service_price | currency("₱", 2, { decimalSeparator: "." })}}
+                            </div>
+                            <div>
+                              <strong>Mobilization Fee:</strong>
+                              {{proposal.mobilizationFee | currency("₱", 2, { decimalSeparator: "." })}}
+                            </div>
+
+                            <div>
+                              <strong>Total Equipment Price:</strong>
+                              {{proposal.totalEquipmentPrice | currency("₱", 2, { decimalSeparator: "." })}}
                             </div>
                           </q-card-section>
                         </div>
@@ -417,12 +439,15 @@ export default {
           // );
           this.$binding(
             "clientPreproposals",
-            fs.collection("preproposals").orderBy("date")
+            fs.collection("preproposals").orderBy("start")
           );
         } else {
           this.$binding(
             "clientPreproposal",
-            fs.collection("preproposals").where("id", "==", user.uid)
+            fs
+              .collection("preproposals")
+              .where("id", "==", user.uid)
+              .orderBy("start")
           )
             .then(response => {
               console.log(response);

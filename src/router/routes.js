@@ -22,8 +22,12 @@ const routes = [
       },
       { path: "checkout", component: () => import("pages/PageCheckout.vue") },
       {
-        path: "reservation-table",
+        path: "approved-reservation",
         component: () => import("pages/PagePreProposal.vue")
+      },
+      {
+        path: "pending-reservation"
+        // component: () => import("pages/PagePreProposal.vue")
       },
       {
         path: "list-services",

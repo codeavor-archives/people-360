@@ -208,21 +208,77 @@
             <q-item-label>Mobilization Fee</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/reservation" exact clickable>
+        <!-- <q-item
+          v-if="userDetails.roles=='old' || userDetails.roles=='new'"
+          to="/reservation"
+          exact
+          clickable
+        >
           <q-item-section avatar>
             <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
             <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Calendar</q-item-label>
+          </q-item-section>
+        </q-item>-->
+
+        <q-item v-if="setAdmin || userDetails.roles=='Inspector'" to="/reservation" exact clickable>
+          <q-item-section avatar>
+            <q-icon name="calendar_today" />
+          </q-item-section>
+          <q-item-section>
             <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservations Calendar</q-item-label>
+
+            <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Calendar</q-item-label> -->
           </q-item-section>
         </q-item>
-        <q-item to="/reservation-table" exact clickable>
+        <q-expansion-item
+          v-if="setAdmin || userDetails.roles=='Inspector'"
+          icon="assessment"
+          label="Reservation Table"
+        >
+          <q-item
+            v-if="setAdmin || userDetails.roles=='Inspector'"
+            to="/pending-reservation"
+            exact
+            clickable
+            class="q-pl-xl"
+          >
+            <q-item-section avatar>
+              <q-icon name="flag" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Pending Reservation</q-item-label>
+              <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label> -->
+            </q-item-section>
+          </q-item>
+          <q-item
+            v-if="setAdmin || userDetails.roles=='Inspector'"
+            to="/approved-reservation"
+            exact
+            clickable
+            class="q-pl-xl"
+          >
+            <q-item-section avatar>
+              <q-icon name="thumb_up_alt" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Approved Reservation</q-item-label>
+              <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label> -->
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
+        <q-item
+          v-if="userDetails.roles=='old' || userDetails.roles=='new'"
+          to="/approved-reservation"
+          exact
+          clickable
+        >
           <q-item-section avatar>
             <q-icon name="assessment" />
           </q-item-section>
           <q-item-section>
-            <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservation Table</q-item-label>
+            <!-- <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservation Table</q-item-label> -->
             <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label>
           </q-item-section>
         </q-item>

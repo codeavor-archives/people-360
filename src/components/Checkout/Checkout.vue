@@ -288,7 +288,9 @@ export default {
         status: "",
         itemPurchase: [],
         fullName: "",
-        mobilizationFee: ""
+        mobilizationFee: "",
+        totalEquipmentPrice: "",
+        projectLocation: ""
 
         // quantity: [],
         // equipment: [],
@@ -365,12 +367,18 @@ export default {
       this.preproposal.name = "";
       this.preproposal.status = "";
     },
-    requestProposal() {
-      // console.log(this.preproposal.mobilizationFee);
+    requestProposals() {
+      console.log(this.preproposal.mobilizationFee.value);
       console.log(this.grandTotalforNew);
       console.log(this.grandTotalforOld);
+      if (this.userDetails.roles == "new") {
+        console.log(this.preproposal.mobilizationFee.newClientPrice);
+      } else {
+        console.log(this.preproposal.mobilizationFee.oldClientPrice);
+      }
+      console.log(this.totalPrice);
     },
-    requestProposals() {
+    requestProposal() {
       var today = new Date();
       var year = new Date();
       var dd = String(today.getDate()).padStart(2, "0");
@@ -422,24 +430,37 @@ export default {
       // this.preproposal.service_price = data2;
       // this.preproposal.equipment = data3;
       // this.preproposal.name = data4;
+      this.preproposal.projectLocation = this.preproposal.mobilizationFee.label;
       this.preproposal.itemPurchase = this.cart;
       this.preproposal.companyName = this.userDetails.companyName;
       if (this.userDetails.roles == "new") {
         this.preproposal.status = false;
+        this.preproposal.totalPrice = this.grandTotalforNewClient;
+        this.preproposal.mobilizationFee = this.preproposal.mobilizationFee.newClientPrice;
+        // this.preproposal.projectLocation = this.preproposal.mobilizationFee.value;
       } else {
         this.preproposal.status = true;
+        this.preproposal.totalPrice = this.grandTotalforOldClient;
+        this.preproposal.mobilizationFee = this.preproposal.mobilizationFee.oldClientPrice;
+        // this.preproposal.projectLocation = this.preproposal.mobilizationFee.value;
       }
 
       if (this.preproposal.optionReport === "Yes") {
         this.preproposal.optionReport = true;
       }
 
-      if (this.userDetails.roles == "new") {
-        this.preproposal.totalPrice = this.grandTotalforNewClient;
-      } else {
-        this.preproposal.totalPrice = this.grandTotalforOldClient;
-      }
+      // if (this.userDetails.roles == "new") {
+      //   this.preproposal.totalPrice = this.grandTotalforNewClient;
+      // } else {
+      //   this.preproposal.totalPrice = this.grandTotalforOldClient;
+      // }
+      //  if (this.userDetails.roles == "new") {
+      //   console.log(this.preproposal.mobilizationFee.newClientPrice);
+      // } else {
+      //   console.log(this.preproposal.mobilizationFee.oldClientPrice);
+      // }
 
+      this.preproposal.totalEquipmentPrice = this.totalPrice;
       this.preproposal.title =
         this.preproposal.companyName + " " + this.preproposal.location;
       this.$firestore.preproposals
@@ -456,6 +477,7 @@ export default {
           this.$store.commit("storeservices/removeItemFromCart", this.cart);
         })
         .catch(error => {
+          this.$q.loading.hide();
           showErrorMessage(error.message);
         });
       this.$store.commit("storeservices/removeItemFromCart", this.cart);
