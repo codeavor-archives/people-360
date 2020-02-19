@@ -79,7 +79,7 @@ export default {
     addToInspector() {
       this.$q.loading.show();
       this.formData.id = this.id;
-
+      this.formData.roles = "Inspector";
       this.updateUser({
         id: this.id,
         userDetails: this.formData

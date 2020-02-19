@@ -40,7 +40,7 @@
                 <q-btn
                   round
                   color="primary"
-                  @click="showAddInspectorModal(props.row, )"
+                  @click="showAddInspectorModal(props.row)"
                   flat
                   dense
                   icon="add"

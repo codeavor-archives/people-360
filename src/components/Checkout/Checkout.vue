@@ -18,7 +18,8 @@
             <q-item-section side top>
               <q-badge>
                 {{
-                item.service_price | currency("₱", 2, { decimalSeparator: "." })
+                item.service_price
+                | currency("₱", 2, { decimalSeparator: "." })
                 }}
               </q-badge>
               <q-item-label caption>Qty: {{ item.service_quantity }}</q-item-label>
@@ -35,31 +36,29 @@
         <div align="right" class>
           <q-item-label class="text-grey-8 q-pb-xs">
             Total:
+            <strong>{{ totalPrice | currency("₱", 2, { decimalSeparator: "." }) }}</strong>
+          </q-item-label>
+
+          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'new'">
+            Mobilization Fee:
             <strong>
               {{
-              totalPrice | currency("₱", 2, { decimalSeparator: "." })
+              preproposal.mobilizationFee.newClientPrice
+              | currency("₱", 2, { decimalSeparator: "." })
+              }}
+            </strong>
+          </q-item-label>
+          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'old'">
+            Mobilization Fee:
+            <strong>
+              {{
+              preproposal.mobilizationFee.oldClientPrice
+              | currency("₱", 2, { decimalSeparator: "." })
               }}
             </strong>
           </q-item-label>
 
-          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles=='new'">
-            Mobilization Fee:
-            <strong>
-              {{
-              preproposal.mobilizationFee.newClientPrice | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles=='old'">
-            Mobilization Fee:
-            <strong>
-              {{
-              preproposal.mobilizationFee.oldClientPrice | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-
-          <q-item-label class="q-pb-xs" v-if="userDetails.roles=='new'">
+          <q-item-label class="q-pb-xs" v-if="userDetails.roles == 'new'">
             <strong>GRAND TOTAL:</strong>
             <strong style=" font-size: 15px;">
               {{
@@ -67,7 +66,7 @@
               }}
             </strong>
           </q-item-label>
-          <q-item-label class="q-pb-xs" v-if="userDetails.roles=='old'">
+          <q-item-label class="q-pb-xs" v-if="userDetails.roles == 'old'">
             <strong>GRAND TOTAL:</strong>
             <strong style=" font-size: 15px;">
               {{
@@ -466,21 +465,30 @@ export default {
       this.$firestore.preproposals
         .add(this.preproposal)
         .then(response => {
+          this.$store.commit("storeservices/removeItemFromCart", this.cart);
           this.clear();
           console.log(response);
           this.$q.loading.hide();
-          this.$q.dialog({
-            title: "Success",
-            message: "Please wait for confirmation",
-            persistent: true
-          });
+          if (this.userDetails.roles == "new") {
+            this.$q.dialog({
+              title: "Success",
+              message: "Please proceed for downpayment",
+              persistent: true
+            });
+          } else {
+            this.$q.dialog({
+              title: "Reserved",
+              message: "Please wait for inspectors",
+              persistent: true
+            });
+          }
           this.$store.commit("storeservices/removeItemFromCart", this.cart);
         })
         .catch(error => {
-          this.$q.loading.hide();
           showErrorMessage(error.message);
+          console.log(error);
         });
-      this.$store.commit("storeservices/removeItemFromCart", this.cart);
+      // this.$store.commit("storeservices/removeItemFromCart", this.cart);
     }
   },
   mounted() {

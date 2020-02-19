@@ -1,7 +1,12 @@
 <template>
   <q-page padding>
-    <pre-proposal></pre-proposal>
-    <!-- <pre-proposal-folder></pre-proposal-folder> -->
+    <transition
+      appear
+      enter-active-class="animated zoomIn"
+      leave-active-class="animated zoomOut absolute-top"
+    >
+      <approved-pre-proposal></approved-pre-proposal>
+    </transition>
   </q-page>
 </template>
 
@@ -9,7 +14,8 @@
 import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   components: {
-    "pre-proposal": require("components/Preproposal/PreproposalTable").default,
+    "approved-pre-proposal": require("components/Preproposal/ApprovedPreproposalTable")
+      .default,
     "pre-proposal-folder": require("components/Preproposal/PreproposalFolders")
       .default
   },

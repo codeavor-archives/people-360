@@ -1,14 +1,14 @@
 <template>
   <q-page>
     <div class>
-      <template v-if="setAdmin || userDetails.roles=='Inspector'">
+      <template v-if="setAdmin || userDetails.roles == 'Inspector'">
         <div class>
           <q-markup-table>
             <thead>
               <tr>
                 <th colspan="20">
                   <div class="row no-wrap items-center">
-                    <div class="text-h5 text-primary">Reservation Table</div>
+                    <div class="text-h5 text-primary">Pending Reservation Table</div>
                   </div>
                 </th>
               </tr>
@@ -25,6 +25,7 @@
                 <th class="text-left">Quantity</th>
                 <th class="text-left">Total Price</th>
                 <th class="text-left">Project Location</th>
+                <th class="text-left">Payment Slip</th>
                 <th class="text-left">Name</th>
                 <th class="text-left">Report</th>
                 <th class="text-left">Status</th>
@@ -34,37 +35,45 @@
             <tbody>
               <!-- <tr v-for="category in equipmentCategories" :key="category.id"> -->
               <tr v-for="proposal in clientPreproposals" :key="proposal.id">
-                <td class="text-left">{{proposal.proposalNumber}}</td>
-                <td class="text-left">{{proposal.companyName}}</td>
-                <td class="text-left">{{proposal.fullName}}</td>
-                <td class="text-left">{{proposal.date}}</td>
-                <td class="text-left">{{proposal.start}}</td>
+                <td class="text-left">{{ proposal.proposalNumber }}</td>
+                <td class="text-left">{{ proposal.companyName }}</td>
+                <td class="text-left">{{ proposal.fullName }}</td>
+                <td class="text-left">{{ proposal.date }}</td>
+                <td class="text-left">{{ proposal.start }}</td>
                 <td class="text-left">
                   <div class="row">
                     <div>
                       <q-card-section
                         v-for="equipment in proposal.itemPurchase"
                         :key="equipment.id"
-                      >{{equipment.service_equipment}}</q-card-section>
+                      >{{ equipment.service_equipment }}</q-card-section>
                     </div>
                   </div>
                 </td>
-                <td
-                  class="text-right"
-                >{{proposal.mobilizationFee | currency("₱", 2, { decimalSeparator: "." })}}</td>
+                <td class="text-right">
+                  {{
+                  proposal.mobilizationFee
+                  | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </td>
                 <td class="text-right">
                   <div class="row">
                     <div>
-                      <q-card-section
-                        v-for="price in proposal.itemPurchase"
-                        :key="price.id"
-                      >{{price.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-card-section>
+                      <q-card-section v-for="price in proposal.itemPurchase" :key="price.id">
+                        {{
+                        price.service_price
+                        | currency("₱", 2, { decimalSeparator: "." })
+                        }}
+                      </q-card-section>
                     </div>
                   </div>
                 </td>
-                <td
-                  class="text-right"
-                >{{proposal.totalEquipmentPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
+                <td class="text-right">
+                  {{
+                  proposal.totalEquipmentPrice
+                  | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </td>
                 <td class="text-left">
                   <div class="row">
                     <div class="row">
@@ -73,7 +82,7 @@
                           v-for="(quantity, index) in proposal.itemPurchase"
                           :key="quantity.id"
                         >
-                          {{quantity.service_quantity}}
+                          {{ quantity.service_quantity }}
                           <!-- <q-btn
                             color="primary"
                             class
@@ -90,29 +99,42 @@
                   </div>
                 </td>
 
-                <td
-                  class="text-right"
-                >{{proposal.totalPrice | currency("₱", 2, { decimalSeparator: "." })}}</td>
-                <td class="text-left">{{proposal.location}}</td>
+                <td class="text-right">
+                  {{
+                  proposal.totalPrice
+                  | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </td>
+                <td class="text-left">{{ proposal.location }}</td>
+                <td class="text-left">
+                  <q-img
+                    style="cursor: pointer;"
+                    @click="showImage(proposal)"
+                    avatar
+                    :src="proposal.paymentSlip"
+                  />
+                </td>
                 <td class="text-left">
                   <div class="row">
                     <div>
                       <q-card-section
                         v-for="name in proposal.itemPurchase"
                         :key="name.id"
-                      >{{name.service_name}}</q-card-section>
+                      >{{ name.service_name }}</q-card-section>
                     </div>
                   </div>
                 </td>
                 <td class="text-left">
                   <q-badge
                     :color="proposal.optionReport ? 'green-7' : 'grey-4'"
-                  >{{proposal.optionReport ? 'Yes': 'No' }}</q-badge>
+                  >{{ proposal.optionReport ? "Yes" : "No" }}</q-badge>
                 </td>
                 <td class="text-left">
-                  <q-badge
-                    :color="proposal.status ? 'green-7' : 'orange-7'"
-                  >{{proposal.status ? 'Approved': 'For Approval' }}</q-badge>
+                  <q-badge :color="proposal.status ? 'green-7' : 'orange-7'">
+                    {{
+                    proposal.status ? "Approved" : "For Approval"
+                    }}
+                  </q-badge>
                 </td>
                 <td class="text-left">
                   <!-- <q-btn
@@ -164,19 +186,19 @@
                     <div class="row no-wrap items-center">
                       <div class="col">
                         <strong>Proposal Number:</strong>
-                        {{proposal.proposalNumber}}
+                        {{ proposal.proposalNumber }}
                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
                         <strong>Start Date:</strong>
-                        {{proposal.start}}
+                        {{ proposal.start }}
                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
                         <strong>Project Location:</strong>
-                        {{proposal.projectLocation}}
+                        {{ proposal.projectLocation }}
                       </div>
                     </div>
                   </q-card-section>
@@ -188,7 +210,9 @@
                       flat
                       color="primary"
                       round
-                      :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                      :icon="
+                        expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
+                      "
                     >
                       <q-tooltip content-class="bg-deep-orange">See More</q-tooltip>
                     </q-btn>
@@ -201,30 +225,42 @@
                           <q-card-section class="q-pa-none">
                             <div v-for="equipment in proposal.itemPurchase" :key="equipment.id">
                               <strong>Equipments:</strong>
-                              {{equipment.service_equipment}}
+                              {{ equipment.service_equipment }}
                             </div>
                             <div v-for="quantity in proposal.itemPurchase" :key="quantity.id">
                               <strong>Quantity:</strong>
-                              {{quantity.service_quantity}}
+                              {{ quantity.service_quantity }}
                             </div>
                             <div v-for="price in proposal.itemPurchase" :key="price.id">
                               <strong>Price:</strong>
-                              {{price.service_price | currency("₱", 2, { decimalSeparator: "." })}}
+                              {{
+                              price.service_price
+                              | currency("₱", 2, { decimalSeparator: "." })
+                              }}
                             </div>
                             <div>
                               <strong>Mobilization Fee:</strong>
-                              {{proposal.mobilizationFee | currency("₱", 2, { decimalSeparator: "." })}}
+                              {{
+                              proposal.mobilizationFee
+                              | currency("₱", 2, { decimalSeparator: "." })
+                              }}
                             </div>
 
                             <div>
                               <strong>Total Equipment Price:</strong>
-                              {{proposal.totalEquipmentPrice | currency("₱", 2, { decimalSeparator: "." })}}
+                              {{
+                              proposal.totalEquipmentPrice
+                              | currency("₱", 2, { decimalSeparator: "." })
+                              }}
                             </div>
                           </q-card-section>
                         </div>
                         <div class="text-subtitle1">
                           <strong>Total Price:</strong>
-                          {{proposal.totalPrice | currency("₱", 2, { decimalSeparator: "." })}}
+                          {{
+                          proposal.totalPrice
+                          | currency("₱", 2, { decimalSeparator: "." })
+                          }}
                         </div>
                       </q-card-section>
                     </div>
@@ -354,6 +390,9 @@
     <q-dialog v-model="editProposal">
       <edit-proposal @close="editProposal = false" :proposals="proposals" :id="id"></edit-proposal>
     </q-dialog>
+    <q-dialog v-model="showPaymentSlipModal">
+      <show-payment-slip @close="showPaymentSlipModal = false" :proposals="proposals" :id="id"></show-payment-slip>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -364,6 +403,7 @@ import { fb, db, fs } from "boot/firebase";
 export default {
   data() {
     return {
+      showPaymentSlipModal: false,
       expanded: false,
       slide: 1,
       editProposal: false,
@@ -380,6 +420,11 @@ export default {
     };
   },
   methods: {
+    showImage(proposal) {
+      // console.log(proposal);
+      this.showPaymentSlipModal = true;
+      this.proposals = proposal;
+    },
     deleteQuantity(quantity, index) {
       // console.log(quantity);
       // console.log(index);
@@ -428,7 +473,7 @@ export default {
       user.getIdTokenResult().then(idTokenResult => {
         const admin = idTokenResult.claims.admin;
         // console.log(admin);
-        if (admin == true) {
+        if (admin == true || this.userDetails.roles == "Inspector") {
           // this.admin = true;
           // this.$binding(
           //   "clientPreproposals",
@@ -439,14 +484,17 @@ export default {
           // );
           this.$binding(
             "clientPreproposals",
-            fs.collection("preproposals").orderBy("start")
+            fs
+              .collection("preproposals")
+              .where("status", "==", false)
+              .orderBy("start")
           );
         } else {
           this.$binding(
             "clientPreproposal",
             fs
               .collection("preproposals")
-              .where("id", "==", user.uid)
+              .where("id", "==", user.uid && "status", "==", false)
               .orderBy("start")
           )
             .then(response => {
@@ -461,6 +509,8 @@ export default {
   },
   components: {
     "edit-proposal": require("components/Preproposal/Modals/EditPreproposal")
+      .default,
+    "show-payment-slip": require("components/Preproposal/Modals/PaymentViewer")
       .default
   },
   computed: {
@@ -469,5 +519,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

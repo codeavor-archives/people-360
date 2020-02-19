@@ -37,6 +37,7 @@
             dense
             rounded
             outlined
+            autogrow
             v-model="newMessage"
           ></q-input>
           <q-btn type="submit" class="q-mt-xs" dense flat color="white" icon="send"></q-btn>

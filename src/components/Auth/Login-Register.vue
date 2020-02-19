@@ -101,11 +101,33 @@
         />
       </template>
     </q-input>
-    <div class="row q-mb-md">
-      <q-btn @click="resetPassword" dense flat color="primary" label="Reset Password" />
+    <q-checkbox
+      v-if="tab == 'register'"
+      :rules="[val => !!val || 'Please read terms and conditions']"
+      lazy-rules
+      v-model="val"
+    >
+      <q-item-label caption>
+        I have read and agree
+        <a href target="_blank" @click="showTermsAndCondition = true"
+          >terms and conditions of service</a
+        >
+      </q-item-label>
+    </q-checkbox>
+    <div class="row q-mt-md q-mb-md">
+      <q-btn
+        @click="resetPassword"
+        dense
+        flat
+        color="primary"
+        label="Reset Password"
+      />
       <q-space></q-space>
       <q-btn type="submit" color="primary" :label="tab" />
     </div>
+    <q-dialog v-model="showTermsAndCondition">
+      <terms-condition @close="showTermsAndCondition = false"></terms-condition>
+    </q-dialog>
   </q-form>
 </template>
 
@@ -118,6 +140,8 @@ export default {
   props: ["tab"],
   data() {
     return {
+      showTermsAndCondition: false,
+      val: false,
       isPwd: true,
       isconfPwd: true,
       formData: {
@@ -163,8 +187,18 @@ export default {
         } else {
           this.$refs.name.validate();
           this.$refs.lastName.validate();
-          if (!this.$refs.name.hasError && !this.$refs.lastName.hasError) {
-            this.registerUser(this.formData);
+          if (this.val == false) {
+            this.$q
+              .dialog({
+                title: "Warning",
+                message: "Please read and accept terms and conditions",
+                persistent: true
+              })
+              .onOk(() => {});
+          } else {
+            if (!this.$refs.name.hasError && !this.$refs.lastName.hasError) {
+              this.registerUser(this.formData);
+            }
           }
         }
       }
@@ -182,6 +216,9 @@ export default {
       }
     },
     ...mapActions("auth", ["registerUser", "loginUser"])
+  },
+  components: {
+    "terms-condition": require("components/Auth/TermsAndCondition").default
   },
   filters: {
     titleCase(value) {

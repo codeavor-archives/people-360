@@ -141,33 +141,69 @@
     >
       <q-list>
         <q-item-label header>Navigation</q-item-label>
-
-        <q-expansion-item v-if="setAdmin" icon="how_to_reg" label="Inspectors">
-          <q-item v-if="setAdmin" to="/inspectors" exact clickable class="q-pl-xl">
+        <q-expansion-item v-if="setAdmin" label="File Maintenance">
+          <q-expansion-item v-if="setAdmin" icon="how_to_reg" label="Inspectors">
+            <q-item v-if="setAdmin" to="/inspectors" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="how_to_reg" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Inspectors</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-if="setAdmin" to="/positions" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="playlist_add_check" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Positions</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="schedule" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Schedule</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
+          <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
+            <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="category" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Equipment Category</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="format_list_bulleted" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>List of Equipments</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
+          <q-item to="/mobilization" exact clickable v-if="setAdmin">
             <q-item-section avatar>
-              <q-icon name="how_to_reg" />
+              <q-icon name="local_shipping" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Inspectors</q-item-label>
+              <q-item-label>Mobilization Fee</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item v-if="setAdmin" to="/positions" exact clickable class="q-pl-xl">
+          <q-item v-if="setAdmin" to="/users" exact clickable>
             <q-item-section avatar>
-              <q-icon name="playlist_add_check" />
+              <q-icon name="people" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Positions</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
-            <q-item-section avatar>
-              <q-icon name="schedule" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Schedule</q-item-label>
+              <q-item-label>Manage User</q-item-label>
             </q-item-section>
           </q-item>
         </q-expansion-item>
+
         <q-item
           v-if="userDetails.roles=='old' || userDetails.roles=='new'"
           to="/services"
@@ -182,32 +218,6 @@
           </q-item-section>
         </q-item>
 
-        <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
-          <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
-            <q-item-section avatar>
-              <q-icon name="format_list_bulleted" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>List of Equipments</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
-            <q-item-section avatar>
-              <q-icon name="category" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Equipment Category</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-expansion-item>
-        <q-item to="/mobilization" exact clickable v-if="setAdmin">
-          <q-item-section avatar>
-            <q-icon name="local_shipping" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Mobilization Fee</q-item-label>
-          </q-item-section>
-        </q-item>
         <!-- <q-item
           v-if="userDetails.roles=='old' || userDetails.roles=='new'"
           to="/reservation"
@@ -222,20 +232,10 @@
           </q-item-section>
         </q-item>-->
 
-        <q-item v-if="setAdmin || userDetails.roles=='Inspector'" to="/reservation" exact clickable>
-          <q-item-section avatar>
-            <q-icon name="calendar_today" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservations Calendar</q-item-label>
-
-            <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Calendar</q-item-label> -->
-          </q-item-section>
-        </q-item>
         <q-expansion-item
           v-if="setAdmin || userDetails.roles=='Inspector'"
           icon="assessment"
-          label="Reservation Table"
+          label="Projects"
         >
           <q-item
             v-if="setAdmin || userDetails.roles=='Inspector'"
@@ -268,6 +268,16 @@
             </q-item-section>
           </q-item>
         </q-expansion-item>
+        <q-item v-if="setAdmin || userDetails.roles=='Inspector'" to="/reservation" exact clickable>
+          <q-item-section avatar>
+            <q-icon name="calendar_today" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservations Calendar</q-item-label>
+
+            <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Calendar</q-item-label> -->
+          </q-item-section>
+        </q-item>
         <q-item
           v-if="userDetails.roles=='old' || userDetails.roles=='new'"
           to="/approved-reservation"
@@ -282,14 +292,7 @@
             <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="setAdmin" to="/users" exact clickable>
-          <q-item-section avatar>
-            <q-icon name="people" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Manage User</q-item-label>
-          </q-item-section>
-        </q-item>
+
         <q-item v-if="setAdmin" to="/certificates" exact clickable>
           <q-item-section avatar>
             <q-icon name="description" />
