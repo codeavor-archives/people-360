@@ -27,6 +27,14 @@
           :options="options"
           label="Inspector Position"
         ></q-select>
+        <q-select
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          v-model="inspector.specialSkill"
+          class="col q-mb-none q-pb-sm"
+          :options="skillNames"
+          label="Inspector Special Skill"
+        ></q-select>
         <!-- <q-input
           :rules="[val => !!val || 'Field is required']"
           ref="name"
@@ -72,13 +80,15 @@ export default {
   props: ["inspector", "id"],
   data() {
     return {
-      options: []
+      options: [],
+      skillNames: []
     };
   },
   firestore() {
     return {
       positions: fs.collection("positions"),
-      inspectors: fs.collection("inspectors")
+      inspectors: fs.collection("inspectors"),
+      specialSkills: fs.collection("specialSkills")
     };
   },
   methods: {
@@ -102,6 +112,8 @@ export default {
     }
   },
   mounted() {
+    this.$binding("skillNames", fs.collection("specialSkills"));
+
     let options = [];
     let positionRef = fs.collection("positions");
     let allPostion = positionRef

@@ -1,13 +1,13 @@
 <template>
   <q-page>
-    <pre-proposal></pre-proposal>
+    <certificate></certificate>
   </q-page>
 </template>
 
 <script>
 export default {
   components: {
-    "pre-proposal": require("components/Forms/PreProposalForm").default
+    certificate: require("components/Forms/Certificate").default
   }
 };
 </script>

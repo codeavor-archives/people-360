@@ -44,6 +44,14 @@
           :options="options"
           label="Inspector Position"
         ></q-select>
+        <q-select
+          :rules="[val => !!val || 'Field is required']"
+          lazy-rules
+          v-model="formData.specialSkill"
+          class="col q-mb-none q-pb-sm"
+          :options="skillNames"
+          label="Inspector Special Skill"
+        ></q-select>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn type="submit" icon="add" label="Add to Inspector" color="primary" />
@@ -61,11 +69,13 @@ export default {
   firestore() {
     return {
       inspectors: fs.collection("inspectors"),
-      positions: fs.collection("positions")
+      positions: fs.collection("positions"),
+      specialSkills: fs.collection("specialSkills")
     };
   },
   data() {
     return {
+      skillNames: [],
       optionRole: ["new", "old", "Inspector"],
       options: [],
       isPwd: true,
@@ -92,6 +102,7 @@ export default {
           name: this.formData.name,
           email: this.formData.email,
           position: this.formData.position,
+          specialSkill: this.formData.specialSkill.skillName,
           label: this.formData.email,
           value: this.formData.email,
           available: true
@@ -140,6 +151,8 @@ export default {
     }
   },
   mounted() {
+    this.$binding("skillNames", fs.collection("specialSkills"));
+
     this.formData = Object.assign({}, this.user);
 
     let options = [];

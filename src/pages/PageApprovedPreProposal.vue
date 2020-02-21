@@ -21,6 +21,13 @@ export default {
   },
   computed: {
     ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"])
+  },
+  methods: {
+    refresh(done) {
+      setTimeout(() => {
+        done();
+      }, 1000);
+    }
   }
 };
 </script>

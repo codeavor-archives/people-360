@@ -109,19 +109,15 @@
     >
       <q-item-label caption>
         I have read and agree
-        <a href target="_blank" @click="showTermsAndCondition = true"
-          >terms and conditions of service</a
-        >
+        <a
+          href
+          target="_blank"
+          @click="showTermsAndCondition = true"
+        >terms and conditions of service</a>
       </q-item-label>
     </q-checkbox>
     <div class="row q-mt-md q-mb-md">
-      <q-btn
-        @click="resetPassword"
-        dense
-        flat
-        color="primary"
-        label="Reset Password"
-      />
+      <q-btn @click="resetPassword" dense flat color="primary" label="Reset Password" />
       <q-space></q-space>
       <q-btn type="submit" color="primary" :label="tab" />
     </div>

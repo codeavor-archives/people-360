@@ -1,148 +1,172 @@
 <template>
   <q-page>
     <template v-if="cart.length">
-      <div class="text-subtitle2">
-        <q-card-section>
-          <div class="text-h6 text-primary">Formal Quotation</div>
-        </q-card-section>
-        <q-list>
-          <q-item v-for="item in cart" :key="item.id">
-            <q-item-section top avatar>
-              <q-avatar>
-                <img :src="item.service_photo" />
-              </q-avatar>
-            </q-item-section>
+      <q-stepper v-model="step" ref="stepper" contracted color="primary" animated>
+        <q-step :name="1" title="Select campaign settings" icon="settings" :done="step > 1">
+          <q-card-actions class>
+            <q-item-label class="q-ml-md">
+              <q-item-label class="col text-justify q-pb-xs">
+                <strong>1.</strong>
+                If there's a Lifting Equipment, test weight for load testing, as well as necessary equipment for moving the test weights will be provided by the
+                <strong>{{this.userDetails.companyName}}</strong>
+              </q-item-label>
+              <q-item-label class="col text-justify q-pb-xs">
+                <strong>2.</strong>
+                <strong>{{this.userDetails.companyName}}</strong> will provide a counterpart Safety Officer who will be the dedicated Liason Officer to coordinate with the other concerned parties within its organization.
+              </q-item-label>
+              <q-item-label class="col text-justify q-pb-xs">
+                <strong>3.</strong>
+                <strong>All equipment inspected, even if it is deemed that inspection is no longer necessary on that equipment, whether it passes or fails, will be included in the billing</strong>
+              </q-item-label>
+              <q-item-label class="col text-justify q-pb-xs">
+                <strong>4.</strong>
+                <strong>Grace Period:</strong> If equipment fails an inspection, there will be a
+                <strong>30-days grace period</strong>- within this period only mobilization will be billed for the reinspection. Beyond that period, it will be billed as new equipment.
+              </q-item-label>
+              <q-item-label class="col text-justify q-pb-xs">
+                <strong>5.</strong>
+                <strong>Equipment Breakdown.</strong>
+                PEOPLE360 is not responsible for any loss, destruction, or damage that may occur during the conduct of inspection of the units of equipment, nor any parts of said number of equipment, covered by this agreement.
+              </q-item-label>
+              <q-item-label class="col text-justify q-pb-xs">
+                <strong>6.</strong>
+                If DOLE Witness is required,
+                <strong>({{this.userDetails.companyName}})</strong> will make the necessary arrangements.
+              </q-item-label>
+              <q-item-label class="col text-justify q-pb-md">
+                <strong>7.</strong>
+                This qoutation is only valid for 6 months after the date of issuance.
+              </q-item-label>
+            </q-item-label>
+            <q-item-label class="col-6 text-justify q-pb-lg">Yours Very Truly,</q-item-label>
+            <div class="row col-6">
+              <q-item-label class="col-12 text-justify">Conforme:</q-item-label>
+              <q-item-label class="col-12 text-justify">
+                For
+                <strong>{{this.userDetails.companyName}}</strong>
+              </q-item-label>
+            </div>
+            <div class="row col-6">
+              <!-- <q-item-label
+            class="col-12 text-justify"
+            v-for="safety in safetyAssociates "
+            :key="safety.id"
+          >
+            <strong>{{safety.name}}</strong>
+          </q-item-label>
+              <q-item-label class="col-12 text-justify">Safety Associate</q-item-label>-->
+              <q-item-label class="col-12">People 360 Consulting Company</q-item-label>
+            </div>
+            <div class="row col-6 q-mt-lg">
+              <q-item-label
+                class="col q-pb-lg"
+              >({{this.userDetails.name}} {{this.userDetails.middleName.charAt(0)}}. {{this.userDetails.lastName}}, {{this.todaysDate}})</q-item-label>
+            </div>
+          </q-card-actions>
+          <q-btn
+            round
+            @click="() => { done1 = true; step = 2 }"
+            color="primary"
+            icon="arrow_forward"
+          />
+        </q-step>
+        <q-step
+          :name="2"
+          title="Create an ad group"
+          caption="Optional"
+          icon="add_shopping_cart"
+          :done="step > 2"
+        >
+          <div class="text-subtitle2">
+            <q-card-section>
+              <div class="text-h6 text-primary">Formal Quotation</div>
+            </q-card-section>
+            <q-list>
+              <q-item v-for="item in cart" :key="item.id">
+                <q-item-section top avatar>
+                  <q-avatar>
+                    <img :src="item.service_photo" />
+                  </q-avatar>
+                </q-item-section>
 
-            <q-item-section>
-              <q-item-label>{{ item.service_name }}</q-item-label>
-              <q-item-label caption>{{ item.service_equipment }}</q-item-label>
-            </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ item.service_name }}</q-item-label>
+                  <q-item-label caption>{{ item.service_equipment }}</q-item-label>
+                </q-item-section>
 
-            <q-item-section side top>
-              <q-badge>
-                {{
-                item.service_price
-                | currency("₱", 2, { decimalSeparator: "." })
-                }}
-              </q-badge>
-              <q-item-label caption>Qty: {{ item.service_quantity }}</q-item-label>
-              <q-btn dense round size="8px" @click="removeToCart(item)" icon="clear" flat></q-btn>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
-      <q-separator />
+                <q-item-section side top>
+                  <q-badge>
+                    {{
+                    item.service_price
+                    | currency("₱", 2, { decimalSeparator: "." })
+                    }}
+                  </q-badge>
+                  <q-item-label caption>Qty: {{ item.service_quantity }}</q-item-label>
+                  <q-btn dense round size="8px" @click="removeToCart(item)" icon="clear" flat></q-btn>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+          <q-separator />
+          <q-badge color="red">Note: Please review items before to submit</q-badge>
+          <q-card-actions align="right" class="q-pr-md row">
+            <q-space></q-space>
+            <div align="right" class>
+              <q-item-label class="text-grey-8 q-pb-xs">
+                Total:
+                <strong>{{ totalPrice | currency("₱", 2, { decimalSeparator: "." }) }}</strong>
+              </q-item-label>
 
-      <q-card-actions align="right" class="q-pr-md row">
-        <q-badge color="red">Note: Please review items before to submit</q-badge>
-        <q-space></q-space>
-        <div align="right" class>
-          <q-item-label class="text-grey-8 q-pb-xs">
-            Total:
-            <strong>{{ totalPrice | currency("₱", 2, { decimalSeparator: "." }) }}</strong>
-          </q-item-label>
+              <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'new'">
+                ADD 12% VAT
+                <strong>
+                  {{
+                  computeTax
+                  | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </strong>
+              </q-item-label>
+              <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'new'">
+                Mobilization Fee:
+                <strong>
+                  {{
+                  preproposal.mobilizationFee.newClientPrice
+                  | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </strong>
+              </q-item-label>
+              <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'old'">
+                Mobilization Fee:
+                <strong>
+                  {{
+                  preproposal.mobilizationFee.oldClientPrice
+                  | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </strong>
+              </q-item-label>
 
-          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'new'">
-            ADD 12% VAT
-            <strong>
-              {{
-              computeTax
-              | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'new'">
-            Mobilization Fee:
-            <strong>
-              {{
-              preproposal.mobilizationFee.newClientPrice
-              | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-          <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'old'">
-            Mobilization Fee:
-            <strong>
-              {{
-              preproposal.mobilizationFee.oldClientPrice
-              | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-
-          <q-item-label class="q-pb-xs" v-if="userDetails.roles == 'new'">
-            <strong>GRAND TOTAL:</strong>
-            <strong style=" font-size: 15px;">
-              {{
-              grandTotalforNew | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-          <q-item-label class="q-pb-xs" v-if="userDetails.roles == 'old'">
-            <strong>GRAND TOTAL:</strong>
-            <strong style=" font-size: 15px;">
-              {{
-              grandTotalforOld | currency("₱", 2, { decimalSeparator: "." })
-              }}
-            </strong>
-          </q-item-label>
-        </div>
-      </q-card-actions>
-      <q-card-actions class>
-        <q-item-label class="q-ml-md">
-          <q-item-label class="col text-justify q-pb-xs">
-            <strong>1.</strong>
-            If there's a Lifting Equipment, test weight for load testing, as well as necessary equipment for moving the test weights will be provided by the
-            <strong>{{this.userDetails.companyName}}</strong>
-          </q-item-label>
-          <q-item-label class="col text-justify q-pb-xs">
-            <strong>2.</strong>
-            <strong>{{this.userDetails.companyName}}</strong> will provide a counterpart Safety Officer who will be the dedicated Liason Officer to coordinate with the other concerned parties within its organization.
-          </q-item-label>
-          <q-item-label class="col text-justify q-pb-xs">
-            <strong>3.</strong>
-            <strong>All equipment inspected, even if it is deemed that inspection is no longer necessary on that equipment, whether it passes or fails, will be included in the billing</strong>
-          </q-item-label>
-          <q-item-label class="col text-justify q-pb-xs">
-            <strong>4.</strong>
-            <strong>Grace Period:</strong> If equipment fails an inspection, there will be a
-            <strong>30-days grace period</strong>- within this period only mobilization will be billed for the reinspection. Beyond that period, it will be billed as new equipment.
-          </q-item-label>
-          <q-item-label class="col text-justify q-pb-xs">
-            <strong>5.</strong>
-            <strong>Equipment Breakdown.</strong>
-            PEOPLE360 is not responsible for any loss, destruction, or damage that may occur during the conduct of inspection of the units of equipment, nor any parts of said number of equipment, covered by this agreement.
-          </q-item-label>
-          <q-item-label class="col text-justify q-pb-xs">
-            <strong>6.</strong>
-            If DOLE Witness is required,
-            <strong>({{this.userDetails.companyName}})</strong> will make the necessary arrangements.
-          </q-item-label>
-          <q-item-label class="col text-justify q-pb-md">
-            <strong>7.</strong>
-            This qoutation is only valid for 6 months after the date of issuance.
-          </q-item-label>
-        </q-item-label>
-        <q-item-label class="col-6 text-justify q-pb-lg">Yours Very Truly,</q-item-label>
-        <div class="row">
-          <q-item-label class="col text-justify q-pb-lg">Conforme:</q-item-label>
-          <q-item-label class="col-12 text-justify q-pt-md">
-            For
-            <strong>{{this.userDetails.companyName}}</strong>
-          </q-item-label>
-        </div>
-        <div class="row col-6">
-          <q-item-label class="col-12 text-justify">(Safety Associate Name):</q-item-label>
-          <q-item-label class="col-12 text-justify">Safety Associate</q-item-label>
-        </div>
-        <div class="row col-6 q-mt-lg">
-          <q-item-label class="col text-justify q-pb-lg">(Signature Over Printed Name, Date)</q-item-label>
-        </div>
-      </q-card-actions>
-      <div class="q-mt-md">
-        <q-form @submit.prevent="requestProposal">
-          <q-card flat class="my-card bg-white text-primary">
-            <!-- <FullCalendar
+              <q-item-label class="q-pb-xs" v-if="userDetails.roles == 'new'">
+                <strong>GRAND TOTAL:</strong>
+                <strong style=" font-size: 15px;">
+                  {{
+                  grandTotalforNew | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </strong>
+              </q-item-label>
+              <q-item-label class="q-pb-xs" v-if="userDetails.roles == 'old'">
+                <strong>GRAND TOTAL:</strong>
+                <strong style=" font-size: 15px;">
+                  {{
+                  grandTotalforOld | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </strong>
+              </q-item-label>
+            </div>
+          </q-card-actions>
+          <div class="q-mt-md">
+            <q-form @submit.prevent="requestProposal">
+              <q-card flat class="my-card bg-white text-primary">
+                <!-- <FullCalendar
               :plugins="calendarPlugins"
               :header="{
           left: 'next today',
@@ -163,51 +187,55 @@
               v-model="date"
               :hiddenDays="hiddenDays"
               :weekends="calendarWeekends"
-            />-->
-            <q-card-section class>
-              <q-input
-                style="display: none"
-                disable
-                class="col q-mb-sm"
-                v-model="preproposal.date"
-                label="Date"
-              ></q-input>
-              <q-input
-                style="display: none"
-                disable
-                class="col q-mb-sm"
-                v-model="preproposal.proposalNumber"
-                label="Proposal Number"
-              ></q-input>
-              <q-select
-                :rules="[val => !!val || 'Field is required']"
-                v-model="preproposal.mobilizationFee"
-                class="col q-mb-none q-pb-sm"
-                :options="locations"
-                label="Location"
-              ></q-select>
-              <q-input
-                v-model="preproposal.start"
-                lazy-rules
-                class="col q-mb-none q-pb-sm"
-                label="Start Date"
-              >
-                <template v-slot:append>
-                  <q-icon v-if="preproposal.start" name="close" class="cursor-pointer" />
-                  <q-icon name="access_time" class="cursor-pointer">
-                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                      <q-date
-                        @input="() => $refs.qDateProxy.hide()"
-                        v-model="preproposal.start"
-                        mask="YYYY-MM-DD"
-                        landscape
-                        :options="optionsFn"
-                      />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-              <!-- <q-input
+                />-->
+                <q-card-section class>
+                  <q-input
+                    style="display: none"
+                    disable
+                    class="col q-mb-sm"
+                    v-model="preproposal.date"
+                    label="Date"
+                  ></q-input>
+                  <q-input
+                    style="display: none"
+                    disable
+                    class="col q-mb-sm"
+                    v-model="preproposal.proposalNumber"
+                    label="Proposal Number"
+                  ></q-input>
+                  <q-select
+                    :rules="[val => !!val || 'Field is required']"
+                    v-model="preproposal.mobilizationFee"
+                    class="col q-mb-none q-pb-sm"
+                    :options="locations"
+                    label="Location"
+                  ></q-select>
+                  <q-input
+                    v-model="preproposal.start"
+                    lazy-rules
+                    class="col q-mb-none q-pb-sm"
+                    label="Start Date"
+                  >
+                    <template v-slot:append>
+                      <q-icon v-if="preproposal.start" name="close" class="cursor-pointer" />
+                      <q-icon name="access_time" class="cursor-pointer">
+                        <q-popup-proxy
+                          ref="qDateProxy"
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-date
+                            @input="() => $refs.qDateProxy.hide()"
+                            v-model="preproposal.start"
+                            mask="YYYY-MM-DD"
+                            landscape
+                            :options="optionsFn"
+                          />
+                        </q-popup-proxy>
+                      </q-icon>
+                    </template>
+                  </q-input>
+                  <!-- <q-input
               v-model="preproposal.end"
               :rules="[val => !!val || 'Field is required']"
               class="col q-mb-none q-pb-sm"
@@ -221,36 +249,53 @@
                   </q-popup-proxy>
                 </q-icon>
               </template>
-              </q-input>-->
-              <!-- <q-input
+                  </q-input>-->
+                  <!-- <q-input
               v-model="preproposal.companyName"
               ref="name"
               class="col q-mb-none q-pb-sm"
               :rules="[val => !!val || 'Field is required']"
               label="Company Name"
-              ></q-input>-->
-              <!-- <q-input
+                  ></q-input>-->
+                  <!-- <q-input
               v-model="preproposal.location"
               :rules="[val => !!val || 'Field is required']"
               ref="name"
               class="col q-mb-none q-pb-sm"
               label="Location(Area)"
-              ></q-input>-->
-              <q-select
-                :rules="[val => !!val || 'Field is required']"
-                class="col"
-                :options="optionsReport"
-                v-model="preproposal.optionReport"
-                label="With Report?"
-              ></q-select>
-            </q-card-section>
-            <q-card-actions>
-              <q-space></q-space>
-              <q-btn type="submit" :disable="!cart.length" color="primary" label="Submit"></q-btn>
-            </q-card-actions>
-          </q-card>
-        </q-form>
-      </div>
+                  ></q-input>-->
+                  <q-select
+                    :rules="[val => !!val || 'Field is required']"
+                    class="col"
+                    :options="optionsReport"
+                    v-model="preproposal.optionReport"
+                    label="With Report?"
+                  ></q-select>
+                </q-card-section>
+                <q-card-actions>
+                  <q-btn
+                    round
+                    v-if="step > 1"
+                    color="primary"
+                    @click="$refs.stepper.previous()"
+                    icon="arrow_back"
+                  />
+                  <q-space></q-space>
+                  <q-btn type="submit" :disable="!cart.length" color="primary" label="Submit"></q-btn>
+                </q-card-actions>
+              </q-card>
+            </q-form>
+          </div>
+          <!-- <q-stepper-navigation>
+            <q-btn @click="() => { done2 = true; step = 3 }" color="primary" label="Continue" />
+            <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
+          </q-stepper-navigation>-->
+        </q-step>
+
+        <!-- <q-step :name="3" title="Create an ad" icon="date_range">
+         
+        </q-step>-->
+      </q-stepper>
     </template>
     <template v-else>
       <transition
@@ -304,14 +349,17 @@ export default {
   firestore() {
     return {
       preproposals: fs.collection("preproposals"),
-      mobilizationFees: fs.collection("mobilizationFees")
+      mobilizationFees: fs.collection("mobilizationFees"),
+      safetyAssociates: fs.collection("safetyAssociates")
     };
   },
   data() {
     return {
+      step: 1,
       todaysDate: "",
       date: "2020/02/17",
       locations: [],
+      safetyAssociates: {},
       start: "",
       end: "",
       medium: false,
@@ -560,6 +608,7 @@ export default {
     this.todaysDate = today;
 
     this.$binding("locations", fs.collection("mobilizationFees"));
+    this.$binding("safetyAssociates", fs.collection("safetyAssociates"));
 
     let user = fb.auth().currentUser;
     let clientData = [];

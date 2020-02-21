@@ -21,6 +21,7 @@
             <q-tr :props="props">
               <q-td :props="props" key="name">{{props.row.name}}</q-td>
               <q-td :props="props" key="position">{{props.row.position}}</q-td>
+              <q-td :props="props" key="specialSkill">{{props.row.specialSkill.skillName}}</q-td>
               <q-td :props="props" key="email">{{props.row.email}}</q-td>
               <q-td>
                 <q-btn
@@ -89,6 +90,13 @@ export default {
           label: "Position",
           sortable: true,
           field: "position"
+        },
+        {
+          name: "specialSkill",
+          align: "left",
+          label: "Special Skill",
+          sortable: true,
+          field: "specialSkill"
         },
         {
           name: "email",

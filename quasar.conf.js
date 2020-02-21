@@ -6,7 +6,7 @@ module.exports = function(ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-    boot: ["firebase", "router-auth", "QCalendar", "Vue2Filters"],
+    boot: ["firebase", "router-auth", "QCalendar", "Vue2Filters", "qrcode"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -100,7 +100,7 @@ module.exports = function(ctx) {
         // "QParallax",
         // "QPopupEdit",
         "QPopupProxy",
-        // "QPullToRefresh",
+        "QPullToRefresh",
         "QRating",
         "QScrollArea",
         "QSeparator",
@@ -110,9 +110,9 @@ module.exports = function(ctx) {
         "QSpace",
         "QSpinner",
         // "QSplitter",
-        // "QStepper",
-        // "QStep",
-        // "QStepperNavigation",
+        "QStepper",
+        "QStep",
+        "QStepperNavigation",
         "QTable",
         "QTh",
         "QTr",

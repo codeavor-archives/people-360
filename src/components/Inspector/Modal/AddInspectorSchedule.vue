@@ -27,12 +27,13 @@
 <script>
 import { fb, db, fs } from "boot/firebase";
 export default {
-  props: ["start"],
+  props: ["start", "proposaltoPass"],
   firestore() {
     return {
       positions: fs.collection("positions"),
       inspectors: fs.collection("inspectors"),
-      inspectorSchedules: fs.collection("inspectorSchedules")
+      inspectorSchedules: fs.collection("inspectorSchedules"),
+      preproposals: fs.collection("preproposals")
     };
   },
   data() {
@@ -50,8 +51,36 @@ export default {
   methods: {
     fbAddInspectorSchedule() {
       this.$q.loading.show();
+
+      // this.proposaltoPass.inspector = this.inspectorSchedule.data
+      this.$firestore.preproposals
+        .doc(this.proposaltoPass.id)
+        .update({
+          inspectors: this.inspectorSchedule.data.email
+        })
+        .then(response => {
+          console.log(response);
+          this.$q.loading.hide();
+          this.$q.notify({
+            message: "Successfully added Inspector",
+            color: "primary",
+            multiLine: true,
+            actions: [
+              {
+                label: "Dismiss",
+                color: "white",
+                handler: () => {}
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          this.$q.loading.hide();
+        });
+
       // Add some firestore add methods here
-      this.inspectorSchedule.start = this.start;
+      // this.inspectorSchedule.start = this.start;
       this.inspectorSchedule.id = this.inspectorSchedule.data.id;
       this.inspectorSchedule.createdby = fb.auth().currentUser.uid;
       this.inspectorSchedule.title =

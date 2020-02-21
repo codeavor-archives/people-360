@@ -22,11 +22,11 @@ const routes = [
       },
       { path: "checkout", component: () => import("pages/PageCheckout.vue") },
       {
-        path: "approved-reservation",
+        path: "approved-projects",
         component: () => import("pages/PageApprovedPreProposal.vue")
       },
       {
-        path: "pending-reservation",
+        path: "pending-projects",
         component: () => import("pages/PagePendingPreProposal.vue")
       },
       {
@@ -56,6 +56,18 @@ const routes = [
       {
         path: "mobilization",
         component: () => import("pages/PageMobilization.vue")
+      },
+      {
+        path: "safety-associate",
+        component: () => import("pages/PageSafetyAssociate.vue")
+      },
+      {
+        path: "formal-quotation",
+        component: () => import("pages/PageQuotation.vue")
+      },
+      {
+        path: "special-skills",
+        component: () => import("pages/PageSpecialSkill.vue")
       }
     ]
   }

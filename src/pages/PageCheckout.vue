@@ -1,6 +1,8 @@
 <template>
   <q-page padding>
-    <checkout></checkout>
+    <q-pull-to-refresh @refresh="refresh">
+      <checkout></checkout>
+    </q-pull-to-refresh>
   </q-page>
 </template>
 
@@ -8,6 +10,13 @@
 export default {
   components: {
     checkout: require("components/Checkout/Checkout").default
+  },
+  methods: {
+    refresh(done) {
+      setTimeout(() => {
+        done();
+      }, 1000);
+    }
   }
 };
 </script>

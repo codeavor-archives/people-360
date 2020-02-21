@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
-    <inspector-position-table v-if="admin"></inspector-position-table>
-    <q-page-sticky v-if="admin" class="all-pointer-events" :offset="[18, 18]">
+    <inspector-position-table v-if="setAdmin"></inspector-position-table>
+    <q-page-sticky v-if="setAdmin" class="all-pointer-events" :offset="[18, 18]">
       <q-fab icon="add" direction="up" color="primary">
         <q-tooltip content-class="bg-deep-orange">Add Position</q-tooltip>
         <q-fab-action @click="showAddPosition = true" color="primary" icon="build" />
@@ -15,6 +15,7 @@
 
 <script>
 import { fb, db } from "boot/firebase";
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -27,6 +28,9 @@ export default {
       .default,
     "add-inspector-position": require("components/Inspector/Modal/AddInspectorPosition")
       .default
+  },
+  computed: {
+    ...mapState("auth", ["loggedIn", "userDetails", "setAdmin"])
   },
   mounted() {
     let user = fb.auth().currentUser;
