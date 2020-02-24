@@ -11,7 +11,7 @@
               <p
                 style="font-family:Palatino Linotype; font-size:18px; text-align:center; text-decoration: underline; "
               >
-                <strong>PEOPLE 360 CORPORATION</strong>
+                <strong>CERTIFICATE OF REG</strong>
               </p>
               <div>
                 <p style="font-family:Palatino Linotype; font-size:16px; text-align:left; ">

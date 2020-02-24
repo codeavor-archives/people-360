@@ -396,8 +396,8 @@ export default {
         fullName: "",
         mobilizationFee: "",
         totalEquipmentPrice: "",
-        projectLocation: ""
-
+        projectLocation: "",
+        tax: ""
         // quantity: [],
         // equipment: [],
         // name: []
@@ -540,12 +540,13 @@ export default {
       this.preproposal.itemPurchase = this.cart;
       this.preproposal.companyName = this.userDetails.companyName;
       if (this.userDetails.roles == "new") {
-        this.preproposal.status = false;
+        this.preproposal.status = "pending";
+        this.preproposal.downPayment = (this.grandTotalforNewClient * 20) / 100;
         this.preproposal.totalPrice = this.grandTotalforNewClient;
         this.preproposal.mobilizationFee = this.preproposal.mobilizationFee.newClientPrice;
         // this.preproposal.projectLocation = this.preproposal.mobilizationFee.value;
       } else {
-        this.preproposal.status = true;
+        this.preproposal.status = "approved";
         this.preproposal.totalPrice = this.grandTotalforOldClient;
         this.preproposal.mobilizationFee = this.preproposal.mobilizationFee.oldClientPrice;
         // this.preproposal.projectLocation = this.preproposal.mobilizationFee.value;
@@ -667,7 +668,10 @@ export default {
     //   );
     // }
     computeTax() {
-      return (this.totalPrice * 12) / 100;
+      return (this.preproposal.tax = (this.totalPrice * 12) / 100);
+    },
+    downPayment() {
+      return (this.preproposal.downPayment = (this.totalPrice * 12) / 100);
     },
     grandTotalforNew() {
       return (this.grandTotalforNewClient =

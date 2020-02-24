@@ -26,8 +26,9 @@
                 <th class="text-left">Total Price</th>
                 <th class="text-left">Project Location</th>
                 <th class="text-left">Payment Slip</th>
+                <th class="text-left">For Downpayment</th>
                 <th class="text-left">Name</th>
-                <th class="text-left">Report</th>
+                <!-- <th class="text-left">Report</th> -->
                 <th class="text-left">Status</th>
                 <th class="text-left" v-if="setAdmin">Actions</th>
               </tr>
@@ -114,6 +115,7 @@
                     :src="proposal.paymentSlip"
                   />
                 </td>
+                <td>{{proposal.downPayment | currency("₱", 2, { decimalSeparator: "." })}}</td>
                 <td class="text-left">
                   <div class="row">
                     <div>
@@ -124,17 +126,13 @@
                     </div>
                   </div>
                 </td>
-                <td class="text-left">
+                <!-- <td class="text-left">
                   <q-badge
                     :color="proposal.optionReport ? 'green-7' : 'grey-4'"
                   >{{ proposal.optionReport ? "Yes" : "No" }}</q-badge>
-                </td>
+                </td>-->
                 <td class="text-left">
-                  <q-badge :color="proposal.status ? 'green-7' : 'orange-7'">
-                    {{
-                    proposal.status ? "Approved" : "For Approval"
-                    }}
-                  </q-badge>
+                  <q-badge color="orange-7" v-if="proposal.status=='pending'">Pending</q-badge>
                 </td>
                 <td class="text-left">
                   <!-- <q-btn
@@ -147,7 +145,7 @@
                   ></q-btn>-->
                   <q-btn
                     @click="approvedProposal(proposal)"
-                    v-if="!proposal.status"
+                    v-if="proposal.status=='pending'"
                     round
                     color="primary"
                     flat
@@ -436,13 +434,13 @@ export default {
       this.$firestore.preproposals
         .doc(proposal.id)
         .update({
-          status: true
+          status: "approved"
         })
         .then(response => {
           console.log(response);
           this.$q.loading.hide();
           this.$q.notify({
-            message: "Successfully approved reservation",
+            message: "Successfully approved project",
             color: "primary",
             multiLine: true,
             actions: [
@@ -486,7 +484,7 @@ export default {
             "clientPreproposals",
             fs
               .collection("preproposals")
-              .where("status", "==", false)
+              .where("status", "==", "pending")
               .orderBy("start")
           );
         } else {
@@ -494,7 +492,7 @@ export default {
             "clientPreproposal",
             fs
               .collection("preproposals")
-              .where("id", "==", user.uid && "status", "==", false)
+              .where("id", "==", user.uid && "status", "==", "pending")
               .orderBy("start")
           )
             .then(response => {

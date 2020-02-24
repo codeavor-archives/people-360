@@ -28,9 +28,9 @@
           type="email"
           ref="email"
           :rules="[
-              val =>
-                isValidEmailAddress(val) || 'Please enter a valid email address'
-            ]"
+            val =>
+              isValidEmailAddress(val) || 'Please enter a valid email address'
+          ]"
           lazy-rules
           class="col q-mb-none q-pb-sm"
           v-model="formData.email"
@@ -57,8 +57,18 @@
         </div>-->
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn @click="makeAdmin" icon="save" label="Make Admin" color="primary" />
-        <q-btn @click="newPassword" icon="save" label="Reset Password" color="primary" />
+        <q-btn
+          @click="makeAdmin"
+          icon="save"
+          label="Make Admin"
+          color="primary"
+        />
+        <q-btn
+          @click="newPassword"
+          icon="save"
+          label="Reset Password"
+          color="primary"
+        />
         <q-btn @click="editUser" icon="save" label="Save" color="primary" />
       </q-card-actions>
     </q-form>
@@ -130,10 +140,36 @@ export default {
       this.$emit("close");
     },
     newPassword() {
+      this.$q.loading.show();
       const newPassword = fc.httpsCallable("newPassword");
-      newPassword({ email: this.user.email }).then(result => {
-        console.log(result);
-      });
+      newPassword({ email: this.user.email })
+        .then(result => {
+          console.log(result);
+          console.log(result);
+          this.$q.loading.hide();
+          this.$emit("close");
+          this.$q.notify({
+            message: "Successfully change password",
+            caption: "a minutes ago",
+            color: "primary",
+            actions: [
+              {
+                label: "Ok",
+                color: "yellow",
+                handler: () => {}
+              },
+              {
+                label: "Dismiss",
+                color: "white",
+                handler: () => {}
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          this.$q.loading.hide();
+          showErrorMessage(error.message);
+        });
       this.$emit("close");
     },
     isValidEmailAddress(email) {

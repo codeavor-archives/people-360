@@ -4,9 +4,9 @@
       <div class>
         <q-table
           :filter="filter"
-          title="Equipment Category Table"
+          title="Certificate Builder Table"
           color="primary"
-          :data="equipmentCategories"
+          :data="certificates"
           :columns="columns"
           row-key="id"
         >
@@ -19,11 +19,13 @@
           </template>
           <template v-slot:body="props">
             <q-tr :props="props">
-              <q-td :props="props" key="type">{{props.row.type}}</q-td>
-              <q-td :props="props" key="position">{{props.row.position}}</q-td>
+              <q-td :props="props" key="director">{{props.row.director}}</q-td>
+              <q-td :props="props" key="logo">
+                <q-img avatar :src="props.row.logo" />
+              </q-td>
               <q-td>
                 <q-btn
-                  @click="showEditTypeModal(props.row)"
+                  @click="showEditCertModal(props.row)"
                   round
                   color="primary"
                   flat
@@ -38,8 +40,8 @@
         </q-table>
       </div>
     </div>
-    <q-dialog v-model="showEditType">
-      <edit-category @close="showEditType = false" :equipmentCategory="equipmentCategory" :id="id"></edit-category>
+    <q-dialog v-model="showEditCertificate">
+      <edit-certificate @close="showEditCertificate = false" :certificate="certificate" :id="id"></edit-certificate>
     </q-dialog>
   </q-page>
 </template>
@@ -49,50 +51,46 @@ import { fb, db, fs } from "boot/firebase";
 export default {
   firestore() {
     return {
-      equipmentCategories: fs.collection("equipmentCategories")
+      certificates: fs.collection("certificates")
     };
   },
   data() {
     return {
+      certificate: {},
       filter: "",
       id: "",
-      showEditType: false,
+      showEditCertificate: false,
       columns: [
         {
-          name: "type",
+          name: "logo",
           align: "left",
-          label: "Type",
+          label: "Logo",
           sortable: true,
           field: "type"
         },
         {
-          name: "position",
+          name: "director",
           align: "left",
-          label: "Position",
+          label: "Director",
           sortable: true,
-          field: "position"
+          field: "director"
         },
         {
           align: "left",
           label: "Action"
         }
-      ],
-      equipmentCategory: {
-        id: "",
-        type: "",
-        subCategory: ""
-      }
+      ]
     };
   },
   methods: {
-    showEditTypeModal(props) {
-      this.showEditType = true;
-      this.equipmentCategory = props;
-      this.id = props.id;
+    showEditCertModal(props) {
+      this.showEditCertificate = true;
+      this.certificate = props;
+      console.log(props);
     }
   },
   components: {
-    "edit-category": require("components/Services/Modal/EditEquipmentType")
+    "edit-certificate": require("components/Certificates/Modals/EditCertificate")
       .default
   }
 };

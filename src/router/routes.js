@@ -68,6 +68,10 @@ const routes = [
       {
         path: "special-skills",
         component: () => import("pages/PageSpecialSkill.vue")
+      },
+      {
+        path: "certificate-builder",
+        component: () => import("pages/PageCertificateBuilder.vue")
       }
     ]
   }

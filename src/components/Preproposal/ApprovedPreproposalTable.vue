@@ -9,7 +9,9 @@
                 <tr>
                   <th colspan="20">
                     <div class="row no-wrap items-center">
-                      <div class="text-h5 text-primary">Approved Reservation Table</div>
+                      <div class="text-h5 text-primary">
+                        Approved Reservation Table
+                      </div>
                     </div>
                   </th>
                 </tr>
@@ -45,23 +47,27 @@
                         <q-card-section
                           v-for="equipment in proposal.itemPurchase"
                           :key="equipment.id"
-                        >{{ equipment.service_equipment }}</q-card-section>
+                          >{{ equipment.service_equipment }}</q-card-section
+                        >
                       </div>
                     </div>
                   </td>
                   <td class="text-right">
                     {{
-                    proposal.mobilizationFee
-                    | currency("₱", 2, { decimalSeparator: "." })
+                      proposal.mobilizationFee
+                        | currency("₱", 2, { decimalSeparator: "." })
                     }}
                   </td>
                   <td class="text-right">
                     <div class="row">
                       <div>
-                        <q-card-section v-for="price in proposal.itemPurchase" :key="price.id">
+                        <q-card-section
+                          v-for="price in proposal.itemPurchase"
+                          :key="price.id"
+                        >
                           {{
-                          price.service_price
-                          | currency("₱", 2, { decimalSeparator: "." })
+                            price.service_price
+                              | currency("₱", 2, { decimalSeparator: "." })
                           }}
                         </q-card-section>
                       </div>
@@ -69,8 +75,8 @@
                   </td>
                   <td class="text-right">
                     {{
-                    proposal.totalEquipmentPrice
-                    | currency("₱", 2, { decimalSeparator: "." })
+                      proposal.totalEquipmentPrice
+                        | currency("₱", 2, { decimalSeparator: "." })
                     }}
                   </td>
                   <td class="text-left">
@@ -99,8 +105,8 @@
                   </td>
                   <td class="text-right">
                     {{
-                    proposal.totalPrice
-                    | currency("₱", 2, { decimalSeparator: "." })
+                      proposal.totalPrice
+                        | currency("₱", 2, { decimalSeparator: "." })
                     }}
                   </td>
                   <td class="text-left">{{ proposal.location }}</td>
@@ -110,19 +116,41 @@
                         <q-card-section
                           v-for="name in proposal.itemPurchase"
                           :key="name.id"
-                        >{{ name.service_name }}</q-card-section>
+                          >{{ name.service_name }}</q-card-section
+                        >
                       </div>
                     </div>
                   </td>
                   <td class="text-left">
                     <q-badge
                       :color="proposal.optionReport ? 'green-7' : 'grey-4'"
-                    >{{ proposal.optionReport ? "Yes" : "No" }}</q-badge>
+                      >{{ proposal.optionReport ? "Yes" : "No" }}</q-badge
+                    >
                   </td>
                   <td class="text-left">
+                    <!-- <q-badge :color="proposal.status ? 'green-7' : 'orange-7'">
+                      {{
+                      proposal.status ? "Reserved" : "For Approval"
+                      }}
+                    </q-badge>-->
                     <q-badge
-                      :color="proposal.status ? 'green-7' : 'orange-7'"
-                    >{{ proposal.status ? "Reserved" : "For Approval" }}</q-badge>
+                      color="orange-7"
+                      v-if="proposal.status == 'pending'"
+                      >Pending</q-badge
+                    >
+                    <q-badge
+                      color="green-7"
+                      v-if="proposal.status == 'approved'"
+                      >Approved</q-badge
+                    >
+                    <q-badge
+                      color="orange-7"
+                      v-if="proposal.status == 'ongoing'"
+                      >On-Going</q-badge
+                    >
+                    <q-badge color="orange-7" v-if="proposal.status == 'done'"
+                      >Done</q-badge
+                    >
                   </td>
                   <td class="text-left">
                     <!-- <q-btn
@@ -134,9 +162,8 @@
                     icon="edit"
                     ></q-btn>-->
 
-                    <q-btn
+                    <!-- <q-btn
                       @click="approvedProposal(proposal)"
-                      v-if="!proposal.status"
                       round
                       color="primary"
                       flat
@@ -144,7 +171,7 @@
                       icon="thumb_up_alt"
                     >
                       <q-tooltip content-class="bg-accent">Reserved</q-tooltip>
-                    </q-btn>
+                    </q-btn>-->
                     <q-btn
                       @click="cancelProposal(proposal)"
                       round
@@ -164,7 +191,9 @@
                       icon="add"
                       @click="assignInspector(proposal)"
                     >
-                      <q-tooltip content-class="bg-red">Add Inspector</q-tooltip>
+                      <q-tooltip content-class="bg-red"
+                        >Add Inspector</q-tooltip
+                      >
                     </q-btn>
                   </td>
                 </tr>
@@ -327,7 +356,8 @@
                             track-color="grey-3"
                             class="absolute"
                             style="top: 10px; right: 12px; transform: translateY(-50%); transform: translateX(-0%)"
-                          >{{ value }}%</q-circular-progress>
+                            >{{ value }}%</q-circular-progress
+                          >
                         </div>
                       </div>
                       <div class="row">
@@ -344,23 +374,43 @@
                       </div>
                     </q-card-section>
                     <q-card-actions class="q-pt-none">
-                      <q-badge :color="proposal.status ? 'green-7' : 'orange-7'">
+                      <!-- <q-badge :color="proposal.status ? 'green-7' : 'orange-7'">
                         {{
-                        proposal.status ? "Reserved" : "Proceed for Downpayment"
+                        proposal.status
+                        ? "Reserved"
+                        : "Proceed for Downpayment"
                         }}
-                      </q-badge>
+                      </q-badge>-->
+                      <q-badge
+                        color="orange-7"
+                        v-if="proposal.status == 'pending'"
+                        >Pending</q-badge
+                      >
+                      <q-badge
+                        color="green-7"
+                        v-if="proposal.status == 'approved'"
+                        >Approved</q-badge
+                      >
+                      <q-badge
+                        color="orange-7"
+                        v-if="proposal.status == 'ongoing'"
+                        >On-Going</q-badge
+                      >
+                      <q-badge color="orange-7" v-if="proposal.status == 'done'"
+                        >Done</q-badge
+                      >
 
                       <q-input
                         class="col-6"
                         v-model="paymentSlip"
                         @change="uploadSlip"
                         dense
-                        v-if="!proposal.status"
+                        v-if="proposal.status == 'pending'"
                         @input="
-                        val => {
-                          file = val[0];
-                        }
-                      "
+                          val => {
+                            file = val[0];
+                          }
+                        "
                         type="file"
                       >
                         <template v-slot:append>
@@ -373,10 +423,11 @@
                           />
                         </template>
                       </q-input>
+
                       <q-btn
                         @click="uploadPaymentSlip(proposal)"
                         round
-                        v-if="readytosubmit && !proposal.status"
+                        v-if="readytosubmit && proposal.status == 'pending'"
                         dense
                         size="sm"
                         flat
@@ -384,17 +435,24 @@
                         color="primary"
                       ></q-btn>
                       <!-- <q-btn
-                      no-caps
-                      size="sm"
-                      color="primary"
-                      dense
-                   
-                      label="Proceed for Downpayment"
-                      @click="pay"
-                    >{{!proposal.status ? '' : ''}}
-                      <q-tooltip content-class="bg-deep-orange">Pay</q-tooltip>
+                        no-caps
+                        size="sm"
+                        color="primary"
+                        dense
+                        label="Proceed for Downpayment"
+                      >
+                        <q-tooltip content-class="bg-deep-orange">Pay</q-tooltip>
                       </q-btn>-->
                       <q-space></q-space>
+                      <q-btn
+                        @click="payDownPayment(proposal)"
+                        size="sm"
+                        round
+                        color="primary"
+                        dense
+                        icon="payment"
+                      ></q-btn>
+
                       <q-btn
                         @click="expanded = !expanded"
                         dense
@@ -402,10 +460,12 @@
                         color="primary"
                         round
                         :icon="
-                        expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
-                      "
+                          expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'
+                        "
                       >
-                        <q-tooltip content-class="bg-deep-orange">See More</q-tooltip>
+                        <q-tooltip content-class="bg-deep-orange"
+                          >See More</q-tooltip
+                        >
                       </q-btn>
                     </q-card-actions>
                     <q-slide-transition>
@@ -414,43 +474,69 @@
                         <q-card-section class="q-pt-none">
                           <div class="row">
                             <q-card-section class="q-pa-none">
-                              <div v-for="equipment in proposal.itemPurchase" :key="equipment.id">
+                              <div
+                                v-for="equipment in proposal.itemPurchase"
+                                :key="equipment.id"
+                              >
                                 <strong>Equipments:</strong>
                                 {{ equipment.service_equipment }}
                               </div>
-                              <div v-for="quantity in proposal.itemPurchase" :key="quantity.id">
+                              <div>
+                                <strong>Slip:</strong>
+                                <q-avatar rounded>
+                                  <img
+                                    style="cursor: pointer;"
+                                    @click="showImage(proposal)"
+                                    avatar
+                                    :src="proposal.paymentSlip"
+                                  />
+                                </q-avatar>
+                              </div>
+                              <div
+                                v-for="quantity in proposal.itemPurchase"
+                                :key="quantity.id"
+                              >
                                 <strong>Quantity:</strong>
                                 {{ quantity.service_quantity }}
                               </div>
-                              <div v-for="price in proposal.itemPurchase" :key="price.id">
+                              <div
+                                v-for="price in proposal.itemPurchase"
+                                :key="price.id"
+                              >
                                 <strong>Price:</strong>
                                 {{
-                                price.service_price
-                                | currency("₱", 2, { decimalSeparator: "." })
+                                  price.service_price
+                                    | currency("₱", 2, {
+                                      decimalSeparator: "."
+                                    })
                                 }}
                               </div>
                               <div>
                                 <strong>Mobilization Fee:</strong>
                                 {{
-                                proposal.mobilizationFee
-                                | currency("₱", 2, { decimalSeparator: "." })
+                                  proposal.mobilizationFee
+                                    | currency("₱", 2, {
+                                      decimalSeparator: "."
+                                    })
                                 }}
                               </div>
 
                               <div>
                                 <strong>Total Equipment Price:</strong>
                                 {{
-                                proposal.totalEquipmentPrice
-                                | currency("₱", 2, { decimalSeparator: "." })
+                                  proposal.totalEquipmentPrice
+                                    | currency("₱", 2, {
+                                      decimalSeparator: "."
+                                    })
                                 }}
                               </div>
                             </q-card-section>
                           </div>
-                          <div class="text-subtitle1">
+                          <div class>
                             <strong>Total Price:</strong>
                             {{
-                            proposal.totalPrice
-                            | currency("₱", 2, { decimalSeparator: "." })
+                              proposal.totalPrice
+                                | currency("₱", 2, { decimalSeparator: "." })
                             }}
                           </div>
                         </q-card-section>
@@ -579,7 +665,11 @@
         </div>-->
       </div>
       <q-dialog v-model="editProposal">
-        <edit-proposal @close="editProposal = false" :proposals="proposals" :id="id"></edit-proposal>
+        <edit-proposal
+          @close="editProposal = false"
+          :proposals="proposals"
+          :id="id"
+        ></edit-proposal>
       </q-dialog>
       <q-dialog v-model="showAddInspectorSched">
         <add-inspector-schedule
@@ -587,11 +677,20 @@
           @close="showAddInspectorSched = false"
         ></add-inspector-schedule>
       </q-dialog>
+      <q-dialog v-model="showPaymentSlipModal">
+        <show-payment-slip
+          @close="showPaymentSlipModal = false"
+          :proposals="proposals"
+          :id="id"
+        ></show-payment-slip>
+      </q-dialog>
     </q-pull-to-refresh>
   </q-page>
 </template>
 
 <script>
+// window.Stripe("pk_test_HQOiUEejQKbAx0vr1tl8UJbB00Mh4SGVyE");
+import axios from "axios";
 // import chartjsdoughnut from 'boot/Charts'
 import { showErrorMessage } from "src/functions/function-show-error-message";
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -601,6 +700,8 @@ export default {
   extends: Bar,
   data() {
     return {
+      showPaymentSlipModal: false,
+      session: "",
       showAddInspectorSched: false,
       slipValue: null,
       paymentSlip: "",
@@ -750,6 +851,42 @@ export default {
     };
   },
   methods: {
+    payDownPayment(proposal) {
+      console.log(proposal);
+      // let data = this.proposal.map(item => ({
+      //   [item.service_Id]: item.service_quantity
+      // }));
+
+      const stripe = Stripe("pk_test_HQOiUEejQKbAx0vr1tl8UJbB00Mh4SGVyE");
+      // data = Object.assign({}, ...data);
+      axios
+        .get(
+          // "https://us-central1-e-commerce-77d42.cloudfunctions.net/checkout",
+          "https://us-central1-asset-management-5f4bd.cloudfunctions.net/checkout",
+          {
+            params: {
+              products: proposal //this data will be the parameter to send to the server in index.js
+            }
+          }
+        )
+        .then(response => {
+          this.session = response.data;
+          console.log(response.data);
+          stripe
+            .redirectToCheckout({
+              sessionId: this.session.id
+            })
+            .then(function(result) {});
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    showImage(proposal) {
+      // console.log(proposal);
+      this.showPaymentSlipModal = true;
+      this.proposals = proposal;
+    },
     mountAllCollections() {
       let user = fb.auth().currentUser;
       let clientData = [];
@@ -795,7 +932,7 @@ export default {
       setTimeout(() => {
         this.mountAllCollections();
         done();
-      }, 1000);
+      }, 500);
     },
     assignInspector(proposal) {
       this.showAddInspectorSched = true;
@@ -956,7 +1093,7 @@ export default {
             "clientPreproposals",
             fs
               .collection("preproposals")
-              .where("status", "==", true)
+              .where("status", "==", "approved")
               .orderBy("start")
           );
         } else {
@@ -982,6 +1119,8 @@ export default {
       .default,
     "view-quotation": require("components/Preproposal/Actions/View").default,
     "add-inspector-schedule": require("components/Inspector/Modal/AddInspectorSchedule")
+      .default,
+    "show-payment-slip": require("components/Preproposal/Modals/PaymentViewer")
       .default
   },
   computed: {

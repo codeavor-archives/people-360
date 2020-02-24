@@ -210,6 +210,24 @@
               <q-item-label>Manage User</q-item-label>
             </q-item-section>
           </q-item>
+          <q-expansion-item dense v-if="setAdmin" icon="description" label="Certificate">
+            <q-item dense v-if="setAdmin" to="/certificates" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="description" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Certificates</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item dense v-if="setAdmin" to="/certificate-builder" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="post_add" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Certificate Builder</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
           <!-- <q-item dense v-if="setAdmin" to="/safety-associate" exact clickable>
             <q-item-section avatar>
               <q-icon name="person_pin" />
@@ -320,14 +338,6 @@
           </q-item-section>
         </q-item>
 
-        <q-item dense v-if="setAdmin" to="/certificates" exact clickable>
-          <q-item-section avatar>
-            <q-icon name="description" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Certificates</q-item-label>
-          </q-item-section>
-        </q-item>
         <q-item dense v-for="nav in navs" :key="nav.label" :to="nav.to" exact clickable>
           <q-item-section avatar>
             <q-icon :name="nav.icon" />
