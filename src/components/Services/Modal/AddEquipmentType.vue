@@ -18,17 +18,6 @@
             <q-icon v-if="equipmentCategory.type" name="close" class="cursor-pointer" />
           </template>
         </q-input>
-        <!-- <q-input
-          :rules="[val => !!val || 'Field is required']"
-          ref="name"
-          class="col"
-          label="Equipment Sub-Category"
-          v-model="equipmentCategory.subCategory"
-        >
-          <template v-slot:append>
-            <q-icon v-if="equipmentCategory.subCategory" name="close" class="cursor-pointer" />
-          </template>
-        </q-input>-->
         <q-select
           :rules="[val => !!val || 'Field is required']"
           v-model="equipmentCategory.position"

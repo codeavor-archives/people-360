@@ -6,7 +6,6 @@
           v-if="loggedIn && !this.$route.params.id"
           class="hamburger"
           flat
-          dense
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
           icon="menu"
@@ -15,17 +14,26 @@
         <q-btn
           v-if="loggedIn && this.$route.params.id"
           flat
-          dense
           round
           icon="arrow_back"
           aria-label="Menu"
           v-go-back.single
         />
         <q-toolbar-title class="text-center" v-if="loggedIn">
-          <q-img src="../../download.jpg" class="logo"></q-img>
+          <!-- <q-avatar size="30px" class> -->
+          <q-img class="logo" src="../../download.jpg">
+            <!-- remove class="logo" -->
+          </q-img>
+          <!-- </q-avatar> -->
           {{ title }}
         </q-toolbar-title>
-        <q-btn @click="showMyCart" round flat icon="shopping_cart">
+        <q-btn
+          v-if="!setAdmin || !userDetails.roles=='Inspector'"
+          @click="showMyCart"
+          round
+          flat
+          icon="shopping_cart"
+        >
           <q-menu :offset="[40, 10]">
             <q-card class="my-card" flat>
               <template v-if="cart.length">
@@ -47,14 +55,7 @@
                         <q-item-section side top>
                           <q-badge>{{item.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
                           <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
-                          <q-btn
-                            dense
-                            round
-                            size="8px"
-                            @click="removeToCart(item)"
-                            icon="clear"
-                            flat
-                          ></q-btn>
+                          <q-btn round size="8px" @click="removeToCart(item)" icon="clear" flat></q-btn>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -75,11 +76,11 @@
             </q-card>
           </q-menu>
         </q-btn>
-        <q-btn-dropdown round flat v-if="loggedIn" push dropdown-icon="more_vert" dense>
+        <q-btn-dropdown round flat v-if="loggedIn" push dropdown-icon="more_vert">
           <div class="row no-wrap q-pa-sm">
             <div class="column">
               <div class="text-h6">Settings</div>
-              <q-item tag="label" v-ripple dense>
+              <q-item tag="label" v-ripple>
                 <q-item-section>
                   <q-item-label>Show 12 hour time format</q-item-label>
                 </q-item-section>
@@ -87,7 +88,7 @@
                   <q-toggle v-model="show12HourFormat" color="blue" />
                 </q-item-section>
               </q-item>
-              <q-item tag="label" v-ripple dense>
+              <q-item tag="label" v-ripple>
                 <q-item-section>
                   <q-item-label>Show tasks in one list</q-item-label>
                 </q-item-section>
@@ -117,7 +118,7 @@
       </q-toolbar>
     </q-header>
     <!-- <q-footer class="footer" v-if="loggedIn && !this.$route.params.id">
-      <q-tabs active-color="white" dense no-caps>
+      <q-tabs active-color="white"  no-caps>
         <q-route-tab
           clickable
           v-for="nav in navs"
@@ -139,11 +140,11 @@
       bordered
       content-class="bg-grey-2"
     >
-      <q-list dense>
+      <q-list>
         <q-item-label header>Navigation</q-item-label>
-        <q-expansion-item dense v-if="setAdmin" label="File Maintenance">
-          <q-expansion-item dense v-if="setAdmin" icon="how_to_reg" label="Inspectors">
-            <q-item dense v-if="setAdmin" to="/inspectors" exact clickable class="q-pl-xl">
+        <q-expansion-item v-if="setAdmin" label="File Maintenance">
+          <q-expansion-item v-if="setAdmin" icon="how_to_reg" label="Inspectors">
+            <q-item v-if="setAdmin" to="/inspectors" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="how_to_reg" />
               </q-item-section>
@@ -151,7 +152,7 @@
                 <q-item-label>Inspectors</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item dense v-if="setAdmin" to="/positions" exact clickable class="q-pl-xl">
+            <q-item v-if="setAdmin" to="/positions" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="playlist_add_check" />
               </q-item-section>
@@ -159,7 +160,7 @@
                 <q-item-label>Positions</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item dense v-if="setAdmin" to="/special-skills" exact clickable class="q-pl-xl">
+            <q-item v-if="setAdmin" to="/special-skills" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="gavel" />
               </q-item-section>
@@ -167,7 +168,7 @@
                 <q-item-label>Special Skills</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item dense v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
+            <q-item v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="schedule" />
               </q-item-section>
@@ -176,8 +177,8 @@
               </q-item-section>
             </q-item>
           </q-expansion-item>
-          <q-expansion-item dense v-if="setAdmin" icon="build" label="Equipments">
-            <q-item dense v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
+          <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
+            <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="category" />
               </q-item-section>
@@ -185,7 +186,7 @@
                 <q-item-label>Equipment Category</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item dense v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
+            <q-item v-if="setAdmin" to="/list-services" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="format_list_bulleted" />
               </q-item-section>
@@ -194,7 +195,7 @@
               </q-item-section>
             </q-item>
           </q-expansion-item>
-          <q-item dense to="/mobilization" exact clickable v-if="setAdmin">
+          <q-item to="/mobilization" exact clickable v-if="setAdmin">
             <q-item-section avatar>
               <q-icon name="local_shipping" />
             </q-item-section>
@@ -202,7 +203,7 @@
               <q-item-label>Mobilization Fee</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item dense v-if="setAdmin" to="/users" exact clickable>
+          <q-item v-if="setAdmin" to="/users" exact clickable>
             <q-item-section avatar>
               <q-icon name="people" />
             </q-item-section>
@@ -210,8 +211,24 @@
               <q-item-label>Manage User</q-item-label>
             </q-item-section>
           </q-item>
-          <q-expansion-item dense v-if="setAdmin" icon="description" label="Certificate">
-            <q-item dense v-if="setAdmin" to="/certificates" exact clickable class="q-pl-xl">
+          <q-item v-if="setAdmin" to="/scheduling" exact clickable>
+            <q-item-section avatar>
+              <q-icon name="schedule" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Scheduling</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item v-if="setAdmin" to="/checklists" exact clickable>
+            <q-item-section avatar>
+              <q-icon name="playlist_add_check" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Checklists</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-expansion-item v-if="setAdmin" icon="description" label="Certificate">
+            <q-item v-if="setAdmin" to="/certificates" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="description" />
               </q-item-section>
@@ -219,7 +236,7 @@
                 <q-item-label>Certificates</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item dense v-if="setAdmin" to="/certificate-builder" exact clickable class="q-pl-xl">
+            <q-item v-if="setAdmin" to="/certificate-builder" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="post_add" />
               </q-item-section>
@@ -228,7 +245,7 @@
               </q-item-section>
             </q-item>
           </q-expansion-item>
-          <!-- <q-item dense v-if="setAdmin" to="/safety-associate" exact clickable>
+          <!-- <q-item  v-if="setAdmin" to="/safety-associate" exact clickable>
             <q-item-section avatar>
               <q-icon name="person_pin" />
             </q-item-section>
@@ -239,7 +256,6 @@
         </q-expansion-item>
 
         <q-item
-          dense
           v-if="userDetails.roles=='old' || userDetails.roles=='new'"
           to="/services"
           exact
@@ -268,13 +284,11 @@
         </q-item>-->
 
         <q-expansion-item
-          dense
           v-if="setAdmin || userDetails.roles=='Inspector'"
           icon="assessment"
           label="Projects"
         >
           <q-item
-            dense
             v-if="setAdmin || userDetails.roles=='Inspector'"
             to="/pending-projects"
             exact
@@ -290,7 +304,6 @@
             </q-item-section>
           </q-item>
           <q-item
-            dense
             v-if="setAdmin || userDetails.roles=='Inspector'"
             to="/approved-projects"
             exact
@@ -306,13 +319,7 @@
             </q-item-section>
           </q-item>
         </q-expansion-item>
-        <q-item
-          dense
-          v-if="setAdmin || userDetails.roles=='Inspector'"
-          to="/reservation"
-          exact
-          clickable
-        >
+        <q-item v-if="setAdmin || userDetails.roles=='Inspector'" to="/reservation" exact clickable>
           <q-item-section avatar>
             <q-icon name="calendar_today" />
           </q-item-section>
@@ -323,7 +330,6 @@
           </q-item-section>
         </q-item>
         <q-item
-          dense
           v-if="userDetails.roles=='old' || userDetails.roles=='new'"
           to="/approved-projects"
           exact
@@ -338,7 +344,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item dense v-for="nav in navs" :key="nav.label" :to="nav.to" exact clickable>
+        <q-item v-for="nav in navs" :key="nav.label" :to="nav.to" exact clickable>
           <q-item-section avatar>
             <q-icon :name="nav.icon" />
           </q-item-section>
@@ -346,8 +352,8 @@
             <q-item-label>{{ nav.label }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-expansion-item dense icon="settings" label="Settings">
-          <q-item dense to="/settings" exact clickable class="q-pl-xl">
+        <q-expansion-item icon="settings" label="Settings">
+          <q-item to="/settings" exact clickable class="q-pl-xl">
             <q-item-section avatar>
               <q-icon name="settings" />
             </q-item-section>

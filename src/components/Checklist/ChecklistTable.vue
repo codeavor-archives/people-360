@@ -4,9 +4,9 @@
       <div class>
         <q-table
           :filter="filter"
-          title="Certificate Builder Table"
+          title="Checklist Table"
           color="primary"
-          :data="certificates"
+          :data="services"
           :columns="columns"
           row-key="id"
         >
@@ -19,20 +19,17 @@
           </template>
           <template v-slot:body="props">
             <q-tr :props="props">
-              <q-td :props="props" key="director">{{props.row.director}}</q-td>
-              <q-td :props="props" key="logo">
-                <q-img avatar :src="props.row.logo" />
-              </q-td>
+              <q-td :props="props" key="equipment">{{props.row.equipment}}</q-td>
               <q-td>
                 <q-btn
-                  @click="showEditCertModal(props.row)"
+                  @click="showEditServiceModal(props.row)"
                   round
                   color="primary"
                   flat
                   dense
-                  icon="edit"
+                  icon="remove_red_eye"
                 >
-                  <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
+                  <q-tooltip content-class="bg-deep-orange">View</q-tooltip>
                 </q-btn>
               </q-td>
             </q-tr>
@@ -40,9 +37,6 @@
         </q-table>
       </div>
     </div>
-    <q-dialog v-model="showEditCertificate">
-      <edit-certificate @close="showEditCertificate = false" :certificate="certificate" :id="id"></edit-certificate>
-    </q-dialog>
   </q-page>
 </template>
 
@@ -51,46 +45,28 @@ import { fb, db, fs } from "boot/firebase";
 export default {
   firestore() {
     return {
-      certificates: fs.collection("certificates")
+      checklists: fs.collection("checklists"),
+      services: fs.collection("services")
     };
   },
   data() {
     return {
-      certificate: {},
       filter: "",
-      id: "",
-      showEditCertificate: false,
       columns: [
         {
-          name: "director",
+          name: "equipment",
           align: "left",
-          label: "Director",
+          label: "Equipment",
           sortable: true,
-          field: "director"
+          field: "equipment"
         },
-        {
-          name: "logo",
-          align: "left",
-          label: "Logo",
-          sortable: true,
-          field: "type"
-        },
+
         {
           align: "left",
           label: "Action"
         }
       ]
     };
-  },
-  methods: {
-    showEditCertModal(props) {
-      this.showEditCertificate = true;
-      this.certificate = props;
-    }
-  },
-  components: {
-    "edit-certificate": require("components/Certificates/Modals/EditCertificate")
-      .default
   }
 };
 </script>

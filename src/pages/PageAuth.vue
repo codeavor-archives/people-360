@@ -46,7 +46,7 @@ export default {
   max-width: 480px;
   margin: 0 auto;
 }
-.login-register {
+/* .login-register {
   margin-top: 50px;
-}
+} */
 </style>

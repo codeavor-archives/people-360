@@ -43,6 +43,16 @@
                 >
                   <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
                 </q-btn>
+                <q-btn
+                  @click="showAddChecklistModal(props.row)"
+                  round
+                  color="primary"
+                  flat
+                  dense
+                  icon="add"
+                >
+                  <q-tooltip content-class="bg-deep-orange">Add Checklist</q-tooltip>
+                </q-btn>
               </q-td>
             </q-tr>
           </template>
@@ -51,6 +61,9 @@
     </div>
     <q-dialog v-model="showEditServices">
       <edit-services @close="showEditServices = false" :service="service" :id="id"></edit-services>
+    </q-dialog>
+    <q-dialog v-model="showAddChecklist">
+      <add-checklist @close="showAddChecklist = false" :checklist="checklist"></add-checklist>
     </q-dialog>
   </q-page>
 </template>
@@ -107,8 +120,10 @@ export default {
         }
       ],
       showEditServices: false,
+      showAddChecklist: false,
       key: {},
       id: "",
+      checklist: {},
       service: {
         id: "",
         name: "",
@@ -126,10 +141,15 @@ export default {
       this.service = props;
       this.id = props.id;
       // console.log(service.id);
+    },
+    showAddChecklistModal(props) {
+      this.showAddChecklist = true;
+      this.checklist = props;
     }
   },
   components: {
-    "edit-services": require("components/Services/Modal/EditServices").default
+    "edit-services": require("components/Services/Modal/EditServices").default,
+    "add-checklist": require("components/Checklist/Modals/AddChecklist").default
   }
 };
 </script>

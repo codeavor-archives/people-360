@@ -50,37 +50,37 @@ export default {
   },
   methods: {
     fbAddInspectorSchedule() {
+      // console.log(this.proposaltoPass);
       this.$q.loading.show();
-
       // this.proposaltoPass.inspector = this.inspectorSchedule.data
-      this.$firestore.preproposals
-        .doc(this.proposaltoPass.id)
-        .update({
-          inspectors: this.inspectorSchedule.data.email
-        })
-        .then(response => {
-          console.log(response);
-          this.$q.loading.hide();
-          this.$q.notify({
-            message: "Successfully added Inspector",
-            color: "primary",
-            multiLine: true,
-            actions: [
-              {
-                label: "Dismiss",
-                color: "white",
-                handler: () => {}
-              }
-            ]
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          this.$q.loading.hide();
-        });
+      // this.$firestore.preproposals
+      //   .doc(this.proposaltoPass.id)
+      //   .update({
+      //     inspectors: this.inspectorSchedule.data.email
+      //   })
+      //   .then(response => {
+      //     console.log(response);
+      //     this.$q.loading.hide();
+      //     this.$q.notify({
+      //       message: "Successfully added Inspector",
+      //       color: "primary",
+      //       multiLine: true,
+      //       actions: [
+      //         {
+      //           label: "Dismiss",
+      //           color: "white",
+      //           handler: () => {}
+      //         }
+      //       ]
+      //     });
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //     this.$q.loading.hide();
+      //   });
 
       // Add some firestore add methods here
-      // this.inspectorSchedule.start = this.start;
+      this.inspectorSchedule.start = this.start;
       this.inspectorSchedule.id = this.inspectorSchedule.data.id;
       this.inspectorSchedule.createdby = fb.auth().currentUser.uid;
       this.inspectorSchedule.title =

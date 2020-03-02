@@ -92,6 +92,20 @@
             />
           </template>
         </q-input>
+        <div v-for="(name, index) in checklistarr" :key="index">
+          <q-input
+            :rules="[val => !!val || 'Field is required']"
+            ref="name"
+            class="q-pa-xs"
+            label="Checklist"
+            v-model="name.name"
+          >
+            <template v-slot:append>
+              <q-icon v-if="name.name" name="close" class="cursor-pointer" />
+            </template>
+          </q-input>
+        </div>
+        <q-btn class="q-mt-md" @click="addCheck" round icon="add"></q-btn>
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn
@@ -117,6 +131,11 @@ export default {
   },
   data() {
     return {
+      checklistarr: [
+        {
+          name: ""
+        }
+      ],
       readytosubmit: false,
       optionCategories: [],
       value: null,
@@ -129,17 +148,26 @@ export default {
         personCount: "",
         dayCount: "",
         available: "true",
-        photo: ""
+        photo: "",
+        checklists: ""
       }
     };
   },
   methods: {
+    addCheck() {
+      this.checklistarr.push({
+        checklistarr: {
+          name: ""
+        }
+      });
+    },
     getConsole(optionCategories) {
       console.log(optionCategories);
     },
     addServices() {
       this.$q.loading.show();
       this.service.id = fb.auth().currentUser.uid;
+      this.checklists = this.checklistarr;
       this.$firestore.services
         .add(this.service)
         .then(error => {
