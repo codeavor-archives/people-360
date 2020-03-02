@@ -33,7 +33,7 @@
             <div class="row">
               <div style="text-align:left; font-size:16px;">
                 <q-item-label class="q-my-xs">COMPANY NAME:</q-item-label>
-                <q-item-label class="q-my-xs">COMPANY ADDRESS:</q-item-label>
+                <!-- <q-item-label class="q-my-xs">COMPANY ADDRESS:</q-item-label> -->
                 <q-item-label class="q-my-xs">INSPECTION ADDRESS:</q-item-label>
                 <q-item-label class="q-my-xs">CHECKLIST NUMBER:</q-item-label>
                 <q-item-label class="q-my-xs">TYPE OF EQUIPMENT:</q-item-label>

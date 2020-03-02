@@ -22,7 +22,7 @@
               <q-td :props="props" key="equipment">{{props.row.equipment}}</q-td>
               <q-td>
                 <q-btn
-                  @click="showEditServiceModal(props.row)"
+                  @click="showChecklistModal(props.row)"
                   round
                   color="primary"
                   flat
@@ -36,6 +36,15 @@
           </template>
         </q-table>
       </div>
+      <q-dialog
+        v-model="showChecklist"
+        persistent
+        :maximized="maximizedToggle"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+      >
+        <checklist-modal @close="showChecklist=false" :checklistTable="checklistTable"></checklist-modal>
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -51,6 +60,9 @@ export default {
   },
   data() {
     return {
+      checklistTable: {},
+      showChecklist: false,
+      maximizedToggle: true,
       filter: "",
       columns: [
         {
@@ -67,6 +79,16 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    showChecklistModal(props) {
+      this.showChecklist = true;
+      this.checklistTable = props;
+      // console.log(props);
+    }
+  },
+  components: {
+    "checklist-modal": require("components/Checklist/Checklist").default
   }
 };
 </script>

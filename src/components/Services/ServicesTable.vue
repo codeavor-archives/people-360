@@ -53,6 +53,16 @@
                 >
                   <q-tooltip content-class="bg-deep-orange">Add Checklist</q-tooltip>
                 </q-btn>
+                <q-btn
+                  @click="showEditChecklistModal(props.row)"
+                  round
+                  color="primary"
+                  flat
+                  dense
+                  icon="remove_red_eye"
+                >
+                  <q-tooltip content-class="bg-deep-orange">View Checklist</q-tooltip>
+                </q-btn>
               </q-td>
             </q-tr>
           </template>
@@ -64,6 +74,9 @@
     </q-dialog>
     <q-dialog v-model="showAddChecklist">
       <add-checklist @close="showAddChecklist = false" :checklist="checklist"></add-checklist>
+    </q-dialog>
+    <q-dialog v-model="showEditChecklist">
+      <edit-checklist @close="showEditChecklist = false" :checklist="checklist"></edit-checklist>
     </q-dialog>
   </q-page>
 </template>
@@ -121,6 +134,7 @@ export default {
       ],
       showEditServices: false,
       showAddChecklist: false,
+      showEditChecklist: false,
       key: {},
       id: "",
       checklist: {},
@@ -145,11 +159,19 @@ export default {
     showAddChecklistModal(props) {
       this.showAddChecklist = true;
       this.checklist = props;
+    },
+    showEditChecklistModal(props) {
+      this.showEditChecklist = true;
+      this.checklist = props;
+      console.log(props);
     }
   },
   components: {
     "edit-services": require("components/Services/Modal/EditServices").default,
-    "add-checklist": require("components/Checklist/Modals/AddChecklist").default
+    "add-checklist": require("components/Checklist/Modals/AddChecklist")
+      .default,
+    "edit-checklist": require("components/Checklist/Modals/EditChecklist")
+      .default
   }
 };
 </script>
