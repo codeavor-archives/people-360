@@ -5,7 +5,7 @@
       <q-space></q-space>
       <q-btn v-close-popup flat round dense icon="close" />
     </q-card-section>
-    <q-form @submit.prevent="editChecklist">
+    <q-form @submit.prevent="fbEditChecklist">
       <q-card-section>
         <div class="row">
           <div class="col-6" v-for="(name, index) in checklist.check" :key="index">
@@ -79,8 +79,22 @@ export default {
       console.log(index);
       this.checklist.check.splice(index, 1);
     },
-    editChecklist() {
-      console.log(this.checklist.check);
+    fbEditChecklist() {
+      // console.log(this.checklist.check);
+      this.checklistData.check = this.checklist.check;
+      this.$q.loading.show();
+      this.$firestore.services
+        .doc(this.checklist.id)
+        .update(this.checklistData)
+        .then(response => {
+          console.log(response);
+          this.$q.loading.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          this.$q.loading.hide();
+        });
+      this.$emit("close");
     }
   }
 };

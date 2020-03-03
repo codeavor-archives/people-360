@@ -86,8 +86,10 @@ export default {
       }
     },
     editCertificate() {
+      console.log(this.certificate.director);
       this.$q.loading.show();
-      this.certificate.id = fb.auth().currentUser.uid;
+      // this.certificate.id = fb.auth().currentUser.uid; <<<<------- ito may problem
+
       this.$firestore.certificates
         .doc(this.certificate.id)
         .update(this.certificate)

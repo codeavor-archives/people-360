@@ -22,6 +22,7 @@
               <q-td :props="props" key="equipment">{{props.row.equipment}}</q-td>
               <q-td>
                 <q-btn
+                  v-if="props.row.check"
                   @click="showChecklistModal(props.row)"
                   round
                   color="primary"

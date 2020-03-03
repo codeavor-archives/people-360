@@ -44,6 +44,7 @@
                   <q-tooltip content-class="bg-deep-orange">Edit</q-tooltip>
                 </q-btn>
                 <q-btn
+                  v-if="!props.row.check"
                   @click="showAddChecklistModal(props.row)"
                   round
                   color="primary"
@@ -54,6 +55,7 @@
                   <q-tooltip content-class="bg-deep-orange">Add Checklist</q-tooltip>
                 </q-btn>
                 <q-btn
+                  v-if="props.row.check"
                   @click="showEditChecklistModal(props.row)"
                   round
                   color="primary"

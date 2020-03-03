@@ -54,6 +54,10 @@ const routes = [
         component: () => import("pages/PageCertificates.vue")
       },
       {
+        path: "print-certificates",
+        component: () => import("pages/PagePrintCertificates.vue")
+      },
+      {
         path: "mobilization",
         component: () => import("pages/PageMobilization.vue")
       },

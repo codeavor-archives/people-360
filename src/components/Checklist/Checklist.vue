@@ -50,6 +50,13 @@
               />-->
               <q-input
                 class="col q-mb-none q-pb-sm"
+                v-model="equipmentData.companyName"
+                label="Company Name"
+                :rules="[val => !!val || 'Field is required']"
+                lazy-rules
+              />
+              <q-input
+                class="col q-mb-none q-pb-sm"
                 v-model="equipmentData.model"
                 label="Model"
                 :rules="[val => !!val || 'Field is required']"
@@ -160,7 +167,8 @@ export default {
         operatingWeight: "",
         bucketData: "",
         volume: "",
-        result: ""
+        result: "",
+        companyName: ""
       },
       step: 1,
       dialog: false,
@@ -172,16 +180,23 @@ export default {
       // console.log(this.checklistTable.check); <<----This is working somehow
     },
     fbSubmitForCertificate() {
+      var today = new Date();
       var year = new Date();
-      var today = new Date().toString().substr(3, 12);
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = today.getFullYear();
+      today = yyyy + "-" + mm + "-" + dd;
+      year = mm;
       this.equipmentData.date = today;
+      this.equipmentData.checklistNumber = today;
       this.equipmentData.certificateNumber =
-        "CERT" + "-" + Math.floor(Math.random() * 1000000000 + 1) + "-" + year;
+        "CHECK" + "-" + Math.floor(Math.random() * 1000000000 + 1) + "-" + year;
+      "CERT" + "-" + Math.floor(Math.random() * 1000000000 + 1) + "-" + year;
 
       this.$q.loading.show();
       let userID = fb.auth().currentUser.uid;
       this.equipmentData.createdBy = userID;
-      this.equipmentData.type = this.checklistTable.type;
+      this.equipmentData.type = this.checklistTable.equipment;
       this.equipmentData.checklist = this.checklistTable.check;
 
       this.$firestore.printingCertificates

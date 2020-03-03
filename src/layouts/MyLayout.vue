@@ -228,12 +228,20 @@
             </q-item-section>
           </q-item>
           <q-expansion-item v-if="setAdmin" icon="description" label="Certificate">
+            <q-item v-if="setAdmin" to="/print-certificates" exact clickable class="q-pl-xl">
+              <q-item-section avatar>
+                <q-icon name="print" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>For Printing Certificates</q-item-label>
+              </q-item-section>
+            </q-item>
             <q-item v-if="setAdmin" to="/certificates" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="description" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Certificates</q-item-label>
+                <q-item-label>Certificate Layout</q-item-label>
               </q-item-section>
             </q-item>
             <q-item v-if="setAdmin" to="/certificate-builder" exact clickable class="q-pl-xl">

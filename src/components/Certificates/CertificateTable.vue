@@ -86,6 +86,7 @@ export default {
     showEditCertModal(props) {
       this.showEditCertificate = true;
       this.certificate = props;
+      console.log(props);
     }
   },
   components: {

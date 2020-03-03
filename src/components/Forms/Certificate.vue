@@ -6,7 +6,7 @@
           <div class="row">
             <div class="col-12">
               <div class="text-center" v-for="logo in certificates" :key="logo.id">
-                <img :src="logo.logo" width="250px" />
+                <img :src="logo.logo" width="180px" />
               </div>
 
               <p
@@ -18,7 +18,10 @@
               <div class="q-my-lg">
                 <q-item-label style="font-size:16px; " class="col text-justify">
                   THIS CERTIFIES THAT THE PROJECT EQUIPMENT
-                  <strong>__________________</strong>HAS BEEN TESTED BY
+                  <strong
+                    v-for="type in certificate"
+                    :key="type.id"
+                  >{{type.type}} {{type.serialNumber}}</strong> HAS BEEN TESTED BY
                   PEOPLE360 CONSULTING CORPORATION AND FOUND TO BE IN
                   CONFORMANCE TO THE FOLLOWING STANDARD(S):
                 </q-item-label>
@@ -26,36 +29,39 @@
               <div class="q-pt-lg" style="border-bottom: 2px solid black;" spaced></div>
             </div>
           </div>
-          <div class="col q-mt-xl" id="customers">
-            <div class="q-py-sm" style="text-align:center; font-size:18px;">
-              <q-item-label>THIS CERTIFICATE IS ISSUED TO:</q-item-label>
+          <div v-for="cert in certificate " :key="cert.id">
+            <div class="col q-mt-xl" id="customers">
+              <div class="q-py-sm" style="text-align:center; font-size:18px;">
+                <q-item-label>THIS CERTIFICATE IS ISSUED TO:</q-item-label>
+              </div>
+              <div class="row">
+                <div style="text-align:left; font-size:16px;">
+                  <q-item-label class="q-my-xs">COMPANY NAME: {{cert.companyName}}</q-item-label>
+                  <!-- <q-item-label class="q-my-xs">COMPANY ADDRESS:</q-item-label> -->
+                  <q-item-label class="q-my-xs">INSPECTION ADDRESS: {{cert.inspectionAddress}}</q-item-label>
+                  <q-item-label class="q-my-xs">CHECKLIST NUMBER: {{cert.checklistNumber}}</q-item-label>
+                  <q-item-label class="q-my-xs">TYPE OF EQUIPMENT: {{cert.type}}</q-item-label>
+                  <q-item-label class="q-my-xs">RESULTS: {{cert.result}}</q-item-label>
+                  <q-item-label
+                    class="q-my-xs"
+                  >DETAILS: {{cert.serialNumber}} {{cert.checklistNumber}}</q-item-label>
+                </div>
+                <q-space></q-space>
+                <div>
+                  <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
+                </div>
+              </div>
             </div>
-            <div class="row">
+
+            <div class="col q-mt-xl" id="customers">
               <div style="text-align:left; font-size:16px;">
-                <q-item-label class="q-my-xs">COMPANY NAME:</q-item-label>
-                <!-- <q-item-label class="q-my-xs">COMPANY ADDRESS:</q-item-label> -->
-                <q-item-label class="q-my-xs">INSPECTION ADDRESS:</q-item-label>
-                <q-item-label class="q-my-xs">CHECKLIST NUMBER:</q-item-label>
-                <q-item-label class="q-my-xs">TYPE OF EQUIPMENT:</q-item-label>
-                <q-item-label class="q-my-xs">RESULTS:</q-item-label>
-                <q-item-label class="q-my-xs">DETAILS:</q-item-label>
-              </div>
-              <q-space></q-space>
-              <div>
-                <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
+                <q-item-label class="q-my-xs">CERTIFICATE NUMBER: {{cert.certificateNumber}}</q-item-label>
+                <q-item-label class="q-my-xs">CERTIFICATE ISSUE DATE: {{date}}</q-item-label>
+                <q-item-label class="q-my-xs">REGISTRATION DATE:{{cert.date}}</q-item-label>
+                <q-item-label class="q-my-xs">VALID UNTIL:{{validityDate}}</q-item-label>
               </div>
             </div>
           </div>
-
-          <div class="col q-mt-xl" id="customers">
-            <div style="text-align:left; font-size:16px;">
-              <q-item-label class="q-my-xs">CERTIFICATE NUMBER:</q-item-label>
-              <q-item-label class="q-my-xs">CERTIFICATE ISSUE DATE:</q-item-label>
-              <q-item-label class="q-my-xs">REGISTRATION DATE:</q-item-label>
-              <q-item-label class="q-my-xs">VALID UNTIL:</q-item-label>
-            </div>
-          </div>
-
           <!-- <div class="row q-mt-xl">
             <div class="row col-6">
               <div></div>
@@ -66,7 +72,6 @@
               <q-item-label class="col-12 text-justify">For</q-item-label>
             </div>
           </div>-->
-
           <div class="row q-py-xl q-mt-xl" id="customers">
             <div class="col-6" style="text-align:center; font-size:16px;">
               <div class="q-mx-xl" style="border-bottom: 2px solid black;">{{date}}</div>
@@ -83,7 +88,6 @@
               <q-item-label class="q-my-xs">DIRECTOR</q-item-label>
             </div>
           </div>
-
           <div class="row">
             <q-page-sticky class="printButton" position="bottom-right" :offset="[18, 18]">
               <q-fab icon="print" direction="up" color="primary">
@@ -96,6 +100,7 @@
         </div>
       </div>
     </div>
+    {{values}}
     <!-- <div id="customers">
       
     </div>-->
@@ -121,20 +126,13 @@ export default {
   data() {
     return {
       // value: "https://example.com",
+      validityDate: "",
       date: "",
       size: 120,
       values: {
-        ptfNumber: "IM-IN-55454",
-        date: "04-20-2020",
-        contactPerson: "Ariel Espinoza",
-        designation: "Developer",
-        department: "ICT Department",
-        company: "DICT",
-        address: "Quezon City",
-        projectTitle: "Heavy Equipment Testing",
-        termsOfPayment: "Bank Deposit",
-        noOfDaysWork: "2",
-        noOfDaysDoc: "2"
+        certificateNumber: "",
+        checklistNumber: "",
+        serialNumber: ""
       }
     };
   },
@@ -224,14 +222,22 @@ export default {
   },
   computed: {
     ...mapState("storeservices", ["cart"]),
+    ...mapState("storecertificates", ["certificate"]),
     value() {
-      return JSON.stringify(this.values);
+      return JSON.stringify(this.certificate);
+      // return JSON.stringify(this.values);
     }
   },
   components: {
     QrcodeVue
   },
   mounted() {
+    let data = JSON.stringify(this.certificate);
+    console.log(data);
+    this.values.certificateNumber = this.certificate.certificateNumber;
+    this.values.checklistNumber = this.certificate.checklistNumber;
+    this.values.serialNumber = this.certificate.serialNumber;
+    // console.log("This is the certificate", this.certificate);
     var today = new Date().toString().substr(3, 12);
     // var year = new Date();
     // var dd = String(today.getDate()).padStart(2, "0");
@@ -239,6 +245,21 @@ export default {
     // var yyyy = today.getFullYear();
     // today = mm + "-" + yyyy + "-" + dd;
     this.date = today;
+
+    var now = new Date();
+    var year = new Date();
+    var addYear = year.setDate(year.getFullYear() + 1);
+    var dd = String(now.getDate()).padStart(2, "0");
+    var mm = String(now.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = now.getFullYear() + 1;
+    now = yyyy + "-" + mm + "-" + dd;
+    this.validityDate = now;
+  },
+  destroyed() {
+    this.$store.commit(
+      "storecertificates/removeItemFromCertificate",
+      this.certificate
+    );
   }
 };
 </script>
