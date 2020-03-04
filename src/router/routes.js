@@ -84,6 +84,14 @@ const routes = [
       {
         path: "checklists",
         component: () => import("pages/PageChecklist.vue")
+      },
+      {
+        path: "billing",
+        component: () => import("pages/PageBilling.vue")
+      },
+      {
+        path: "on-going",
+        component: () => import("pages/PageOngoingPreproposal.vue")
       }
     ]
   }

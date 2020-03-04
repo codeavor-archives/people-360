@@ -8,7 +8,7 @@
               <tr>
                 <th colspan="20">
                   <div class="row no-wrap items-center">
-                    <div class="text-h5 text-primary">Pending Reservation Table</div>
+                    <div class="text-h5 text-primary">Pending Projects Table</div>
                   </div>
                 </th>
               </tr>
@@ -155,7 +155,7 @@
                     <q-tooltip content-class="bg-accent">Reserved</q-tooltip>
                   </q-btn>
                   <q-btn
-                    @click="approvedProposal(proposal)"
+                    @click="cancelProposal(proposal)"
                     round
                     color="primary"
                     flat
@@ -431,10 +431,12 @@ export default {
       // console.log(proposal.id);
       this.$q.loading.show();
       // this.proposal.status = true;
+      let balance = proposal.balance - proposal.downPayment;
       this.$firestore.preproposals
         .doc(proposal.id)
         .update({
-          status: "approved"
+          status: "approved",
+          balance: balance
         })
         .then(response => {
           console.log(response);

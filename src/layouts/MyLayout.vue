@@ -188,7 +188,7 @@
               <q-item-section>
                 <q-item-label>Schedule</q-item-label>
               </q-item-section>
-            </q-item> -->
+            </q-item>-->
           </q-expansion-item>
           <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
             <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
@@ -266,6 +266,14 @@
               </q-item-section>
             </q-item>
           </q-expansion-item>
+          <q-item v-if="setAdmin" to="/billing" exact clickable>
+            <q-item-section avatar>
+              <q-icon name="credit_card" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Billing</q-item-label>
+            </q-item-section>
+          </q-item>
           <!-- <q-item  v-if="setAdmin" to="/safety-associate" exact clickable>
             <q-item-section avatar>
               <q-icon name="person_pin" />
@@ -337,6 +345,20 @@
             <q-item-section>
               <q-item-label v-if="setAdmin || userDetails.roles == 'Inspector'">Approved Projects</q-item-label>
               <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label> -->
+            </q-item-section>
+          </q-item>
+          <q-item
+            v-if="setAdmin || userDetails.roles == 'Inspector'"
+            to="/on-going"
+            exact
+            clickable
+            class="q-pl-xl"
+          >
+            <q-item-section avatar>
+              <q-icon name="assignment_turned_in" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label v-if="setAdmin || userDetails.roles == 'Inspector'">On Going Projects</q-item-label>
             </q-item-section>
           </q-item>
         </q-expansion-item>

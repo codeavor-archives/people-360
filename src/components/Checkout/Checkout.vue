@@ -117,7 +117,7 @@
                 <strong>{{ totalPrice | currency("₱", 2, { decimalSeparator: "." }) }}</strong>
               </q-item-label>
 
-              <q-item-label class="text-grey-8 q-pb-xs" v-if="userDetails.roles == 'new'">
+              <q-item-label class="text-grey-8 q-pb-xs">
                 ADD 12% VAT
                 <strong>
                   {{
@@ -543,11 +543,13 @@ export default {
         this.preproposal.status = "pending";
         this.preproposal.downPayment = (this.grandTotalforNewClient * 20) / 100;
         this.preproposal.totalPrice = this.grandTotalforNewClient;
+        this.preproposal.balance = this.grandTotalforNewClient;
         this.preproposal.mobilizationFee = this.preproposal.mobilizationFee.newClientPrice;
         // this.preproposal.projectLocation = this.preproposal.mobilizationFee.value;
       } else {
         this.preproposal.status = "approved";
         this.preproposal.totalPrice = this.grandTotalforOldClient;
+        this.preproposal.balance = this.grandTotalforOldClient;
         this.preproposal.mobilizationFee = this.preproposal.mobilizationFee.oldClientPrice;
         // this.preproposal.projectLocation = this.preproposal.mobilizationFee.value;
       }

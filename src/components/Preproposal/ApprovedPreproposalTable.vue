@@ -9,7 +9,7 @@
                 <tr>
                   <th colspan="20">
                     <div class="row no-wrap items-center">
-                      <div class="text-h5 text-primary">Approved Reservation Table</div>
+                      <div class="text-h5 text-primary">Approved Projects Table</div>
                     </div>
                   </th>
                 </tr>
@@ -161,7 +161,7 @@
                       <q-tooltip content-class="bg-red">Cancel</q-tooltip>
                     </q-btn>
                     <view-quotation :proposalId="proposal.id"></view-quotation>
-                    <q-btn
+                    <!-- <q-btn
                       round
                       color="primary"
                       flat
@@ -170,6 +170,9 @@
                       @click="assignInspector(proposal)"
                     >
                       <q-tooltip content-class="bg-red">Add Inspector</q-tooltip>
+                    </q-btn>-->
+                    <q-btn round color="primary" flat dense icon="assignment_turned_in">
+                      <q-tooltip content-class="bg-red">For Inspection</q-tooltip>
                     </q-btn>
                   </td>
                 </tr>
@@ -475,6 +478,15 @@
                                 <strong>Total Equipment Price:</strong>
                                 {{
                                 proposal.totalEquipmentPrice
+                                | currency("₱", 2, {
+                                decimalSeparator: "."
+                                })
+                                }}
+                              </div>
+                              <div>
+                                <strong>Total Equipment Balance</strong>
+                                {{
+                                proposal.balance
                                 | currency("₱", 2, {
                                 decimalSeparator: "."
                                 })

@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div>
     <div class>
       <div class>
         <q-table
@@ -21,7 +21,7 @@
             <q-tr :props="props">
               <q-td :props="props" key="director">{{props.row.director}}</q-td>
               <q-td :props="props" key="logo">
-                <q-img avatar :src="props.row.logo" />
+                <q-img style="width: 100px" avatar :src="props.row.logo" />
               </q-td>
               <q-td>
                 <q-btn
@@ -43,7 +43,7 @@
     <q-dialog v-model="showEditCertificate">
       <edit-certificate @close="showEditCertificate = false" :certificate="certificate" :id="id"></edit-certificate>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script>
