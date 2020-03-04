@@ -21,14 +21,14 @@
         />
         <q-toolbar-title class="text-center" v-if="loggedIn">
           <!-- <q-avatar size="30px" class> -->
-          <q-img class="logo" src="../../download.jpg">
+          <q-img class="logo" src="../../P-360logo.png">
             <!-- remove class="logo" -->
           </q-img>
           <!-- </q-avatar> -->
           {{ title }}
         </q-toolbar-title>
         <q-btn
-          v-if="!setAdmin || !userDetails.roles=='Inspector'"
+          v-if="!setAdmin || !userDetails.roles == 'Inspector'"
           @click="showMyCart"
           round
           flat
@@ -48,13 +48,22 @@
                         </q-item-section>
 
                         <q-item-section>
-                          <q-item-label>{{item.service_name}}</q-item-label>
-                          <q-item-label caption>{{item.service_equipment}}</q-item-label>
+                          <q-item-label>{{ item.service_name }}</q-item-label>
+                          <q-item-label caption>
+                            {{
+                            item.service_equipment
+                            }}
+                          </q-item-label>
                         </q-item-section>
 
                         <q-item-section side top>
-                          <q-badge>{{item.service_price | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
-                          <q-item-label caption>Qty: {{item.service_quantity}}</q-item-label>
+                          <q-badge>
+                            {{
+                            item.service_price
+                            | currency("₱", 2, { decimalSeparator: "." })
+                            }}
+                          </q-badge>
+                          <q-item-label caption>Qty: {{ item.service_quantity }}</q-item-label>
                           <q-btn round size="8px" @click="removeToCart(item)" icon="clear" flat></q-btn>
                         </q-item-section>
                       </q-item>
@@ -69,7 +78,11 @@
               <q-card-actions align="right" class="q-pa-xs">
                 <q-space></q-space>
                 <q-item-label caption>Total &nbsp;</q-item-label>
-                <q-badge>{{totalPrice | currency("₱", 2, { decimalSeparator: "." })}}</q-badge>
+                <q-badge>
+                  {{
+                  totalPrice | currency("₱", 2, { decimalSeparator: "." })
+                  }}
+                </q-badge>
                 <q-space></q-space>
                 <q-btn to="/checkout" flat color="primary" label="Checkout"></q-btn>
               </q-card-actions>
@@ -168,14 +181,14 @@
                 <q-item-label>Special Skills</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
+            <!-- <q-item v-if="setAdmin" to="/schedules" exact clickable class="q-pl-xl">
               <q-item-section avatar>
                 <q-icon name="schedule" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>Schedule</q-item-label>
               </q-item-section>
-            </q-item>
+            </q-item> -->
           </q-expansion-item>
           <q-expansion-item v-if="setAdmin" icon="build" label="Equipments">
             <q-item v-if="setAdmin" to="/equipment-category" exact clickable class="q-pl-xl">
@@ -264,7 +277,7 @@
         </q-expansion-item>
 
         <q-item
-          v-if="userDetails.roles=='old' || userDetails.roles=='new'"
+          v-if="userDetails.roles == 'old' || userDetails.roles == 'new'"
           to="/services"
           exact
           clickable
@@ -292,12 +305,12 @@
         </q-item>-->
         <q-item-label header>Others</q-item-label>
         <q-expansion-item
-          v-if="setAdmin || userDetails.roles=='Inspector'"
+          v-if="setAdmin || userDetails.roles == 'Inspector'"
           icon="assessment"
           label="Projects"
         >
           <q-item
-            v-if="setAdmin || userDetails.roles=='Inspector'"
+            v-if="setAdmin || userDetails.roles == 'Inspector'"
             to="/pending-projects"
             exact
             clickable
@@ -307,12 +320,12 @@
               <q-icon name="flag" />
             </q-item-section>
             <q-item-section>
-              <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Pending Projects</q-item-label>
+              <q-item-label v-if="setAdmin || userDetails.roles == 'Inspector'">Pending Projects</q-item-label>
               <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label> -->
             </q-item-section>
           </q-item>
           <q-item
-            v-if="setAdmin || userDetails.roles=='Inspector'"
+            v-if="setAdmin || userDetails.roles == 'Inspector'"
             to="/approved-projects"
             exact
             clickable
@@ -322,23 +335,28 @@
               <q-icon name="thumb_up_alt" />
             </q-item-section>
             <q-item-section>
-              <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Approved Projects</q-item-label>
+              <q-item-label v-if="setAdmin || userDetails.roles == 'Inspector'">Approved Projects</q-item-label>
               <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Reservation</q-item-label> -->
             </q-item-section>
           </q-item>
         </q-expansion-item>
-        <q-item v-if="setAdmin || userDetails.roles=='Inspector'" to="/reservation" exact clickable>
+        <q-item
+          v-if="setAdmin || userDetails.roles == 'Inspector'"
+          to="/reservation"
+          exact
+          clickable
+        >
           <q-item-section avatar>
             <q-icon name="calendar_today" />
           </q-item-section>
           <q-item-section>
-            <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Project Calendar</q-item-label>
+            <q-item-label v-if="setAdmin || userDetails.roles == 'Inspector'">Project Calendar</q-item-label>
 
             <!-- <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Calendar</q-item-label> -->
           </q-item-section>
         </q-item>
         <q-item
-          v-if="userDetails.roles=='old' || userDetails.roles=='new'"
+          v-if="userDetails.roles == 'old' || userDetails.roles == 'new'"
           to="/approved-projects"
           exact
           clickable
@@ -348,7 +366,9 @@
           </q-item-section>
           <q-item-section>
             <!-- <q-item-label v-if="setAdmin || userDetails.roles=='Inspector'">Reservation Table</q-item-label> -->
-            <q-item-label v-if="userDetails.roles=='old' || userDetails.roles=='new'">My Projects</q-item-label>
+            <q-item-label
+              v-if="userDetails.roles == 'old' || userDetails.roles == 'new'"
+            >My Projects</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -515,9 +535,9 @@ export default {
 }
 .logo {
   height: 27px;
+  max-height: 27px;
   width: 30px;
   max-width: 30px;
-  max-height: 27px;
 }
 .my-card {
   width: 300px;
@@ -532,5 +552,3 @@ export default {
 //   color: white !important;
 // }     ====================This can be applied if your changing the background color of the drawer
 </style>
-
-
