@@ -12,7 +12,9 @@ module.exports = function(ctx) {
       "QCalendar",
       "Vue2Filters",
       "qrcode",
-      "stripe"
+      "stripe",
+      "lodash",
+      // "vuetify"
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -116,7 +118,7 @@ module.exports = function(ctx) {
         "QSlideTransition",
         "QSpace",
         "QSpinner",
-        // "QSplitter",
+        "QSplitter",
         "QStepper",
         "QStep",
         "QStepperNavigation",

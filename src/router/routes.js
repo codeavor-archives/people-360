@@ -78,7 +78,7 @@ const routes = [
         component: () => import("pages/PageCertificateBuilder.vue")
       },
       {
-        path: "scheduling",
+        path: "scheduling/:id",
         component: () => import("pages/PageScheduling.vue")
       },
       {

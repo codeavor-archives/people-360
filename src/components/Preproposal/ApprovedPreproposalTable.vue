@@ -174,6 +174,9 @@
                     <q-btn round color="primary" flat dense icon="assignment_turned_in">
                       <q-tooltip content-class="bg-red">For Inspection</q-tooltip>
                     </q-btn>
+                    <q-btn round color="primary" flat dense icon="date_range" @click="$router.push('/scheduling/'+proposal.id)">
+                      <q-tooltip content-class="bg-red">Schedule</q-tooltip>
+                    </q-btn>
                   </td>
                 </tr>
               </tbody>
